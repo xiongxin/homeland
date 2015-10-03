@@ -19,7 +19,7 @@
 <body>
 <div class="fanhui"><img src="/misc/images/bot_top.png"></div>
 <?php $user = session('user_auth');?>
-<?php if(intval($user['subscribe']) < -1):?>
+<?php if(intval($user['subscribe']) < 1):?>
 <div class="z-up-ewm">
     <div class="z-up-ewm-img">
         <div class="z-up-ewm-pic" style="z-index: 1;"><img src="/misc/images/getqrcode.jpg"></div><!-- getqrcode -->
@@ -48,7 +48,7 @@
                 <i class="glyphicon glyphicon-home"></i>
                 <span class="text">首页</span>
             </a>
-            <a href="/article/list/cate_id/">
+            <a href="/article/list/cate_id/50.html">
                 <i class="glyphicon glyphicon-flag"></i>
                 <span class="text">家园课程</span>
             </a>
@@ -76,7 +76,8 @@
             'onMenuShareTimeline',
             'onMenuShareAppMessage',
             'onMenuShareQQ',
-            'onMenuShareWeibo'
+            'onMenuShareWeibo',
+            'scanQRCode'
         ]
     });
 

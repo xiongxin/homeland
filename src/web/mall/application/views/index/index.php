@@ -21,7 +21,7 @@
         <?php foreach($cate_list as $item):
             $item['link'] = ($item['pid'] == 39 ? '/article/list/cate_id/'.$item['id'].'.html' : $item['link']);
         ?>
-        <a href="<?=$item['link']?>" class="col-xs-4 mt10">
+        <a href="<?=$item['link']?>" class="col-xs-4 mt10 nav-cat">
             <img class="img-responsive" src="<?=$item['pic_url']?>">
             <?=$item['title']?>
         </a>
@@ -42,16 +42,11 @@
 <block name="script">
 <script type="text/javascript" src="/v2/js/TouchSlide.1.1.js"></script>
 <script type="text/javascript">
-function club_sign(){
-    wx.scanQRCode({
-        needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-        scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
-        success: function (res) {
-            var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-            alert(result);
-        }
-    });
-}
+wx.ready(function () {
+    $(".nav-cat:eq(0)").click(function(){
+        wx.scanQRCode();
+    })
+});
 $(document).ready(function(){
 
     $('embed').css({width:$(".container").width()+30,height:'auto'});

@@ -6,9 +6,13 @@
         </div>
     </div>
 </header>
+
 <div id="article" class="article-wrapper">
     <div class="article-bd">
         <ul class="article-list media-bd">
+            <?php if(empty($list)):?>
+            <li><div>您所查看的目录还没有内容！</div></li>
+            <?php endif;?>
             <?php foreach($list as $item):?>
             <li>
                 <a href="/article/info/id/<?=$item['id']?>.html">

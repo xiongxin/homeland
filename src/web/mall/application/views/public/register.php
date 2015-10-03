@@ -11,26 +11,26 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label for="name" class="col-xs-offset-1 col-xs-2 control-label p0">企业名称：</label>
-                <div class="col-sm-7 col-xs-9">
+                <label for="name" class="col-xs-offset-1 col-xs-3 control-label p0">企业名称：</label>
+                <div class="col-xs-8">
                   <input type="text" name="company" class="form-control" placeholder="请输入企业名称">
                 </div>
             </div>
             <div class="form-group">
-                <label for="phone" class="col-xs-offset-1 col-xs-2 control-label p0">法人：</label>
-                <div class="col-sm-7 col-xs-9">
+                <label for="phone" class="col-xs-offset-1 col-xs-3 control-label p0">企业法人：</label>
+                <div class="col-xs-8">
                     <input type="text" name="corporation" class="form-control"  placeholder="请输入法人姓名">
                 </div>
             </div>
             <div class="form-group">
-                <label for="phone" class="col-xs-offset-1 col-xs-2 control-label p0">手机号码：</label>
-                <div class="col-sm-7 col-xs-9">
+                <label for="phone" class="col-xs-offset-1 col-xs-3 control-label p0">手机号码：</label>
+                <div class="col-xs-8">
                   <input type="text" name="mobile" maxlength="11" class="form-control" id="mobile" placeholder="请输入您的手机号码">
                 </div>
             </div>
             <div class="form-group">
-                <label for="phone" class="col-xs-offset-1 col-xs-2 control-label p0">地区：</label>
-                <div class="col-sm-7 col-xs-9" id="city">
+                <label for="phone" class="col-xs-offset-1 col-xs-3 control-label p0">所在地区：</label>
+                <div class="col-xs-8" id="city">
 
                 </div>
             </div>
