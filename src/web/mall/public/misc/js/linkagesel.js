@@ -127,7 +127,7 @@ XBW.linkagesel = {
                 text.push(tmp[1]);
             }
         }
-        return text.reverse().join(' ');
+        return text.reverse();
     },
     //根据选中值，自动选择
     choose : function(selected){
