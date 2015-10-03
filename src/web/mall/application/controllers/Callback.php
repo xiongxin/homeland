@@ -111,14 +111,6 @@ class CallbackController extends Yaf\Controller_Abstract  {
                 $this->redirect('/?status=nosub_userregfail');
                 die;
             }
-            $cpsid = intval($this->getRequest()->getQuery('state'));
-            if($cpsid){
-                //将此二人的关系先存起来
-                $ff = M()->exec("replace into t_wx_spread (unionid,openid,cpsid,save_time) values('{$user_info['unionid']}','{$user_info['openid']}',$cpsid,'".time_format()."')");
-		        SeasLog::debug($ff.'SQL'.M()->last_query());
-            }else{
-                //SeasLog::debug('哇! 这位用户从哪进来的,没有人分享给他网址,竟然自己就进来了!');
-            }
         }
 
         //将用户信息放入会话中,此功能有待完善
@@ -135,45 +127,8 @@ class CallbackController extends Yaf\Controller_Abstract  {
         //根据state的值跳转到相应的页面
         switch($state){
 
-            case 'myorder':
-                $this->redirect('/member/order/index.html');
-                break;
-
-            case 'mycard':
-                $this->redirect('/member/index/barcode.html');
-                break;
-
-            case 'profit':
-                $this->redirect('/member/index/shop.html');
-                break;
-
-            case 'invite':
-                $this->redirect('/member/index/index.html?fx=1');
-                break;
-
-            case 'near':
-                $this->redirect('/public/map/type/near.html');
-                break;
-
-            case 'zhinan':
-                $this->redirect('http://mp.weixin.qq.com/s?__biz=MzI3NjAxNzE3OA==&mid=208969664&idx=1&sn=2786b9892004f9471a2a0d7220936152&scene=5#rd');
-                break;
-            case 'kaidian':
-                $this->redirect('/product/detail/goods_id/16.html');
-                break;
-            case 'haibao':
-                $this->redirect('/member/index/setupshop.html');
-                break;
-            case 'tglink':
-                $this->redirect('/member/index/choosedis.html');
-                break;
-
             default:
-                $param = '';
-                if($userinfo){
-                    $param = '&cpsid='.$userinfo['userid'];
-                }
-                $this->redirect('/?status=success'.$param);
+                $this->redirect('/?status=success');
                 break;
         }
         die;

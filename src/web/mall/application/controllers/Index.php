@@ -46,6 +46,6 @@ class IndexController extends MallController {
     }
 
     function signAction(){
-        
+
     }
 }
