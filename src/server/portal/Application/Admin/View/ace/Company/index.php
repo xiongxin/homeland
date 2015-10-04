@@ -35,6 +35,7 @@
 					<th class="">申请人手机</th>
 					<th class="">企业地址</th>
 					<th class="">创建时间</th>
+					<th class="">状态</th>
 					<th>绑定编码</th>
 					<th class="">操作</th>
 					</tr>
@@ -49,10 +50,13 @@
 						<td><?=$vo['mobile']?></td>
 						<td><?=$vo['province'].' '.$vo['city']?></td>
 						<td><?=$vo['insert_time']?></td>
+						<td><?=$status_list[$vo['status']]?></td>
 						<td><?=$vo['bind_code']?></td>
 						<td>
                             <a href="<?=U('edit',array('id'=>$vo['id']))?>">修改</a> |
                             <a class="ajax-get" href="<?=U('bindcode',array('id'=>$vo['id']))?>">重置绑定编码</a>
+                            |
+                            <a href="<?=U('userlist',array('id'=>$vo['id']))?>">成员列表</a>
 	                   </td>
 					</tr>
 					</volist>

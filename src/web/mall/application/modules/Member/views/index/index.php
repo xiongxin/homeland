@@ -17,30 +17,31 @@
                     <div class="member_m_x"><a href="javascript:"><?=$user_company['company']?></a></div>
                 </div>
                 <?php else:?>
-                <div class="member_m_r" style="font-size: 2rem;">
-                    去绑定
+                <div class="member_m_r" style="font-size: 1.6rem;">
+                    去绑定企业
                 </div>
                 <?php endif;?>
             </a>
         </div>
-
+        <?php if(!empty($user_company)):?>
         <div class="list-group mb10 mt10">
             <a href="/member/order/index.html" class="list-group-item">
                 <div class="list_group_img"><img src="/misc/images/member_img15.png"></div>
                 会员级别
-                <span class="gary pull-right">金种子</span>
+                <span class="gary pull-right"><?=$level_list[$user_company['level']]?></span>
             </a>
         </div>
 
-        <div class="list-group mb10">
+        <div class="list-group">
             <a href="/member/index/barcode.html" class="list-group-item">
                 <div class="list_group_img"><img src="/misc/images/member_img16.png"></div>
                 加入时间
-                <span class="gary pull-right">2015-10-04</span>
+                <span class="gary pull-right"><?=$user_company['insert_time']?></span>
             </a>
         </div>
+        <?php endif;?>
 
-        <div class="list-group mb10">
+        <div class="list-group mt10 mb10">
             <a href="/article/info/id/23.html" class="list-group-item tip">
                 <div class="list_group_img"><img src="/misc/images/member_img19.png"></div>
                 会员特权

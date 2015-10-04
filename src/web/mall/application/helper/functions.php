@@ -72,7 +72,7 @@ function is_login(){
     if (empty($user)) {
         return 0;
     } else {
-        return isset($user['userid']) ? $user['userid'] : 0;
+        return isset($user['unionid']) ? $user['unionid'] : 0;
     }
 }
 

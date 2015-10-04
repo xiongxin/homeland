@@ -27,6 +27,7 @@
         </a>
         <?php endforeach;?>
     </div>
+    <?php if(isset($banners[2]) && isset($banner[2][0])):?>
     <div class="row">
         <div class="tb_box">
             <h2 class="tab_tit">
@@ -37,6 +38,7 @@
             </div>
         </div>
     </div>
+    <?php endif;?>
 </div>
 
 <block name="script">

@@ -48,7 +48,7 @@ class CompanyController extends AdminController {
                     ->join($prefix.'wx_user b on c.unionid = b.unionid','left');
 
 
-        $this->assign('status_list',['WAT'=>'待审核','OK#'=>'正常','RJT'=>'审核拒绝']);
+        $this->assign('status_list',[''=>'--请选择--','WAT'=>'待审核','OK#'=>'正常','RJT'=>'审核拒绝']);
         $this->assign('_list', $this->lists($model,$where,'c.id desc','c.*,b.nickname,b.userid'));
 
         $this->meta_title = '公司列表查询';

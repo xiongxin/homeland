@@ -36,7 +36,7 @@
         $options = array(
             'label_text'=>'状态',
         );
-        echo ace_dropdown($options ,'corporation',$status_list,$item['status']);
+        echo ace_dropdown($options ,'status',$status_list,$item['status']);
 
         echo ace_srbtn();
         echo ace_form_close()

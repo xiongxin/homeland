@@ -45,7 +45,57 @@ class IndexController extends MallController {
         file_put_contents($cache_name,$this->render($this->getAction()));
     }
 
+    public function homeMapAction(){
+        $pro_codes = [
+            '北京市'=>'BJ',
+            '广西壮族自治区'=>'GX',
+            '海南省'=>'HA',
+            '重庆市'=>'CQ',
+            '四川省'=>'SC',
+            '贵州省'=>'GZ',
+            '云南省'=>'YN',
+            '西藏自治区'=>'XZ',
+            '陕西省'=>'SA',
+            '甘肃省'=>'GS',
+            '青海省'=>'QH',
+            '宁夏回族自治区'=>'NX',
+            '新疆维吾尔自治区'=>'XJ',
+            '台湾省'=>'TW',
+            '香港特别行政区'=>'HK',
+            '澳门特别行政区'=>'3681',
+            '广东省'=>'GD',
+            '湖南省'=>'HN',
+            '天津市'=>'TJ',
+            '河北省'=>'HB',
+            '山西省'=>'SX',
+            '内蒙古自治区'=>'NM',
+            '辽宁省'=>'LN',
+            '吉林省'=>'JL',
+            '黑龙江省'=>'HL',
+            '上海市'=>'SH',
+            '江苏省'=>'JS',
+            '浙江省'=>'ZJ',
+            '安徽省'=>'AH',
+            '福建省'=>'FJ',
+            '江西省'=>'JX',
+            '山东省'=>'SD',
+            '河南省'=>'HE',
+            '湖北省'=>'HB',
+        ];
+        $counts = M()->query('SELECT COUNT(id) as count,province FROM t_company GROUP BY province')->fetchAll(PDO::FETCH_ASSOC);
+        $data = [];
+        foreach($counts as $item){
+            $tmp = [
+                'code'=>$pro_codes[$item['province']],
+                'value'=>$item['count']
+            ];
+            $data[] = $tmp;
+        }
+        $this->getView()->assign('data',json_encode($data));
+    }
+
     function signAction(){
 
     }
+
 }
