@@ -15,7 +15,7 @@ class PublicController extends MallController {
 
     public function registerAction(){
         if(IS_POST){
-            if(M('t_company_apply')->get('id',['unionid'=>$this->user['unionid']])){
+            if(M('t_company')->get('id',['unionid'=>$this->user['unionid']])){
                 $this->error('对不起，您已经申请过了，无需再次申请！');
             }
             $data = [];
@@ -47,7 +47,7 @@ class PublicController extends MallController {
             $data['unionid'] = $this->user['unionid'];
             $data['insert_time'] = time_format();
 
-            if(M('t_company_apply')->insert($data)){
+            if(M('t_company')->insert($data)){
                 $this->success('申请成功！');
             }else{
                 $this->error('申请失败，请重新再试！');

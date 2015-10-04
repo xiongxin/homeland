@@ -303,7 +303,7 @@ XBW.linkagesel = {
             //为下拉框绑定事件
             $(selector+' .'+options.menu_id+root).change(function(){
 
-                $('#'+options.district_id).val(this.value);
+                $('#'+options.district_id).val(this.value).change();
 
                 if(root > 1 && this.value == ''){
                     $(selector+' .'+options.district_id).val($(selector+' #'+options.menu_id+root).prev().val());
@@ -377,7 +377,7 @@ XBW.linkagesel = {
                 text.push(tmp[1]);
             }
         }
-        return text.reverse().join(' ');
+        return text.reverse();
     },
     //根据选中值，自动选择
     choose : function(selected){

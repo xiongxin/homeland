@@ -37,8 +37,7 @@
                     <th class="">UID</th>
                     <th class="">昵称</th>
                     <th class="">头像</th>
-                    <th class="">openid</th>
-                    <th class="">unionid</th>
+                    <th class="">unionId</th>
                     <th class="">关注时间</th>
                     <th class="">创建时间</th>
                     <th class="">状态</th>
@@ -58,7 +57,6 @@
                             <td>{$vo.userid} </td>
                             <td><a href="{:U('User/dtwechat',array('userid'=>$vo['userid']))}">{$vo.nickname}</a></td>
                             <td><img src="{$vo.headimgurl}" width="50"/></td>
-                            <td>{$vo.openid}</td>
                             <td>{$vo.unionid}</td>
                             <td><span>{$vo.subscribe_time|time_format}</span></td>
                             <td><span>{$vo.add_time}</span></td>

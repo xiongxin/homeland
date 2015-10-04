@@ -31,8 +31,8 @@ class CallbackController extends Yaf\Controller_Abstract  {
 
         $user_token = $this->wechat->getOauthAccessToken($code);
         //本地调试用
-//        $user_token['openid'] = 'oGg5EwxSCk6_H1kFqSs74Jb8Jkck';
-//        $user_token['unionid'] = 'olbkKtxWIOQDYKCQM7GBp7WTNbEU';
+        $user_token['openid'] = 'ozCgxuFdxW5EqGeJ6OuIu10leIS0';
+        $user_token['unionid'] = 'olbkKtxWIOQDYKCQM7GBp7WTNbEU';
 
         if(empty($user_token) || !isset($user_token['openid'])){
             $this->redirect('/?status=get_user_token_faild');
