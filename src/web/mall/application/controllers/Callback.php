@@ -127,6 +127,12 @@ class CallbackController extends Yaf\Controller_Abstract  {
         //根据state的值跳转到相应的页面
         switch($state){
 
+            case 'class':
+                $this->redirect('/article/list/cate_id/50.html');
+                break;
+            case 'myinfo':
+                $this->redirect('/member/index/index.html');
+                break;
             default:
                 $this->redirect('/?status=success');
                 break;
