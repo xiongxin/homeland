@@ -16,6 +16,52 @@ use User\Api\UserApi;
  */
 class CompanyController extends AdminController {
 
+    /**
+     * @param int $id
+     */
+    public function userlist($id=0){
+
+        if(empty($id)){
+            $this->error('ID不能为空！');
+        }
+        $prefix = C('DB_PREFIX');
+        $model = M()->table($prefix.'user_company c')
+            ->join($prefix.'wx_user b on c.unionid = b.unionid','left');
+
+        $this->assign('_list', $this->lists($model,['c.company_id'=>$id],'c.insert_time desc','c.*,b.nickname,b.userid'));
+
+        $this->display();
+    }
+
+    /**
+     * @param int $id
+     */
+    public function useredit($id=0){
+
+        if(empty($id)){
+            $this->error('ID不能为空！');
+        }
+        if(IS_POST){
+
+            $level = I('level');
+            if(M('user_company')->where(['id'=>$id])->save(['level'=>$level])){
+                $this->success('修改成功！',U('userlist',['id'=>I('post.company_id')]));
+            }else{
+                $this->error('修改失败，请重新再试！');
+            }
+        }
+        $prefix = C('DB_PREFIX');
+        $model = M()->table($prefix.'user_company c')
+            ->join($prefix.'wx_user b on c.unionid = b.unionid','left');
+
+        $this->assign('item', $model->where(['c.id'=>$id])->field('c.*,b.nickname,b.userid')->find());
+
+        $this->display();
+    }
+
+    /**
+     * @param int $id
+     */
     public function bindcode($id=0){
 
         $bind_code = mt_rand(100000,999999);

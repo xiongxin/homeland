@@ -4,7 +4,6 @@
      <div class="table-responsive">
         <div class="dataTables_wrapper">  
 
-            <?php if(I('order_id') == ''):?>
             <div class="row">
                 <form class="search-form">
                     <div class="col-sm-12">
@@ -24,7 +23,6 @@
                     </div>
                 </form>
             </div>
-            <?php endif;?>
             <!-- 数据列表 -->
             <table class="table table-striped table-bordered table-hover dataTable">
 			    <thead>
