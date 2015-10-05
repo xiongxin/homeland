@@ -20,9 +20,9 @@ class IndexController extends MallController {
         $f = M('t_sign')->insert(['unionid'=>$this->user['unionid'],'insert_time'=>time_format()]);
 
         if($f){
-            $this->success('签到成功！');
+            $this->success('签到成功！','/');
         }else{
-            $this->error('签到失败，请重新再试！');
+            $this->error('签到失败，请重新再试！','/');
         }
     }
 
