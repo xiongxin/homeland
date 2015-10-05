@@ -13,7 +13,7 @@ class UrlController extends Yaf\Controller_Abstract  {
     protected $raw_data;
     
     public function init(){
-//         Dispatcher::getInstance()->returnResponse(true);
+        Dispatcher::getInstance()->returnResponse(true);
         Dispatcher::getInstance()->disableView();
         
         $this->config = Yaf\Registry::get('config');
@@ -33,6 +33,7 @@ class UrlController extends Yaf\Controller_Abstract  {
         $url = DOMAIN.'/callback/spread.html?forward='.$forward;
 
         echo json_encode(['errcode'=>0,'errmsg'=>'成功！','url'=>$this->wechat->getShortUrl($this->wechat->getOauthRedirect($url,'','snsapi_base'))]);
+        die;
     }
 
 }
