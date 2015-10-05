@@ -22,11 +22,9 @@ class UrlController extends Yaf\Controller_Abstract  {
 
         $this->raw_data = file_get_contents('php://input');
 
-        if(!isset($this->raw_data['body'])){
-            echo '{"errcode":10000,"errmsg":"body节点不能为空"}';die;
+        if(isset($this->raw_data['body'])){
+            $this->raw_data = $this->raw_data['body'];
         }
-        $this->raw_data = $this->raw_data['body'];
-
     }
 
     public function signAction(){
