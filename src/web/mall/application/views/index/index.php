@@ -27,7 +27,7 @@
         </a>
         <?php endforeach;?>
     </div>
-    <?php if(isset($banners[2]) && isset($banner[2][0])):?>
+    <?php if(isset($banners[2]) && isset($banners[2][0])):?>
     <div class="row">
         <div class="tb_box">
             <h2 class="tab_tit">
