@@ -13,6 +13,19 @@ class IndexController extends MallController {
         //$this->layout->setLayoutFile('v1_layout.php');
     }
 
+    public function scanSignAction(){
+        if(!M('t_user_company')->get('id',['unionid'=>$this->user['unionid']])){
+            $this->error('对不起，您还没有绑定企业！');
+        }
+        $f = M('t_sign')->insert(['unionid'=>$this->user['unionid'],'insert_time'=>time_format()]);
+
+        if($f){
+            $this->success('签到成功！');
+        }else{
+            $this->error('签到失败，请重新再试！');
+        }
+    }
+
     /** 
     * 默认动作，首页
     * Yaf支持直接把Yaf\Request_Abstract::getParam()得到的同名参数作为Action的形参

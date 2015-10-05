@@ -31,7 +31,7 @@ class AddonsController extends AdminController {
 //            $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb88f2adbf549aa75&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=index#wechat_redirect';
             $api = new ApiService();
             $resp = $api->setApiUrl(C('APIURI.wechat'))
-                ->setData([])
+                ->setData(new \stdClass())
                 ->send('index/url/sign');
 
             if(empty($resp) || $resp['errcode'] != '0'){
