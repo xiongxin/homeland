@@ -8,7 +8,9 @@
 </header>
 <div class="container">
     <div class="row">
-        <div id="container" style=""></div>
+        <div id="container" style="">
+            <div style="background: #fff; text-align: center;">加载中......</div>
+        </div>
     </div>
 </div>
 <block name="script">
@@ -46,10 +48,10 @@
                 colorAxis: {
                     min: 1,
                     type: 'logarithmic',
-                    minColor: '#EEEEFF',
+                    minColor: '#a4a4d8',
                     maxColor: '#000022',
                     stops: [
-                        [0, '#EFEFFF'],
+                        [0, '#a4a4d8'],
                         [0.67, '#4444FF'],
                         [1, '#000022']
                     ]
