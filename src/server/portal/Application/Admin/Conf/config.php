@@ -24,7 +24,9 @@ return array(
                                     'content'=>'您的短信验证是%s，有效期10分钟！',
 				                    "gatewayId"=>"GUODU",
                                 ), //SMS接口地址和账号信息
-
+    'APIURI'               =>[
+                                'wechat'=>'http://ttdh.fengniao.info/'
+                            ],
     'URL_CASE_INSENSITIVE' => true, //默认false 表示URL区分大小写 true则表示不区分大小写
     
     /* 数据缓存设置 */
