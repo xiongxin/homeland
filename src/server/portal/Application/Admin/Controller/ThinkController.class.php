@@ -185,8 +185,6 @@ class ThinkController extends AdminController {
                 $jumpurl = empty($jumpurl) ? U('lists?model='.$model['name']) : U($jumpurl);
                 $this->success('保存'.$model['title'].'成功！', $jumpurl);
             } else {
-                var_dump($Model->_sql());
-
                 $this->error($Model->getError());
             }
         } else {

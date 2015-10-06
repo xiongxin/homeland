@@ -113,15 +113,9 @@ class UcenterMemberModel extends Model{
 		    $token_name   = C('TOKEN_NAME', null, '__hash__');
 		    $data[$token_name] = I('post.'.$token_name);
 		}
-		$district = M('xbdistrict')->where('id='.I('district'))->find();
-		$city = M('xbdistrict')->where('id='.$district['pid'])->find();
-		$data['city'] = $city['name'];
-		$data['district'] = $district['name'];
-		$data['user_type'] = I('post.user_type');
 		/* 添加用户 */
 		if($this->create($data)){
 			$uid = $this->add();
-			M("auth_group_access")->add(['uid'=>$uid,'group_id'=>I('group_id')]);
 			return $uid ? $uid : 0; //0-未知错误，大于0-注册成功
 		} else {
 			return $this->getError(); //错误详情见自动验证注释
