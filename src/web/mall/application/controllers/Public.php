@@ -64,7 +64,7 @@ class PublicController extends MallController {
 
         $this->wechat = new Wechat($this->config->wechat->toArray());
 
-        $base_url = 'http://ttdh.fengniao.info/';
+        $base_url = 'http://homeland.mi360.me/';
         $newmenu =  [
             "button"=>[
                 [
