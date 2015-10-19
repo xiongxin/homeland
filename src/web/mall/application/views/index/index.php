@@ -51,7 +51,7 @@ wx.ready(function () {
 });
 $(document).ready(function(){
 
-    $('embed').css({width:$(".container").width()+30,height:'auto'});
+    $('#video').css({width:$(".container").width()+30,height:'auto'});
 
     $("#slide img").each(function(){
         var img_src=$(this).attr("_src");

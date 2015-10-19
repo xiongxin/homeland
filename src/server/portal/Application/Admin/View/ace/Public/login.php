@@ -78,8 +78,8 @@
                                                 <fieldset>
                                                     <label class="block clearfix">
                                                         <span class="block input-icon input-icon-right">
-                                                            <input type="text" class="form-control" maxlength="11" autocomplete="off" placeholder="请填写手机号码" name="username">
-                                                            <i class="icon-mobile-phone"></i>
+                                                            <input type="text" class="form-control" autocomplete="off" placeholder="请填写用户名" name="username">
+                                                            <i class="icon-user"></i>
                                                         </span>
                                                     </label>
 
