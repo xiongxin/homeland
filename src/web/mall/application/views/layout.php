@@ -22,7 +22,7 @@
 <?php if(intval($user['subscribe']) < 1):?>
 <div class="z-up-ewm">
     <div class="z-up-ewm-img">
-        <div class="z-up-ewm-pic" style="z-index: 1;"><img src="/misc/images/getqrcode.jpg"></div><!-- getqrcode -->
+        <div class="z-up-ewm-pic" style="z-index: 1;"><img src="/misc/images/qrcode_for_gh_d45276cc2d2e_258.jpg></div><!-- getqrcode -->
         <div class="z-up-ewm-text">
         <?php if(isset($layout['alert_msg'])):?>
             <?=$layout['alert_msg'];?>

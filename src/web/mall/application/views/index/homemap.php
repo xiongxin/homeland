@@ -14,7 +14,7 @@
     </div>
 </div>
 <block name="script">
-    <script type="text/javascript" src="http://static.hcharts.cn/highmaps/highmaps.js"></script>
+    <script type="text/javascript" src="/v2/js/highmaps.js"></script>
     <script type="text/javascript" src="/v2/js/cn-all-sar-taiwan.js"></script>
 
     <script>
