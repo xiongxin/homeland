@@ -25,7 +25,7 @@ return array(
 				                    "gatewayId"=>"GUODU",
                                 ), //SMS接口地址和账号信息
     'APIURI'               =>[
-                                'wechat'=>'http://ttdh.fengniao.info/'
+                                'wechat'=>'http://homeland.mi360.me/'
                             ],
     'URL_CASE_INSENSITIVE' => true, //默认false 表示URL区分大小写 true则表示不区分大小写
     

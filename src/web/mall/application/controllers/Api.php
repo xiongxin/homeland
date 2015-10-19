@@ -91,8 +91,22 @@ class ApiController extends Yaf\Controller_Abstract  {
                 }
                 $this->_subscribe($userinfo);
                 
-                $this->wechat->text('欢迎关注！')->reply();
-
+               
+                $this->wechat->news([
+                    [
+                        'Title'=>'欢迎您关注民族企业家园，点击进入首页',
+                        'Description'=>'',
+                        'PicUrl'=>'http://7xn7ez.com1.z0.glb.clouddn.com/56234b673d153.jpg?imageView2/1/w/592/h/330/interlace/1',
+                        'Url'=>DOMAIN,
+                    ],
+                    [
+                        'Title'=>'招商赢天下',
+                        'Description'=>'',
+                        'PicUrl'=>'http://7xn7ez.com1.z0.glb.clouddn.com/56234b85c3994.jpg?imageView2/1/w/50/h/50/interlace/1',
+                        'Url'=>DOMAIN.'/article/list/cate_id/42.html',
+                    ],
+                ])->reply();
+ 
                 break;
             case Wechat::EVENT_UNSUBSCRIBE:
 
