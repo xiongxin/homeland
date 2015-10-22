@@ -17,15 +17,38 @@ class ArticleController extends MallController {
 
     public function listAction($cate_id=0){
 
+        $cur_page = intval($this->getRequest()->getQuery('page',1));
+
+        $pagenum = $this->config->application->pagenum;
+
+        $limit      = ($cur_page-1)*$pagenum;
+
+
         $cate_id = intval($cate_id);
         $this->getView()->assign('cate_name',M('t_category')->get('title',['id'=>$cate_id]));
         $model = new Model('t_document');
+
+        $total = $model->count(
+                                ['[><]t_picture(p)'=>['cover_id'=>'id']],
+                                '*',
+                                [
+                                    'AND'=>['category_id'=>$cate_id,'t_document.status'=>1]
+                                ]
+                            );
+
         $list = $model->select(
                                 ['[><]t_picture(p)'=>['cover_id'=>'id']],
                                 ['t_document.id','title','description','t_document.update_time','p.url(pic_url)'],
-                                ['category_id'=>$cate_id]
+                                [
+                                    'AND'=>['category_id'=>$cate_id,'t_document.status'=>1],
+                                    'LIMIT'=>[$limit,$pagenum]
+                                ]
                             );
 
+        $page = new Page(intval($total),$pagenum,$_REQUEST);
+
         $this->getView()->assign('list',$list);
+        $this->getView()->assign('page',$page->show());
+        $this->getView()->assign('total',$total);
     }
 }

@@ -33,6 +33,8 @@
             <?php endforeach;?>
         </ul>
     </div>
+
+    <?php include APP_PATH.'views/common/page.php'?>
 </div>
 <block name="style">
     <link rel="stylesheet" href="/v2/css/main.css">
