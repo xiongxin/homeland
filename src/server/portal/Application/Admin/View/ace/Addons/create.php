@@ -138,20 +138,8 @@ return array(
 			</div>
 			<span class="help-block col-xs-12 col-sm-5 inline block has_adminlist hidden">自定义模板,注意：自定义模板里的列表变量为$_list这种,遍历后可以用listkey可以控制表头显示,也可以完全手写，分页变量用$_page</span>
 		</div>
-		<div class="clearfix form-actions">
-            <div class="col-xs-12 center">
-                
-                <button class="btn btn-purple btn-return" type="button" id="preview">
-                    <i class="icon-zoom-in bigger-110"></i>预 览
-                </button>
-                <button type="submit" target-form="form-horizontal" class="btn btn-success ajax-post no-refresh" id="sub-btn">
-                    <i class="icon-ok bigger-110"></i> 确认保存
-                </button> 
-                <a onclick="history.go(-1)" class="btn btn-info" href="javascript:;">
-                   <i class="icon-reply"></i>返回上一页
-                </a>  
-            </div>
-        </div>
+
+        <?=ace_srbtn()?>
 	</form>
 </block>
 

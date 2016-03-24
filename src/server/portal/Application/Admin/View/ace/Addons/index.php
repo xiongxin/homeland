@@ -4,17 +4,7 @@
 
 	<div class="table-responsive">
         <div class="dataTables_wrapper">  
-            
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="search-form">
-                        <label>
-                            <a href="{:U('create')}" class="btn btn-sm btn-primary">快速创建</a>
-                        </label>
-                    </div>  
-                </div>
-            </div>
-            
+
             <!-- 数据列表 -->
             <table class="table table-striped table-bordered table-hover dataTable">
 				<thead>
@@ -73,7 +63,16 @@
 					</notempty>
 				</tbody>
 			</table>
-            <include file="Public/page"/>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>
+                        <a href="{:U('create')}" class="btn btn-white">快速创建</a>
+                    </label>
+                </div>
+                <div class="col-sm-8">
+                    <include file="Public/page"/>
+                </div>
+            </div>
 		</div>
 	</div>
 </block>

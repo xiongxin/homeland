@@ -5215,8 +5215,8 @@ button.btn:active {
 
 .form-actions {
 	display: block;
-	/*background-color: #f5f5f5;
-	border-top: 1px solid #e5e5e5;*/
+	/*background-color: #f5f5f5;*/
+	border-top: 1px solid #e5e5e5;
 	margin-bottom: 20px;
 	margin-top: 20px;
 	padding: 19px 20px 20px
@@ -5292,7 +5292,7 @@ textarea:focus,input[type="text"]:focus,input[type="password"]:focus,input[type=
 	-webkit-box-shadow: none;
 	box-shadow: none;
 	color: #696969;
-	border-color: #f59942;
+	border-color: #5a81a8;
 	background-color: #fff;
 	outline: 0
 }
@@ -5308,7 +5308,7 @@ textarea:focus,input[type="text"]:focus,input[type="password"]:focus,input[type=
 
 .form-control:focus,select:focus {
 	color: #696969;
-	border-color: #f59942;
+	border-color: #5a81a8;
 	background-color: #fff;
 	outline: 0
 }
@@ -5601,7 +5601,7 @@ input[type=checkbox].ace:checked+.lbl::before,input[type=radio].ace:checked+.lbl
 
 input[type=checkbox].ace:hover+.lbl::before,input[type=radio].ace:hover+.lbl::before,input[type=checkbox].ace+.lbl:hover::before,input[type=radio].ace+.lbl:hover::before
 	{
-	border-color: #ff893c
+	border-color: #5a81a8
 }
 
 input[type=checkbox].ace:active+.lbl::before,input[type=radio].ace:active+.lbl::before,input[type=checkbox].ace:checked:active+.lbl::before,input[type=radio].ace:checked:active+.lbl::before
@@ -5997,7 +5997,7 @@ input[type=checkbox].ace.ace-switch.ace-switch-7:checked+.lbl::after {
 .ace-file-input .file-label:hover {
 	-webkit-box-shadow: none;
 	box-shadow: none;
-	border-color: #f59942
+	border-color: #5a81a8
 }
 
 .ace-file-input .file-label:before {
@@ -6320,7 +6320,7 @@ input[type=checkbox].ace.ace-switch.ace-switch-7:checked+.lbl::after {
 }
 
 .ace-file-input input[type=file]:hover+.file-label {
-	border-color: #f59942 \0/
+	border-color: #5a81a8 \0/
 }
 
 .ace-file-multiple input[type=file] {
@@ -10782,7 +10782,6 @@ li.item-default {
 
 .message-item .time {
 	float: right;
-	width: 60px;
 	height: 18px;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -10929,66 +10928,6 @@ li.item-default {
 	border-top: 1px solid #e4e9ee
 }
 
-.message-footer .pagination {
-	margin: 0
-}
-
-.message-footer .pagination>li {
-	margin: 0;
-	padding: 0
-}
-
-.message-footer .pagination>li>a,.message-footer .pagination>li>span {
-	color: #777;
-	padding: 3px;
-	margin-left: 3px;
-	margin-right: 3px;
-	background-color: transparent;
-	border: 0
-}
-
-.message-footer .pagination>li.disabled>span {
-	color: #bbb;
-	cursor: default
-}
-
-.message-footer .pagination>li>a:hover {
-	color: #2283c5;
-	text-decoration: none
-}
-
-.message-footer input[type=text] {
-	font-size: 12px;
-	width: 34px;
-	height: 24px;
-	line-height: 20px;
-	margin-bottom: 0;
-	padding: 3px;
-	vertical-align: middle;
-	text-align: center
-}
-
-.message-footer-style2 .pagination>li>a,.message-footer-style2 .pagination>li>span
-	{
-	border: 1px solid #b5b5b5;
-	border-radius: 100% !important;
-	width: 26px;
-	height: 26px;
-	line-height: 24px;
-	display: inline-block;
-	text-align: center;
-	padding: 0
-}
-
-.message-footer-style2 .pagination>li>span {
-	border-color: #CCC
-}
-
-.message-footer-style2 .pagination>li>a:hover {
-	border-color: #84afc9;
-	background-color: #f7f7f7
-}
-
 .message-item.message-inline-open {
 	background-color: #f2f6f9;
 	border: 1px solid #DDD;
@@ -11086,7 +11025,7 @@ ul.attachment-list>li {
 
 .messagebar-item-left,.messagebar-item-right {
 	position: absolute;
-	bottom: 14px;
+	bottom: 10px;
 	left: 12px;
 	text-align: left
 }
@@ -11098,9 +11037,8 @@ ul.attachment-list>li {
 
 .message-navbar .nav-search {
 	right: auto;
-	left: 60px;
-	top: auto;
-	bottom: 11px
+	left: 105px;
+    top: 0px;
 }
 
 .message-form {
@@ -14107,7 +14045,13 @@ th[aria-selected=true] .ui-jqgrid-sortable {
 	position: static;
 	margin: 0 1px
 }
-
+.ui-inline{
+    cursor: pointer;
+    display: block;
+    float: left;
+    margin-left: 5px;
+}
+a.ui-pg-div:hover{ text-decoration: none;}
 .ui-pg-div .ui-icon:before {
 	font-family: FontAwesome;
 	display: inline

@@ -165,7 +165,6 @@
 						<option value="1">所有人可见</option>
 						<option value="0">不可见</option>
 						<option value="2">管理员可见</option>
-						<option value="3">不在后台菜单展示</option>
 					</select>
 				</div>
 				<span class="check-tips">（是否对用户可见，针对前台）</span>
@@ -231,19 +230,9 @@
 				</div>
 			</div>
 		</div>
-		
-		<div class="clearfix form-actions">
-            <div class="col-xs-12 center">
-    			<input type="hidden" name="id" value="{$info.id|default=''}">
-    			<input type="hidden" name="pid" value="{:isset($category['id'])?$category['id']:$info['pid']}">
-                <button id="sub-btn" class="btn btn-success ajax-post" target-form="form-horizontal" type="submit">
-                    <i class="icon-ok bigger-110"></i> 确认保存
-                </button> 
-                <a href="javascript:history.back(-1);" class="btn btn-info">
-                   <i class="icon-reply"></i>返回上一页
-                </a>  
-            </div>
-        </div>
+        <input type="hidden" name="id" value="{$info.id|default=''}">
+        <input type="hidden" name="pid" value="{:isset($category['id'])?$category['id']:$info['pid']}">
+        <?=ace_srbtn()?>
 	</div>
     </form>
 </div>	

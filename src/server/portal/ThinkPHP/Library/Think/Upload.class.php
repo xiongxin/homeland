@@ -178,7 +178,7 @@ class Upload {
             }
 
             /* 生成保存文件名 */
-            $savename = $this->getSaveName($file);
+            $savename = $file['md5'].'.'.$file['ext'];
             if(false == $savename){
                 continue;
             } else {

@@ -2,29 +2,6 @@
 <block name="body">
      <div class="table-responsive">
         <div class="dataTables_wrapper">  
-            <div class="row">
-                <div class="col-sm-12">
-                    <label>
-                        <a class="btn btn-sm btn-primary" href="{:U('createGroup')}"><i class="icon-plus"></i>新增</a>
-                    </label>
-                    <label>
-                        <button class="btn btn-sm btn-success ajax-post" target-form="ids" url="{:U('changestatus?method=resumeGroup')}">
-                            <i class="icon-ok"></i>启 用
-                        </button>
-                    </label>
-                    <label>
-                        <button class="btn btn-sm btn-inverse ajax-post" target-form="ids" url="{:U('changestatus?method=forbidGroup')}">
-                            <i class="icon-ban-circle"></i>暂停
-                        </button>
-                    </label>
-                    <label>
-                        <button class="btn btn-sm btn-danger ajax-post" target-form="ids" url="{:U('changestatus?method=deleteGroup')}">
-                            <i class="icon-trash"></i>删除
-                        </button>
-                    </label>
-                </div>
-            </div>
-            
             <!-- 数据列表 -->
             <table class="table table-striped table-bordered table-hover dataTable">
 			    <thead>
@@ -78,7 +55,33 @@
 					</notempty>
 				</tbody>
 		    </table>
-            <include file="Public/page"/>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>
+                        <a class="btn btn-white" href="{:U('createGroup')}">
+                            新增
+                        </a>
+                    </label>
+                    <label>
+                        <button class="btn btn-white ajax-post" target-form="ids" url="{:U('changestatus?method=resumeGroup')}">
+                            启 用
+                        </button>
+                    </label>
+                    <label>
+                        <button class="btn btn-white ajax-post" target-form="ids" url="{:U('changestatus?method=forbidGroup')}">
+                            暂停
+                        </button>
+                    </label>
+                    <label>
+                        <button class="btn btn-white ajax-post" target-form="ids" url="{:U('changestatus?method=deleteGroup')}">
+                            删除
+                        </button>
+                    </label>
+                </div>
+                <div class="col-sm-8">
+                    <include file="Public/page"/>
+                </div>
+            </div>
         </div>
     </div>
 </block>

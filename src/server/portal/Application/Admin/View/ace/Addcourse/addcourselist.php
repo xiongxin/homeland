@@ -58,7 +58,7 @@
                 <notempty name="_list">
                     <volist name="_list" id="vo">
                         <tr>
-                            <td class="hidden-480"><a href="<?=U('addcourselist',array('order_id'=>$vo['order_id']))?>"><?=$vo['order_id']?> </td>
+                            <td class="hidden-480"><a href="<?=U('addcourselist',array('order_id'=>$vo['order_id']))?>"><?=$vo['order_id']?></a></td>
                             <td><?=$vo['baby_name']?></td>
                             <td class="hidden-480"><?=$vo['mobile_num']?></td>
                             <td class="hidden-480"><?=$vo['school_name']?></td>
@@ -69,11 +69,25 @@
                             <td><?=$vo['given_count']?></td>
                             <td class="hidden-480"><?=$vo['insert_time']?></td>
                             <td>
+						<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
                                 <a href="<?=U('edit',array('order_id'=>$vo['order_id']))?>">修改</a>
                                 |
                                 <a class="ajax-get confirm" href="<?=U('delete',array('order_id'=>$vo['order_id']))?>">删除</a>
                                 |
                                 <a href="<?=U('reject',array('order_id'=>$vo['order_id']))?>">退课</a>
+				</div>
+                            <div class="visible-xs visible-sm hidden-md hidden-lg">
+                                <div class="inline position-relative">
+                                    <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown">
+                                        <i class="icon-caret-down icon-only bigger-120"></i>
+                                    </button>
+
+                                    <ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
+                                <li><a href="<?=U('edit',array('order_id'=>$vo['order_id']))?>">修改</a></li>
+                                <li><a class="ajax-get confirm" href="<?=U('delete',array('order_id'=>$vo['order_id']))?>">删除</a></li>
+                                <li><a href="<?=U('reject',array('order_id'=>$vo['order_id']))?>">退课</a></li>
+				    </ul>
+				    </div>
                             </td>
                         </tr>
                     </volist>

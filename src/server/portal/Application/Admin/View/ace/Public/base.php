@@ -51,7 +51,7 @@
 	    <!--<![endif]-->
     </head>
     
-    <body>
+    <body class="skin-2">
         <!--top-->
         <div class="navbar navbar-default" id="navbar">
             <script type="text/javascript">
@@ -70,7 +70,6 @@
             
                 <div class="navbar-header pull-right" role="navigation">
                     <ul class="nav ace-nav">
-            
                         <li class="light-blue">
                             <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                                 <img class="nav-user-photo" src="__ACE__/avatars/avatar2.png" alt="Jason's Photo" />
@@ -82,6 +81,7 @@
                                 <i class="icon-caret-down"></i>
                             </a>
                             <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+
                                 <li>
                                     <a href="{:U('User/updatePassword')}">
                                         <i class="icon-key"></i>
@@ -114,7 +114,7 @@
         <script>
         $(document).ready(function(){
             $("#logout").click(function(){
-                layer.confirm('您确定退出？',function(index){
+                layer.confirm('您确定退出？',{icon:3},function(index){
                     layer.close(index);
                     $.get('{:U('Public/logout')}',function(resp){
                         window.location = resp.url;

@@ -69,7 +69,7 @@ class ArticleController extends AdminController {
         //获取动态分类
         $cate_auth  =   AuthGroupModel::getAuthCategories(UID); //获取当前用户所有的内容权限节点
         $cate_auth  =   $cate_auth == null ? array() : $cate_auth;
-        $cate       =   M('Category')->where(array('status'=>1,'display'=>['NEQ', 3]))->field('id,title,pid,allow_publish,groups')->order('pid,sort')->select();
+        $cate       =   M('Category')->where(array('status'=>1))->field('id,title,pid,allow_publish,groups')->order('pid,sort')->select();
 
         //没有权限的分类则不显示
         if(!IS_ROOT){
@@ -161,11 +161,11 @@ class ArticleController extends AdminController {
             // 获取列表绑定的模型
             if ($pid == 0) {
                 $models     =   get_category($cate_id, 'model');
-				// 获取分组定义
-				$groups		=	get_category($cate_id, 'groups');
-				if($groups){
-					$groups	=	parse_field_attr($groups);
-				}
+                // 获取分组定义
+                $groups		=	get_category($cate_id, 'groups');
+                if($groups){
+                    $groups	=	parse_field_attr($groups);
+                }
             }else{ // 子文档列表
                 $models     =   get_category($cate_id, 'model_sub');
             }
@@ -178,7 +178,7 @@ class ArticleController extends AdminController {
                 $model = M('Model')->getById($model_id);
                 if (empty($model['list_grid'])) {
                     $model['list_grid'] = M('Model')->getFieldByName('document','list_grid');
-                }                
+                }
             }
             $this->assign('model', explode(',', $models));
         }else{
@@ -228,9 +228,9 @@ class ArticleController extends AdminController {
         $list   =   $this->getDocumentList($cate_id,$model_id,$position,$fields,$group_id);
         // 列表显示处理
         $list   =   $this->parseDocumentList($list,$model_id);
-        
+
         $this->assign('model_id',$model_id);
-		$this->assign('group_id',$group_id);
+        $this->assign('group_id',$group_id);
         $this->assign('position',$position);
         $this->assign('groups', $groups);
         $this->assign('list',   $list);
@@ -293,14 +293,14 @@ class ArticleController extends AdminController {
                     unset($field[$key]);
                     $field[] = 'DOCUMENT.id';
                 }
-            }            
+            }
         }
         if(!is_null($position)){
             $map[] = "position & {$position} = {$position}";
         }
-		if(!is_null($group_id)){
-			$map['group_id']	=	$group_id;
-		}
+        if(!is_null($group_id)){
+            $map['group_id']	=	$group_id;
+        }
         $list = $this->lists($Document,$map,'level DESC,DOCUMENT.id DESC',$field);
 
         if($map['pid']){
@@ -337,7 +337,7 @@ class ArticleController extends AdminController {
 
         $cate_id    =   I('get.cate_id',0);
         $model_id   =   I('get.model_id',0);
-		$group_id	=	I('get.group_id','');
+        $group_id	=	I('get.group_id','');
 
         empty($cate_id) && $this->error('参数不能为空！');
         empty($model_id) && $this->error('该分类未绑定模型！');
@@ -353,7 +353,7 @@ class ArticleController extends AdminController {
         $info['pid']            =   $_GET['pid']?$_GET['pid']:0;
         $info['model_id']       =   $model_id;
         $info['category_id']    =   $cate_id;
-		$info['group_id']		=	$group_id;
+        $info['group_id']		=	$group_id;
 
         if($info['pid']){
             // 获取上级文档

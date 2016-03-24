@@ -7,24 +7,6 @@
             <div class="row">
                 <div class="col-sm-12">
                     <form class="search-form">
-                        <label>
-                            <a class="btn btn-sm btn-primary" href="{:U('add',array('pid'=>I('get.pid',0)))}"><i class="icon-plus"></i>新增</a>
-                        </label>
-                        <label>
-                            <a class="btn btn-sm btn-success ajax-post" href="{:U('import',array('pid'=>I('get.pid',0)))}">
-                                <i class="icon-ok"></i>导入
-                            </a>
-                        </label>
-                        <label>
-                            <button type="button" class="btn btn-sm btn-inverse list_sort" url="{:U('sort',array('pid'=>I('get.pid',0)),'')}">
-                                <i class="icon-ban-circle"></i>排序
-                            </button>
-                        </label>
-                        <label>
-                            <button type="button" class="btn btn-sm btn-danger ajax-post confirm" target-form="ids" url="{:U('del')}">
-                                <i class="icon-trash"></i>删除
-                            </button>
-                        </label>
                         <label>菜单名称
                             <input type="text" class="search-input" name="title" value="{:I('title')}" placeholder="请输入菜单名称">
                         </label>
@@ -78,18 +60,24 @@
                         <td>{$menu.url}</td>
                         <td>{$menu.sort}</td>
                         <td>
-                            <a href="{:U('toogleDev',array('id'=>$menu['id'],'value'=>abs($menu['is_dev']-1)))}" class="ajax-get">
-                            {$menu.is_dev_text}
-                            </a>
+                            <label>
+                                <input type="checkbox" class="ace ace-switch ace-switch-5 ajax-get" name="status" value="{$menu.is_dev}" <?=$menu['is_dev'] == '1' ? 'checked' : ''?> url="{:U('toogleDev',array('id'=>$menu['id'],'value'=>abs($menu['is_dev']-1)))}">
+                                <span class="lbl"></span>
+                            </label>
                         </td>
                         <td>
-                            <a href="{:U('toogleHide',array('id'=>$menu['id'],'value'=>abs($menu['hide']-1)))}" class="ajax-get">
-                            {$menu.hide_text}
-                            </a>
+                            <label>
+                                <input type="checkbox" class="ace ace-switch ace-switch-6 ajax-get" name="status" value="{$menu.hide}" <?=$menu['hide'] == '1' ? '' : 'checked'?> url="{:U('toogleHide',array('id'=>$menu['id'],'value'=>abs($menu['hide']-1)))}">
+                                <span class="lbl"></span>
+                            </label>
                         </td>
                         <td>
-                            <a title="编辑" href="{:U('edit?id='.$menu['id'])}">编辑</a>
-                            <a class="confirm ajax-get" title="删除" href="{:U('del?id='.$menu['id'])}">删除</a>
+                            <a title="编辑" href="{:U('edit?id='.$menu['id'])}" class="ui-pg-div ui-inline">
+                                编辑
+                            </a>
+                            <a title="删除" href="{:U('del?id='.$menu['id'])}" class="ui-pg-div ui-inline confirm ajax-get">
+                                删除
+                            </a>
                         </td>
                     </tr>
                 </volist>
@@ -99,7 +87,25 @@
                 </tbody>
             </table>
             </form>
-            <include file="Public/page"/>
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>
+                        <a class="btn btn-white" href="{:U('add',array('pid'=>I('get.pid',0)))}">
+                            新增
+                        </a>
+                    </label>
+                    <label>
+                        <button type="button" class="btn btn-white list_sort" url="{:U('sort',array('pid'=>I('get.pid',0)),'')}">
+                            排序
+                        </button>
+                    </label>
+                    <label>
+                        <button type="button" class="btn btn-white ajax-post confirm" target-form="ids" url="{:U('del')}">
+                            删除
+                        </button>
+                    </label>
+                </div>
+            </div>
         </div>
     </div>
 </block>

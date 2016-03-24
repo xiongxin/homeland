@@ -72,14 +72,14 @@ class AttributeModel extends Model {
             }
 
         } else { //更新数据
-            if($create){
-            //更新表字段
-                $res = $this->updateField($data);
-                if(!$res){
-                    $this->error = '更新字段出错！';
-                    return false;
-                }
-            }
+//            if($create){
+//            //更新表字段
+//                $res = $this->updateField($data);
+//                if(!$res){
+//                    $this->error = '更新字段出错！';
+//                    return false;
+//                }
+//            }
 
             $status = $this->save();
             if(false === $status){

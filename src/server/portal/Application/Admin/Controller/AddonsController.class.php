@@ -8,7 +8,6 @@
 // +----------------------------------------------------------------------
 
 namespace Admin\Controller;
-use Admin\Service\ApiService;
 
 /**
  * 扩展后台管理页面
@@ -21,30 +20,6 @@ class AddonsController extends AdminController {
             '已装插件后台'=> D('Addons')->getAdminList(),
         ));
         parent::_initialize();
-    }
-
-
-    public function signqrcode($get_pic=0){
-
-        if(!empty($get_pic)){
-            Vendor('phpqrcode');
-//            $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb88f2adbf549aa75&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=index#wechat_redirect';
-            $api = new ApiService();
-            $resp = $api->setApiUrl(C('APIURI.wechat'))
-                ->setData(new \stdClass())
-                ->send('index/url/sign');
-
-            if(empty($resp) || $resp['errcode'] != '0'){
-                $this->error('哎呀，出错了，请重新再试或联系管理员！');
-            }
-
-            header('Content-type: application/png');
-            header('Content-Disposition: attachment; filename="qrcode.png"');
-            echo \QRcode::png($resp['url'],false,QR_ECLEVEL_L,15,2);
-            die;
-        }
-        $this->meta_title = '签到二维码生成';
-        $this->display();
     }
 
     //创建向导首页

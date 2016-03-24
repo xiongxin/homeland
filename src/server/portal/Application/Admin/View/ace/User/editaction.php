@@ -50,20 +50,9 @@
 			<div class="help-block col-xs-12 col-sm-5 inline">（记录日志备注时按此规则来生成，支持[变量|函数]。目前变量有：user,time,model,record,data）</div>
 		</div>
 
-		<div class="clearfix form-actions">
-			<input type="hidden" name="id" value="{$data.id}"/>
-            <div class="col-xs-12 center">
-                <button type="submit" target-form="form-horizontal" class="btn btn-success ajax-post no-refresh" id="sub-btn">
-                    <i class="icon-ok bigger-110"></i> 确认保存
-                </button> 
-                <button type="reset" class="btn" id="reset-btn">
-                    <i class="icon-undo bigger-110"></i> 重置
-                </button>   
-                <a onclick="history.go(-1)" class="btn btn-info" href="javascript:;">
-	               <i class="icon-reply"></i>返回上一页
-	            </a>  
-            </div>
-        </div>
+        <input type="hidden" name="id" value="{$data.id}"/>
+
+        <?=ace_srbtn()?>
 	</form>
 </block>
 

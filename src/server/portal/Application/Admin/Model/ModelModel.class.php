@@ -163,7 +163,8 @@ class ModelModel extends Model{
         //删除属性数据
         M('Attribute')->where(array('model_id'=>$id))->delete();
         //删除模型数据
-        $this->delete($id);
+        return $this->delete($id);
+
         //删除该表
         $sql = <<<sql
                 DROP TABLE {$table_name};

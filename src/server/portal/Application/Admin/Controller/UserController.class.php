@@ -16,51 +16,107 @@ use User\Api\UserApi;
  */
 class UserController extends AdminController {
 
-    public function dtwechat(){
+    public function paasuview($id=0){
 
-        $userid = intval(I('userid'));
-
-        if(empty($userid)){
-            $this->error('用户ID不能为空！');
+        if(empty($id)){
+            $this->error('ID不能为空！');
         }
+
         $prefix = C('DB_PREFIX');
-        $item = M()->table($prefix.'wx_user w')
-            ->field('w.*')
-            ->where(['w.userid'=>$userid])
-            ->find();
+        $model = M()->table($prefix.'user u')
+            ->join($prefix.'user_auth ua on ua.user_id = u.id','left');
 
-        $this->assign('item',$item);
-
-        $this->meta_title = '微信用户详情';
+        $this->assign('item',$model->where(['id'=>intval($id)])->field('u.*,ua.real_name,identity_no')->find());
+        $this->meta_title = '查看用户详情';
         $this->display();
     }
 
-    public function wechat(){
+    public function resetpupwd(){
 
-        $map = [];
-        $nickname = I('nickname');
+        if(IS_POST){
+            $data = [];
+            $where['mobile_num'] = I('mobile_num');
+            if(empty($where['mobile_num'])){
+                $this->error('手机号码不能为空！');
+            }
+            $where['real_name'] = I('real_name');
+            if(empty($where['real_name'])){
+                $this->error('真实姓名不能为空！');
+            }
+            $where['identity_no'] = I('id_num');
+            if(empty($where['identity_no'])){
+                $this->error('身份证号不能为空！');
+            }
+            if(I('method') == 'check_user'){
+
+                $prefix = C('DB_PREFIX');
+                $exist = M()->table($prefix.'user u')
+                            ->join($prefix.'user_auth ua on ua.user_id = u.id','inner')
+                            ->where($where)
+                            ->find();
+                if($exist){
+                    $this->success('用户存在!');
+                }else{
+                    $this->error('用户不存在!'.M()->_sql());
+                }
+            }
+            $data = [
+                'realName'=>$where['real_name'],
+                'cardID'=>$where['identity_no'],
+                'mobileNum'=>$where['mobile_num'],
+                'operator'=>is_login(),
+            ];
+            $api = new ApiService();
+            $resp = $api->setApiUrl(C('APIURI.paas2'))
+                    ->setData($data)->send('userSecurity/resetPassword');
+            if(!empty($resp) && $resp['errcode'] == '0'){
+                $this->success('重置成功');
+            }
+            $this->error(isset($resp['errmsg']) ? $resp['errmsg'] : '重置失败，请重新再试或联系管理员！');
+        }
+        $this->meta_title = '重置用户登录密码';
+        $this->display();
+    }
+
+    /**
+     * 用户管理首页
+     * @author 麦当苗儿 <zuojiazi@vip.qq.com>
+     */
+    public function paasusers(){
+        $nickname       =   I('nickname');
         if(!empty($nickname)){
-            $map['w.nickname'] = ['like', '%'.(string)$nickname.'%'];
+            $map['u.nick_name']    =   array('like', '%'.(string)$nickname.'%');
         }
-        $status = I('status',1);
-        if($status != ''){
-            $map['w.subscribe'] = $status;
+        $mobile_num       =   I('mobile');
+        if(!empty($mobile_num)){
+            $map['u.mobile_num']    =   array('like', '%'.(string)$mobile_num.'%');
         }
-
-        $status_list = [
-                        '1'=>'已关注',
-                        '0'=>'已取消关注',
-                        '-1'=>'从未关注过',
-                        ];
 
         $prefix = C('DB_PREFIX');
-        $model = M()->table($prefix.'wx_user w');
-
-        $this->assign('_list', $this->lists($model,$map,'w.userid desc','w.*'));
-        $this->assign('status_list',$status_list);
-
-        $this->meta_title = '微信用户管理';
+        $model = M()->table($prefix.'user u')
+                    ->join($prefix.'user_auth ua on ua.user_id = u.id','left');
+        $list   = $this->lists($model, $map,'','u.*,ua.real_name');
+        $this->assign('_list', $list);
+        $this->meta_title = '注册用户列表';
         $this->display();
+    }
+
+    /**
+     * @param int $id
+     * @param string $status
+     */
+    public function changePuStatus($id=0,$status='OK#'){
+        if(empty($id)){
+            $this->error('修改失败');
+        }
+
+        $status = $status == 'OK#' ? 'OFF' : 'OK#';
+
+        if(M('user')->where(['id'=>$id])->save(['status'=>$status])){
+            $this->success('');
+        }else{
+            $this->error('修改失败，请重新再试！');
+        }
     }
     /**
      * 用户管理首页
@@ -71,15 +127,14 @@ class UserController extends AdminController {
         $map['m.status']  =   array('egt',0);
         if(is_numeric($nickname)){
             $map['uid|nickname']=   array(intval($nickname),array('like','%'.$nickname.'%'),'_multi'=>true);
-        }else{
+        }elseif(!empty($nickname)){
             $map['m.nickname']    =   array('like', '%'.(string)$nickname.'%');
         }
 
         $prefix = C('DB_PREFIX');
-        $model = M()->table($prefix.'member m')
-                    ->join($prefix.'ucenter_member um on m.uid = um.id');
-        $list   = $this->lists($model, $map,'','m.*,um.username');
-        int_to_string($list);
+        $model = M()->table($prefix.'ucenter_member um')
+                    ->join($prefix.'member m on m.uid = um.id','left');
+        $list   = $this->lists($model, $map,'','m.*,um.username,um.id');
         $this->assign('_list', $list);
         $this->meta_title = '用户信息';
         $this->display();
@@ -103,7 +158,6 @@ class UserController extends AdminController {
     public function submitNickname(){
         //获取参数
         $nickname = I('post.nickname');
-        $password = I('post.password');
         empty($nickname) && $this->error('请输入昵称');
 
         $Member =   D('Member');
@@ -293,11 +347,10 @@ class UserController extends AdminController {
             if($password != $repassword){
                 $this->error('密码和重复密码不一致！');
             }
-		
-	    $mobile = I('post.mobile');
+
             /* 调用注册接口注册用户 */
             $User   =   new UserApi;
-            $uid    =   $User->register($username, $password, $email,$mobile);
+            $uid    =   $User->register($username, $password, $email,$username);
             if(0 < $uid){ //注册成功
                 $user = array('uid' => $uid, 'nickname' => I('nickname'), 'status' => 1);
                 if(!M('Member')->add($user)){

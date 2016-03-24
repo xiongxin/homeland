@@ -4,14 +4,19 @@
 <script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
 <!-- 标签页导航 -->
 <div class="tabbable">
+
+    <?php
+    $tabs = parse_config_attr($model['field_group']);
+    if(count($tabs) > 1):
+    ?>
     <ul class="nav nav-tabs padding-18">
-        
-        <volist name=":parse_config_attr($model['field_group'])" id="group">
+        <volist name="tabs" id="group">
         <li <eq name="key" value="1">class="active"</eq>><a data-toggle="tab" href="#tab{$key}">{$group}</a></li>
         </volist>
     </ul>
+    <?php endif;?>
     <!-- 表单 -->
-    <form id="form" action="{:U('edit?model='.$model['id'])}" method="post" class="form-horizontal">
+    <form id="form" action="<?=isset($form_action) ? U($form_action) : U('edit',['model'=>$model['id']])?>" method="post" class="form-horizontal">
     <div class="tab-content no-border padding-24">
         <!-- 基础文档模型 -->
 		<volist name=":parse_config_attr($model['field_group'])" id="group">
@@ -54,7 +59,7 @@
                                 </select>
                             </case>
                             <case value="select">
-                                <select name="{$field.name}">
+                                <select  class="width-100" name="{$field.name}">
                                     <volist name=":parse_field_attr($field['extra'])" id="vo">
                                         <option value="{$key}" <eq name="data[$field['name']]" value="$key">selected</eq>>{$vo}</option>
                                     </volist>
@@ -72,7 +77,7 @@
                                 <volist name=":parse_field_attr($field['extra'])" id="vo">
                                 	<label>
 										<input type="checkbox" class="ace" name="{$field.name}[]" value="{$key}"<in name="key" value="$data[$field['name']]" >checked="checked"</in> />
-										<span class="lbl"> {$vo}&nbsp;</span> 
+										<span class="lbl"> {$vo}&nbsp;</span>
 									</label>
                                 </volist>
                             </case>
@@ -81,17 +86,17 @@
                                 {:hook('adminArticleEdit', array('name'=>$field['name'],'value'=>$data[$field['name']]))}
                             </case>
                             <case value="picture">
-                                <div class="controls">
+                                <div class="controls" id="picture_{$field.name}">
 									<input type="file" id="upload_picture_{$field.name}">
 									<input type="hidden" name="{$field.name}" id="cover_id_{$field.name}" value="{$data[$field['name']]}"/>
 									<div class="upload-img-box">
 									<notempty name="data[$field['name']]">
-										<div class="upload-pre-item"><img width="120" src="<?=($field['extra'] == 'src' ? $data[$field['name']] : get_cover($data[$field['name']]))?>"/></div>
+										<div class="upload-pre-item"><img width="120" src="<?=($field['extra'] == 'src' ? imageView2($data[$field['name']]) : get_cover($data[$field['name']]))?>"/></div>
 									</notempty>
 									</div>
 								</div>
 								<script type="text/javascript">
-								<?php 
+								<?php
 								    $thumb = array();
 								    foreach (explode("\r\n", $field['extra']) as $k=>$v){
                                         if(empty($v)){
@@ -116,15 +121,23 @@
                                         alert('未检测到兼容版本的Flash.');
                                     }
 							    });
+                                $(function(){
+                                    layer.ready(function(){
+                                        layer.photos({
+                                            photos: "#picture_{$field.name}"
+                                        });
+                                    });
+                                })
 								function uploadPicture{$field.name}(file, data){
 							    	var data = $.parseJSON(data);
-							    	var src = '';
 							        if(data.status){
-							        	src = data.url || '__ROOT__' + data.path;
-                                        $("#cover_id_{$field.name}").val(<eq name="field.extra" value="src">src<else/>data.id</eq>);
-                                        $("#cover_id_{$field.name}").parent().find('.upload-img-box').html(
-							        		'<div class="upload-pre-item"><img width="120" src="' + src + '"/></div>'
-							        	);
+                                        $("#cover_id_{$field.name}").val(<eq name="field.extra" value="src">data.url<else/>data.id</eq>);
+                                        $("#cover_id_{$field.name}").parent().find('.upload-img-box')
+                                            .html('<div class="upload-pre-item"><img width="120" src="' + data.src + '"/></div>');
+
+                                        layer.photos({
+                                            photos: "#picture_{$field.name}"
+                                        });
 							        } else {
 							        	updateAlert(data.info);
 							        	setTimeout(function(){
@@ -203,13 +216,13 @@
                 <input type="hidden" name="id" value="{$data.id}">
                 <button type="submit" target-form="form-horizontal" class="btn btn-success ajax-post no-refresh" id="sub-btn">
                     <i class="icon-ok bigger-110"></i> 确认保存
-                </button> 
+                </button>
                 <button type="reset" class="btn" id="reset-btn">
                     <i class="icon-undo bigger-110"></i> 重置
-                </button>   
+                </button>
                 <a onclick="history.go(-1)" class="btn btn-info" href="javascript:;">
                    <i class="icon-reply"></i>返回上一页
-                </a>  
+                </a>
             </div>
         </div>
     </div>

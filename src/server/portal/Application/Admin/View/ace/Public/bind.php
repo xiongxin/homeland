@@ -143,7 +143,7 @@
     	$("form").submit(function(){
     		var self = $(this);
     		$("button:submit").addClass("log-in").attr("disabled", true);
-            loading = layer.load('请稍后...');
+            loading = layer.load();
             
     		$.post(self.attr("action"), self.serialize(), success, "json").always(function(){
 
@@ -154,17 +154,17 @@
 
     		function success(data){
     			if(data.status){
-    				layer.msg(data.info,1,1,function(){
+    				layer.msg(data.info,{icon:1},function(){
     					window.location.href = data.url;
     				});
     			} else {
     				if(data.url != ''){
-    					layer.msg(data.info,2,3,function(){
+    					layer.msg(data.info,{icon:2},function(){
                             show_box("signup-box");
     					});
     				    
     				}else{
-    					layer.alert(data.info);
+    					layer.alert(data.info,{icon:2});
     				}
     				//刷新验证码
     				$(".reloadverify").click();
@@ -190,16 +190,16 @@
                 if(/^1\d{10}$/.test(mobile)){
                     $.post("{:U('getAuthCode')}",{mobile:mobile}).done(function(resp){
                         if(resp.status == 1){
-                            layer.msg(resp.info,1,1);
+                            layer.msg(resp.info,{icon:1});
                         }else{
-                            layer.alert(resp.info);
+                            layer.alert(resp.info,{icon:2});
                         }
                     }).fail(function(){
                         
-                        layer.alert('验证码获取失败！');
+                        layer.alert('验证码获取失败！',{icon:2});
                     });
                 }else{
-                	layer.alert('请输入正确的手机号码！');
+                	layer.alert('请输入正确的手机号码！',{icon:2});
                 }
             });
             

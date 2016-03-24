@@ -35,12 +35,3 @@
         </div>
     </div>
 </block>
-
-<block name="script">
-<script type="text/javascript">
-$(function(){
-    //导航高亮
-    highlight_subnav('{:U('banner/index')}');
-})
-</script>
-</block>

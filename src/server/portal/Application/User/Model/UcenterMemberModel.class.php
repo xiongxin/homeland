@@ -113,6 +113,7 @@ class UcenterMemberModel extends Model{
 		    $token_name   = C('TOKEN_NAME', null, '__hash__');
 		    $data[$token_name] = I('post.'.$token_name);
 		}
+		
 		/* 添加用户 */
 		if($this->create($data)){
 			$uid = $this->add();

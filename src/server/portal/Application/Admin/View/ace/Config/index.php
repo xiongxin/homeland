@@ -3,7 +3,6 @@
 <block name="body">
     <div class="page-header">
         <h1>
-            配置管理
             <small>
                 <i class="icon-double-angle-right"></i>
                 <present name="Think.get.group">
@@ -20,12 +19,6 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="search-form">
-                        <label>
-                            <a class="btn btn-sm btn-primary" href="{:U('add')}"><i class="icon-plus"></i>新增</a>
-                        </label>
-                        <label>
-                            <a class="btn list_sort btn-sm btn-success" href="{:U('sort?group='.I('group'),'','')}"><i class="icon-ok"></i>排序</a>
-                        </label>
                         <label>请输入配置名称 
                             <input type="text" name="name" class="search-input" value="{:I('name')}" placeholder="请输入配置名称">
                         </label>
@@ -47,7 +40,7 @@
 						<th>标题</th>
 						<th>分组</th>
 						<th>类型</th>
-						<th>操作</th>
+                        <th>操作</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -59,10 +52,11 @@
 							<td>{$config.title}</td>
 							<td>{$config.group|get_config_group}</td>
 							<td>{$config.type|get_config_type}</td>
-							<td>
-								<a title="编辑" href="{:U('edit?id='.$config['id'])}">编辑</a>
-								<a class="confirm ajax-get" title="删除" href="{:U('del?id='.$config['id'])}">删除</a>
-							</td>
+                            <td>
+                                <a title="删除" href="{:U('del?id='.$config['id'])}" class="ui-pg-div ui-inline confirm ajax-get">
+                                    删除
+                                </a>
+                            </td>
 						</tr>
 					</volist>
 					<else/>
@@ -70,7 +64,23 @@
 					</notempty>
 				</tbody>
 			</table>
-            <include file="Public/page"/>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>
+                        <a class="btn btn-white" href="{:U('add')}">
+                            新增
+                        </a>
+                    </label>
+                    <label>
+                        <a class="btn list_sort btn-white" href="{:U('sort?group='.I('group'),'','')}">
+                            排序
+                        </a>
+                    </label>
+                </div>
+                <div class="col-sm-8">
+                    <include file="Public/page"/>
+                </div>
+            </div>
 	    </div>
     </div>
 </block>

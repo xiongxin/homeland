@@ -72,13 +72,13 @@ class FileController extends AdminController {
             C("UPLOAD_{$pic_driver}_CONFIG")
         ); //TODO:上传到远程服务器
 
-        $thumbs = I('post.thumb');
-        
-        $filename = basename($info['download']['path']);
         /* 记录图片信息 */
         if($info){
             $return['status'] = 1;
             $return = array_merge($info['download'], $return);
+            if(isset($return['url'])){
+                $return['src'] = imageView2($return['url']);
+            }
         } else {
             $return['status'] = 0;
             $return['info']   = $Picture->getError();

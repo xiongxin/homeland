@@ -9,9 +9,10 @@
 <!-- 标题 -->
 <div class="page-header">
 	<h1>
-	文档列表({$_total}) 
+
 	<small>
-	[
+    文档列表({$_total})
+    [
 	<notempty name="rightNav">
 	<volist name="rightNav" id="nav">
 	<a href="{:U('index','cate_id='.$nav['id'])}">{$nav.title}</a>
@@ -31,11 +32,22 @@
 		<neq name="model_id" value="$vo"><a href="{:U('index',array('pid'=>$pid,'cate_id'=>$cate_id,'model_id'=>$vo))}">{$vo|get_document_model='title'}</a><else/><strong>{$vo|get_document_model='title'}</strong></neq>&nbsp;
 		</volist>
 	]</if>
-	<notempty name="groups">[ 分组：<empty name="group_id"><strong>全部</strong><else/><a href="{:U('index',array('pid'=>$pid,'cate_id'=>$cate_id))}">全部</a></empty>
+    <!--
+	<notempty name="groups">
+        [ 分组：
+        <empty name="group_id"><strong>全部</strong><else/><a href="{:U('index',array('pid'=>$pid,'cate_id'=>$cate_id))}">全部</a></empty>
 		<foreach name="groups" item="vo">
-		<neq name="group_id" value="$key"><a href="{:U('index',array('pid'=>$pid,'cate_id'=>$cate_id,'model_id'=>$model_id,'group_id'=>$key))}">{$vo}</a><else/><strong>{$vo}</strong></neq>&nbsp;
+		<neq name="group_id" value="$key">
+            <a href="{:U('index',array('pid'=>$pid,'cate_id'=>$cate_id,'model_id'=>$model_id,'group_id'=>$key))}">
+                {$vo}
+            </a>
+        <else/>
+        <strong>{$vo}</strong>
+        </neq>&nbsp;
 		</foreach>
-	]</notempty>
+	    ]
+    </notempty>
+    -->
 	</small>
 	</h1>
 </div>
@@ -45,36 +57,6 @@
     <div class="dataTables_wrapper">   
         <div class="row">
             <form method="get" action="__SELF__" class="search-form">
-                <div class="col-sm-12 row">
-                    <gt name="allow" value="0">
-    				<div class="btn-group">
-    					<button data-toggle="dropdown" class="btn btn-sm btn-success document_add dropdown-toggle" <if condition="count($model) eq 1">url="{:U('article/add',array('cate_id'=>$cate_id,'pid'=>I('pid',0),'model_id'=>$model[0],'group_id'=>$group_id))}"</if>>新 增
-    						<if condition="count($model) gt 1"><i class="icon-angle-down icon-on-right"></i></if>
-    					</button>
-    					<if condition="count($model) gt 1">
-    					<ul class="dropdown-menu dropdown-danger nav-list">
-    						<volist name="model" id="vo">
-    						<li><a href="{:U('article/add',array('cate_id'=>$cate_id,'model_id'=>$vo,'pid'=>I('pid',0),'group_id'=>$group_id))}">{$vo|get_document_model='title'}</a></li>
-    						</volist>
-    					</ul>
-    					</if>
-					</div>
-    				<else/>
-    					<button class="btn btn-sm disabled" >新 增
-    						<if condition="count($model) gt 1"><i class="icon-angle-down icon-on-right"></i></if>
-    					</button>
-    				</gt>
-    				<button class="btn btn-sm btn-success ajax-post" target-form="ids" url="{:U("Article/setStatus",array("status"=>1))}">启 用</button>
-        			<button class="btn btn-sm btn-grey ajax-post" target-form="ids" url="{:U("Article/setStatus",array("status"=>0))}">禁 用</button>
-        			<button class="btn btn-sm btn-yellow ajax-post" target-form="ids" url="{:U("Article/move")}">移 动</button>
-        			<button class="btn btn-sm btn-purple ajax-post" target-form="ids" url="{:U("Article/copy")}">复 制</button>
-        			<button class="btn btn-sm btn-info ajax-post" target-form="ids" hide-data="true" url="{:U("Article/paste")}">粘 贴</button>
-        			<input type="hidden" class="hide-data" name="cate_id" value="{$cate_id}"/>
-        			<input type="hidden" class="hide-data" name="pid" value="{$pid}"/>
-        			<button class="btn btn-sm btn-danger ajax-post confirm" target-form="ids" url="{:U("Article/setStatus",array("status"=>-1))}">删 除</button>
-        			<!-- <button class="btn document_add" url="{:U('article/batchOperate',array('cate_id'=>$cate_id,'pid'=>I('pid',0)))}">导入</button> -->
-        			<a class="btn btn-sm btn-pink list_sort" href="{:U('sort',array('cate_id'=>$cate_id,'pid'=>I('pid',0)),'')}">排序</a>
-                </div>
                 <div class="col-sm-12 row">
                     
                     <label>状&nbsp; &nbsp; &nbsp; &nbsp; 态： 
@@ -118,6 +100,7 @@
 
             <!-- 列表 -->
             <tbody>
+                <notempty name="list">
                 <volist name="list" id="data">
                     <tr>
                         <td>
@@ -131,9 +114,47 @@
                         </volist>
                     </tr>
                 </volist>
+                <else/>
+                <tr><td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+                </notempty>
             </tbody>
         </table>
-        <include file="Public/page"/>
+        <div class="row">
+            <div class="col-sm-12">
+                <gt name="allow" value="0">
+                    <div class="btn-group">
+                        <button style="border-width: 1px;" data-toggle="dropdown" class="btn btn-white document_add dropdown-toggle" <if condition="count($model) eq 1">url="{:U('article/add',array('cate_id'=>$cate_id,'pid'=>I('pid',0),'model_id'=>$model[0],'group_id'=>$group_id))}"</if>>
+                            新 增
+                            <if condition="count($model) gt 1"><i class="icon-angle-down icon-on-right"></i></if>
+                        </button>
+                        <if condition="count($model) gt 1">
+                            <ul class="dropdown-menu dropdown-danger nav-list">
+                                <volist name="model" id="vo">
+                                    <li><a href="{:U('article/add',array('cate_id'=>$cate_id,'model_id'=>$vo,'pid'=>I('pid',0),'group_id'=>$group_id))}">{$vo|get_document_model='title'}</a></li>
+                                </volist>
+                            </ul>
+                        </if>
+                    </div>
+                    <else/>
+                    <button class="btn btn-sm disabled" >新 增
+                        <if condition="count($model) gt 1"><i class="icon-angle-down icon-on-right"></i></if>
+                    </button>
+                </gt>
+                <button style="border-width: 1px;" class="btn btn-white ajax-post" target-form="ids" url="{:U("Article/setStatus",array("status"=>1))}">启 用</button>
+                <button class="btn btn-white ajax-post" target-form="ids" url="{:U("Article/setStatus",array("status"=>0))}">禁 用</button>
+                <button class="btn btn-white ajax-post" target-form="ids" url="{:U("Article/move")}">移 动</button>
+                <button class="btn btn-white ajax-post" target-form="ids" url="{:U("Article/copy")}">复 制</button>
+                <button class="btn btn-white ajax-post" target-form="ids" hide-data="true" url="{:U("Article/paste")}">粘 贴</button>
+                <input type="hidden" class="hide-data" name="cate_id" value="{$cate_id}"/>
+                <input type="hidden" class="hide-data" name="pid" value="{$pid}"/>
+                <button class="btn btn-white ajax-post confirm" target-form="ids" url="{:U("Article/setStatus",array("status"=>-1))}">删 除</button>
+                <!-- <button class="btn document_add" url="{:U('article/batchOperate',array('cate_id'=>$cate_id,'pid'=>I('pid',0)))}">导入</button> -->
+                <a class="btn btn-white list_sort" href="{:U('sort',array('cate_id'=>$cate_id,'pid'=>I('pid',0)),'')}">排序</a>
+            </div>
+            <div class="col-sm-12">
+                <include file="Public/page"/>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -93,6 +93,12 @@
 					</div>
 					<span class="help-block col-xs-12 col-sm-reset inline">（目前只支持独立模型和文档模型）</span>
 				</div>
+                <?php
+                echo ace_radio(['label_text'=>'是否需要列表管理','help'=>'勾选需要，则会在列表页面显示出数据的链接'],['name'=>'need_datalist'],$info['need_datalist'],['不需要 &nbsp;','需要 ']);
+                ?>
+                <?php
+                echo ace_radio(['label_text'=>'是否需要批量操作','help'=>'勾选需要，则会在列表页面显示批量操作项'],['name'=>'need_batch_handle'],$info['need_batch_handle'],['不需要 &nbsp;','需要 ']);
+                ?>
 			</div>
 
 			<div id="tab2" class="tab-pane">
@@ -208,21 +214,8 @@
 				</div>
 			</div>
 
-			<!-- 按钮 -->
-			<div class="clearfix form-actions">
-                <div class="col-xs-12 center">
-                    <input type="hidden" name="id" value="{$info['id']}"/>
-                    <button type="submit" target-form="form-horizontal" class="btn btn-success ajax-post no-refresh" id="sub-btn">
-                        <i class="icon-ok bigger-110"></i> 确认保存
-                    </button> 
-                    <button type="reset" class="btn" id="reset-btn">
-                        <i class="icon-undo bigger-110"></i> 重置
-                    </button>	  
-                    <a onclick="history.go(-1)" class="btn btn-info" href="javascript:;">
-                        <i class="icon-reply"></i>返回上一页
-                    </a>	
-                </div>
-            </div>
+            <input type="hidden" name="id" value="{$info['id']}"/>
+            <?=ace_srbtn()?>
         </div>
 	</form>
 </div>

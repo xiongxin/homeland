@@ -251,17 +251,8 @@
                     </div>
                     {:R('AuthManager/tree', array($group_list))}
                 </div>
-                
-                <div class="clearfix form-actions">
-                    <div class="col-xs-12 center">
-                        <button type="submit" target-form="save-category" class="btn btn-success ajax-post no-refresh" id="sub-btn">
-                            <i class="icon-ok bigger-110"></i> 确认保存
-                        </button> 
-                        <a class="btn btn-info" href="javascript:history.back(-1)">
-                           <i class="icon-reply"></i>返回上一页
-                        </a>  
-                    </div>
-                </div>
+
+                <?=ace_srbtn()?>
             </form>
 		</div>
 	</div>

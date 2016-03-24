@@ -12,7 +12,7 @@
                         <i class="icon-map-marker blue bigger-300"></i>
                     </div>
                     <div class="body">
-                        <div class="name">定位</div>
+                        <div class="name blue">定位</div>
                         <div class="text">
                             <i class="icon-quote-left"></i>后台管理门户
                         </div>
@@ -23,7 +23,7 @@
                         <i class="icon-user pink2 bigger-300"></i>
                     </div>
                     <div class="body">
-                        <div class="name">适用人员</div>
+                        <div class="name blue">适用人员</div>
                         <div class="text">
                             <i class="icon-quote-left"></i>运营、财务、运维
                         </div>
@@ -34,7 +34,7 @@
                         <i class="icon-cogs green bigger-300"></i>
                     </div>
                     <div class="body">
-                        <div class="name">服务器操作系统</div>
+                        <div class="name blue">服务器操作系统</div>
                         <div class="text">
                             <i class="icon-quote-left"></i>{$Think.const.PHP_OS}
                         </div>
@@ -45,7 +45,7 @@
                         <i class="icon-cog orange2 bigger-300"></i>
                     </div>
                     <div class="body">
-                        <div class="name">运行环境</div>
+                        <div class="name blue">运行环境</div>
                         <div class="text">
                             <i class="icon-quote-left"></i>{$_SERVER['SERVER_SOFTWARE']}
                         </div>
@@ -56,10 +56,10 @@
                         <i class="icon-hdd brown bigger-300"></i>
                     </div>
                     <div class="body">
-                        <div class="name">MYSQL版本</div>
+                        <div class="name blue">MYSQL版本</div>
                         <div class="text">
                             <i class="icon-quote-left"></i>
-                            <?php 
+                            <?php
                             
     							$system_info_mysql = M()->query("select version() as v;");
         						echo $system_info_mysql[0]['v'];
@@ -72,7 +72,7 @@
                         <i class="icon-cloud-upload purple bigger-300"></i>
                     </div>
                     <div class="body">
-                        <div class="name">上传限制</div>
+                        <div class="name blue">上传限制</div>
                         <div class="text">
                             <i class="icon-quote-left"></i>
     						{:ini_get('upload_max_filesize')}

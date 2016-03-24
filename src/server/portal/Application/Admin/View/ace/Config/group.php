@@ -38,7 +38,7 @@
 			                  <textarea class="autosize-transition span12 form-control" rows="5" cols="40" name="config[{$config.name}]">{$config.value}</textarea>
 				              </case>
 				              <case value="4">
-				              <select name="config[{$config.name}]">
+				              <select name="config[{$config.name}]" class="width-100">
 				                  <volist name=":parse_config_attr($config['extra'])" id="vo">
 				                      <option value="{$key}" <eq name="config.value" value="$key">selected</eq>>{$vo}</option>
 				                  </volist>

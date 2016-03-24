@@ -3,19 +3,13 @@
 <block name="body"> 
     <?php 
         echo ace_form_open();
-        $options = array(
-            'label_text'=>'用户名',
-            'help'=>'',
-            'icon'=>'icon-user'
-        );
-        echo ace_input_m($options ,array('name'=>'username','class'=>'width-100'),'');
 
         $options = array(
             'label_text'=>'手机号码',
-            'help'=>'用于找回密码和微信端绑定账号用',
+            'help'=>'用于登录、找回密码和微信端绑定账号用',
             'icon'=>'icon-mobile-phone'
         );
-        echo ace_input_m($options ,array('name'=>'mobile','class'=>'width-100'),'');
+        echo ace_input_m($options ,array('name'=>'username','class'=>'width-100 mobile'),'',' maxlength="11"');
 
         $options = array(
             'label_text'=>'昵称',
@@ -42,6 +36,7 @@
             'icon'=>'icon-email'
         );
         echo ace_input_m($options ,'email','','maxlength="128"');
+
         echo ace_srbtn();
         echo ace_form_close()
     ?>

@@ -13,13 +13,64 @@
  */
 require_once(APP_PATH . '/Admin/Common/ace.php');
 
-function getMonthNum($date1,$date2){
-    $date1_stamp=strtotime($date1);
-    $date2_stamp=strtotime($date2);
-    list($date_1['y'],$date_1['m'])=explode("-",date('Y-m',$date1_stamp));
-    list($date_2['y'],$date_2['m'])=explode("-",date('Y-m',$date2_stamp));
+function bfb($num=0){
+    return intval($num)>0 ? $num.' %' : $num;
+}
+/**
+ * 裁剪正中部分，等比缩小生成缩略图
+ * @param $url
+ * @param int $w
+ * @param int $h
+ * @return string
+ */
+function imageView2($url,$w=null,$h=null){
+    if(empty($w) || empty($h)){
+        $url = $url.'?e='.(time()+3600);
+    }else{
+        $url = $url.'?imageView2/1/w/'.$w.'/h/'.$h.'/interlace/1&e='.(time()+3600);
+    }
 
-    return abs($date_1['y']-$date_2['y'])*12 + abs($date_2['m']-$date_1['m']);
+    $config = C('UPLOAD_QINIU_CONFIG');
+    $sign = hash_hmac('sha1', $url, $config['secrectKey'], true);
+    return $url.'&token='.$config['accessKey'].':'.urlsafe_base64_encode($sign);
+}
+/**
+ * 强制宽高生成缩略图
+ * @param $url
+ * @param int $w
+ * @param int $h
+ * @return string
+ */
+function imageMogr2($url,$w=null,$h=null){
+    if(empty($w) || empty($h)){
+        $url = $url.'?e='.(time()+3600);
+    }else{
+        $url = $url.'?imageMogr2/thumbnail/!'.$w.'x'.$h.'!&e='.(time()+3600);
+    }
+
+    $config = C('UPLOAD_QINIU_CONFIG');
+    $sign = hash_hmac('sha1', $url, $config['secrectKey'], true);
+    return $url.'&token='.$config['accessKey'].':'.urlsafe_base64_encode($sign);
+}
+
+/**
+ * 获取7牛下载链接
+ * @param $url
+ * @return string
+ */
+function get_qiniu_file_durl($url){
+    $url = $url.'?attname=&e='.(time()+3600);
+
+    $config = C('UPLOAD_QINIU_CONFIG');
+    $sign = hash_hmac('sha1', $url, $config['secrectKey'], true);
+    return $url.'&token='.$config['accessKey'].':'.urlsafe_base64_encode($sign);
+}
+
+function urlsafe_base64_encode($str) // URLSafeBase64Encode
+{
+    $find = array("+","/");
+    $replace = array("-", "_");
+    return str_replace($find, $replace, base64_encode($str));
 }
 
 /**
@@ -166,6 +217,16 @@ function price_format($price,$decimals=2,$html=true){
 
 function get_list_field($data, $grid){
 
+    $class_list = [
+        '[EDIT]'=>'ui-pg-div ui-inline',
+        '[DELETE]'=>'ui-pg-div ui-inline ajax-get confirm ',
+        '[LIST]'=>'ui-pg-div ui-inline',
+    ];
+    $show_list = [
+        '[EDIT]'=>'<span class="ui-icon ui-icon-pencil"></span>',
+        '[DELETE]'=>'<span class="ui-icon ui-icon-trash"></span>',
+        '[LIST]'=>'<span class="ui-icon icon-list-alt purple"></span>',
+    ];
     // 获取当前字段数据
     foreach($grid['field'] as $field){
         //var_dump($field);
@@ -173,7 +234,14 @@ function get_list_field($data, $grid){
         $temp  =    $data[$array[0]];
         // 函数支持
         if(isset($array[1])){
-            $temp = call_user_func($array[1], $temp);
+            if(function_exists($array[1])){
+                $temp = call_user_func($array[1], $temp);
+            }else{
+                $array2 = explode('#',$array[1]);
+                if(isset($array2[2]) && $array2[0] && $array2[1] && $temp){
+                    $temp = M($array2[0])->where([$array2[2] => $temp])->getField($array2[1]);
+                }
+            }
         }
         $data2[$array[0]]    =   $temp;
     }
@@ -193,11 +261,17 @@ function get_list_field($data, $grid){
         foreach($links as $link){
             $array  =   explode('|',$link);
             $href   =   $array[0];
-            $class_str = isset($grid['class']) ? $grid['class'] : '';
+
             if(preg_match('/^\[([a-z_]+)\]$/',$href,$matches)){
                 $val[]  =   $data2[$matches[1]];
             }else{
+                $class_str = isset($array[2]) ? $array[2] : (isset($class_list[$href])?$class_list[$href]:'');
                 $show   =   isset($array[1])?$array[1]:$value;
+                $show = str_replace(
+                                    ['[SPAN]'],
+                                    [$show_list[$href]],
+                                    $show
+                                    );
                 // 替换系统特殊字符串
                 $href   =   str_replace(
                     array('[DELETE]','[EDIT]','[LIST]'),
@@ -593,3 +667,42 @@ function get_action_type($type, $all = false){
     }
     return $list[$type];
 }
+
+
+/**
+ * 检查接口返回
+ * @param intger $type 类型
+ * @author huajie <banhuajie@163.com>
+ */
+function check_resp($resp){
+    return !empty($resp) && $resp['errcode'] == '0';
+}
+
+/**
+* 获取性别
+*
+*/
+
+function get_sex ($sex) {
+    if($sex == 1) {
+        return '男';
+    }else if($sex == 2) {
+        return '女';
+    } else {
+        return '未知';
+    }
+ }
+
+ /**
+* 获取关注标示
+*
+*/
+function get_subscribe ($subscribe) {
+    if($subscribe == -1) {
+        return '从未关注过';
+    }else if($subscribe == 0) {
+        return '未关注';
+    } else {
+        return '已关注';
+    }
+ }

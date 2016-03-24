@@ -161,22 +161,10 @@
 				</div>
 			</div>
 
-			<!-- 按钮 -->
-			<div class="clearfix form-actions">
-                <div class="col-xs-12 center">
-					<input type="hidden" name="id" value="{$info['id']}"/>
-					<input type="hidden" name="model_id" value="{$info['model_id']}"/>
-                    <button type="submit" target-form="form-horizontal" class="btn btn-success ajax-post no-refresh" id="sub-btn">
-                        <i class="icon-ok bigger-110"></i> 确认保存
-                    </button> 
-                    <button type="reset" class="btn" id="reset-btn">
-                        <i class="icon-undo bigger-110"></i> 重置
-                    </button>	  
-                    <a onclick="history.go(-1)" class="btn btn-info" href="javascript:;">
-                        <i class="icon-reply"></i>返回上一页
-                    </a>	
-                </div>
-            </div>
+            <input type="hidden" name="id" value="{$info['id']}"/>
+            <input type="hidden" name="model_id" value="{$info['model_id']}"/>
+
+            <?=ace_srbtn()?>
         </div>
 	</form>
 </div>

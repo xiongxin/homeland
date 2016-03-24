@@ -17,7 +17,7 @@ class BannerController extends ThinkController {
     public function index($p=0){
 
         $this->assign('active_menu','banner/index');
-        $this->lists('banner',$p,[]);
+        $this->lists('xxfb_advertisement',$p,[]);
     }
 
     public function add(){

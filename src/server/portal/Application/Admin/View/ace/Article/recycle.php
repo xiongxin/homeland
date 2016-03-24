@@ -10,11 +10,7 @@
 <!-- 数据表格 -->
 <div class="table-responsive">
     <div class="dataTables_wrapper"> 
-        <div class="row">
-            <button url="{:U('article/clear')}" class="btn btn-sm btn-danger ajax-get">清 空</button>
-            <button url="{:U('article/permit')}" class="btn btn-sm btn-success ajax-post" target-form="ids">还 原</button>
-        </div>
-        <table class="table table-striped table-bordered table-hover dataTable">  
+        <table class="table table-striped table-bordered table-hover dataTable">
             <thead>
                 <tr>
         		<th class="row-selected">
@@ -33,6 +29,7 @@
         		</tr>
             </thead>
             <tbody>
+                <notempty name="list">
         		<volist name="list" id="vo">
         		<tr>
                     <td>
@@ -51,9 +48,20 @@
                         </td>
         		</tr>
         		</volist>
+                <else/>
+                <tr><td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+                </notempty>
         	</tbody>
-        </table> 
-        <include file="Public/page"/>
+        </table>
+        <div class="row">
+            <div class="col-sm-4">
+                <button url="{:U('article/clear')}" class="btn btn-white ajax-get">清 空</button>
+                <button url="{:U('article/permit')}" class="btn btn-white ajax-post" target-form="ids">还 原</button>
+            </div>
+            <div class="col-sm-8">
+                <include file="Public/page"/>
+            </div>
+        </div>
 	</div>
 </div>
 </block>

@@ -22,20 +22,20 @@
 			</div>
 			<div class="hr hr16 hr-dotted"></div>
 			<div class="sort_btn">
-				<button class="top btn btn-primary" type="button"> <i class="icon-double-angle-left"> </i>第 一</button>
-				<button class="up btn btn-info" type="button"> <i class="icon-angle-left"></i> 上 移</button>
-				<button class="down btn btn-success" type="button">下 移 <i class="icon-angle-right"></i></button>
-				<button class="bottom btn btn-purple" type="button">最 后 <i class="icon-double-angle-right"></i></button>
+				<button class="top btn btn-white" type="button"> <i class="icon-double-angle-left"> </i>第 一</button>
+				<button class="up btn btn-white" type="button"> <i class="icon-angle-left"></i> 上 移</button>
+				<button class="down btn btn-white" type="button">下 移 <i class="icon-angle-right"></i></button>
+				<button class="bottom btn btn-white" type="button">最 后 <i class="icon-double-angle-right"></i></button>
 			</div>
 			<div class="hr hr16 hr-dotted"></div>
 			<div class="clearfix form-actions">
-                <div class="col-xs-12 center">
+                <div class="col-xs-12">
 			        <input type="hidden" name="ids">
-                    <button type="submit" class="sort_confirm btn submit-btn btn-success ajax-post no-refresh" target-form="form-horizontal" id="sub-btn">
-                      <i class="icon-ok bigger-110"></i> 确认保存
+                    <button type="submit" class="sort_confirm btn btn-sm submit-btn btn-success no-border ajax-post no-refresh" target-form="form-horizontal" id="sub-btn">
+                      确认保存
                     </button> 
-                    <a onclick="history.go(-1)" class="btn btn-info" href="javascript:;">
-                     <i class="icon-reply"></i>返回上一页
+                    <a onclick="history.go(-1)" class="btn btn-white" href="javascript:;">
+                     返回
                     </a>	
                 </div>
             </div>

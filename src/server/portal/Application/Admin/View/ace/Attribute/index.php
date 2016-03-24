@@ -15,16 +15,7 @@
 	<!-- 数据列表 -->
     <div class="table-responsive">
         <div class="dataTables_wrapper">  
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="search-form">
-                        <label>
-                            <a class="btn btn-sm btn-primary" href="{:U('Attribute/add?model_id='.$model_id)}"><i class="icon-plus"></i>新增</a>
-                        </label>
-                    </div>  
-                </div>
-            </div>
-            
+
             <table class="table table-striped table-bordered table-hover dataTable">
 			    <thead>
 			        <tr>
@@ -53,7 +44,18 @@
 					</notempty>
 				</tbody>
 		    </table>
-            <include file="Public/page"/>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>
+                        <a class="btn btn-white" href="{:U('Attribute/add?model_id='.$model_id)}">
+                            新增
+                        </a>
+                    </label>
+                </div>
+                <div class="col-sm-8">
+                    <include file="Public/page"/>
+                </div>
+            </div>
         </div>
     </div>
 </block>

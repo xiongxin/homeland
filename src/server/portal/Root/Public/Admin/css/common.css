@@ -136,3 +136,16 @@
 	vertical-align: middle;
 	margin-right: 5px
 }
+.detail-content{width:100%; max-width: 720px; margin: 0 auto;}
+
+.header-l-blue {
+    background: #f2f2f2;
+    border-color: #ddd;
+    border-left: 3px solid #4c8fbd;
+    border-bottom: none;
+    color: #393939;
+    padding: 2px 10px;
+}
+
+.check_data table td span{ color:#999;padding-right:8px; line-height: 26px;}
+.item-table td{width:50%;}

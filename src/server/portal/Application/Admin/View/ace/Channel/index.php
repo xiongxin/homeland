@@ -4,26 +4,16 @@
 
  <div class="table-responsive">
     <div class="dataTables_wrapper">  
-        
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="search-form">
-                    <label>
-                        <a class="btn btn-sm btn-primary" href="{:U('add','pid='.$pid)}"><i class="icon-plus"></i>新增</a>
-                    </label>
-                    <label>
-                        <a class="btn btn-sm btn-success list_sort" href="{:U('sort',array('pid'=>I('get.pid',0)),'')}"><i class="icon-ok"></i>排序</a>
-                    </label>
-                </div>  
-            </div>
-        </div>
-        
+
         <!-- 数据列表 -->
         <table class="table table-striped table-bordered table-hover dataTable">
 			<thead>
 				<tr>
-					<th class="row-selected">
-						<input class="checkbox check-all" type="checkbox">
+					<th class="row-selected center">
+                        <label>
+                            <input class="ace check-all" type="checkbox"/>
+                            <span class="lbl"></span>
+                        </label>
 					</th>
 					<th>ID</th>
 					<th>导航名称</th>
@@ -36,7 +26,12 @@
 				<notempty name="list">
 				<volist name="list" id="channel">
 					<tr>
-						<td><input class="ids row-selected" type="checkbox" name="" id="" value="{$channel['id']}"> </td>
+						<td class="center">
+                            <label>
+                                <input class="ace ids" type="checkbox" name="id[]" value="{$channel['id']}" />
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
 						<td>{$channel.id}</td>
 						<td><a href="{:U('index?pid='.$channel['id'])}">{$channel.title}</a></td>
 						<td>{$channel.url}</td>
@@ -53,7 +48,20 @@
 				</notempty>
 			</tbody>
 		</table>
-        <include file="Public/page"/>
+        <div class="row">
+            <div class="col-sm-12">
+                <label>
+                    <a class="btn btn-white" href="{:U('add','pid='.$pid)}">
+                        新增
+                    </a>
+                </label>
+                <label>
+                    <a class="btn btn-white list_sort" href="{:U('sort',array('pid'=>I('get.pid',0)),'')}">
+                        排序
+                    </a>
+                </label>
+            </div>
+        </div>
     </div>
 </div>
 </block>

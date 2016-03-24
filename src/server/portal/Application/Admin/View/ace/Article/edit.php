@@ -41,7 +41,7 @@
                 <if condition="$field['is_show'] == 1 || $field['is_show'] == 3">
                 <div class="form-group">
                     <label class="col-xs-12 col-sm-2 control-label no-padding-right">{$field['title']}</label>
-                    <div class="col-xs-12 col-sm-6">
+                    <div class="col-xs-12 col-sm-7">
                         <switch name="field.type">
                             <case value="num">
                                 <input type="text" class="width-100" name="{$field.name}" value="{$data[$field['name']]}">
@@ -190,17 +190,17 @@
 		</volist>
 
 		<div class="clearfix form-actions">
-            <div class="col-xs-12 center">
+            <div class="col-xs-12">
                 <input type="hidden" name="id" value="{$data.id|default=''}"/>
     			<input type="hidden" name="pid" value="{$data.pid|default=''}"/>
     			<input type="hidden" name="model_id" value="{$data.model_id|default=''}"/>
     			<input type="hidden" name="group_id" value="{$data.group_id|default=''}"/>
     			<input type="hidden" name="category_id" value="{$data.category_id|default=''}">
-                <button type="submit" target-form="form-horizontal" class="btn btn-success ajax-post no-refresh" id="sub-btn">
-                    <i class="icon-ok bigger-110"></i> 确认保存
+                <button type="submit" target-form="form-horizontal" class="btn btn-sm btn-success no-border ajax-post no-refresh" id="sub-btn">
+                    确认保存
                 </button> 
-                <a class="btn btn-info" href="{$Think.cookie.__forward__}">
-                   <i class="icon-reply"></i>返回上一页
+                <a class="btn btn-white" href="{$Think.cookie.__forward__}">
+                   返回
                 </a>  
                 <if condition="C('OPEN_DRAFTBOX') and (ACTION_NAME eq 'add' or $data['status'] eq 3)">
     			<button class="btn btn-success save-btn" url="{:U('article/autoSave')}" target-form="form-horizontal" id="autoSave">

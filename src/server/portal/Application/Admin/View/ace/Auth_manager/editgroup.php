@@ -15,20 +15,8 @@
                 <textarea id="auth-description" name="description" class="autosize-transition span12 form-control">{$auth_group.description}</textarea>
             </div>
         </div>
-        <div class="clearfix form-actions">
-            <input type="hidden" name="id" value="{$auth_group.id}" />
-            <div class="col-xs-12 center">
-                <button type="submit" target-form="form-horizontal" class="btn btn-success ajax-post no-refresh" id="sub-btn">
-                    <i class="icon-ok bigger-110"></i> 确认保存
-                </button> 
-                <button type="reset" class="btn" id="reset-btn">
-                    <i class="icon-undo bigger-110"></i> 重置
-                </button>   
-                <a onclick="history.go(-1)" class="btn btn-info" href="javascript:;">
-                   <i class="icon-reply"></i>返回上一页
-                </a>  
-            </div>
-        </div>
+        <input type="hidden" name="id" value="{$auth_group.id}" />
+        <?=ace_srbtn()?>
     </form>
 </block>
 <block name="script">

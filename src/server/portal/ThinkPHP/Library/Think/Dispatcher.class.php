@@ -152,6 +152,9 @@ class Dispatcher {
             // 加载模块配置文件
             if(is_file(MODULE_PATH.'Conf/config'.CONF_EXT))
                 C(load_config(MODULE_PATH.'Conf/config'.CONF_EXT));
+            // 加载自定义模块配置文件
+            if(is_file(CUSTOM_CONF_PATH.MODULE_NAME.'/config'.CONF_EXT))
+                C(load_config(CUSTOM_CONF_PATH.MODULE_NAME.'/config'.CONF_EXT));
             // 加载应用模式对应的配置文件
             if('common' != APP_MODE && is_file(MODULE_PATH.'Conf/config_'.APP_MODE.CONF_EXT))
                 C(load_config(MODULE_PATH.'Conf/config_'.APP_MODE.CONF_EXT));

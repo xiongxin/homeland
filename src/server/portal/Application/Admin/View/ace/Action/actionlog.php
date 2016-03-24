@@ -4,18 +4,6 @@
 	<!--列表 -->
     <div class="table-responsive">
         <div class="dataTables_wrapper">   
-            <div class="row">
-                <div class="col-sm-12">
-                    <label>
-                        <a class="btn btn-sm btn-warning ajax-get confirm" href="{:U('clear')}"><i class="icon-remove"></i>清空</a>
-                    </label>
-                    <label>
-                        <button class="btn btn-sm btn-danger ajax-post confirm" target-form="ids" url="{:U('remove')}">
-                            <i class="icon-trash"></i>删除
-                        </button>
-                    </label>
-                </div>
-            </div>
             <table class="table table-striped table-bordered table-hover dataTable">
 			    <thead>
 			        <tr>
@@ -56,7 +44,23 @@
 					</notempty>
 				</tbody>
             </table>
-            <include file="Public/page"/>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>
+                        <a class="btn btn-white ajax-get confirm" href="{:U('clear')}">
+                            清空
+                        </a>
+                    </label>
+                    <label>
+                        <button class="btn btn-white ajax-post confirm" target-form="ids" url="{:U('remove')}">
+                            删除
+                        </button>
+                    </label>
+                </div>
+                <div class="col-sm-8">
+                    <include file="Public/page"/>
+                </div>
+            </div>
         </div>
     </div>
 </block>

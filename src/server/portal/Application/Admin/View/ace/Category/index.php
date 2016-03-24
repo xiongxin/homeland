@@ -221,9 +221,6 @@
     </style>
 	<!-- 表格列表 -->
 	<div class="tb-unit posr">
-		<div class="tb-unit-bar">
-			<a class="btn btn-sm btn-success" href="{:U('add')}"><i class="icon-plus"></i>新 增</a>
-		</div>
 		<div class="category">
 			<div class="hd cf">
 				<div class="fold">折叠</div>
@@ -236,6 +233,10 @@
 			<div style="clear: both;"></div>
 		</div>
 	</div>
+
+    <div class="tb-unit-bar">
+        <a class="btn btn-white" href="{:U('add')}">新 增</a>
+    </div>
 	<!-- /表格列表 -->
 </block>
 

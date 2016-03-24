@@ -14,22 +14,12 @@
 			</div>
             <div class="hr hr16 hr-dotted"></div>
             <div class="sort_btn">
-                <button class="top btn btn-primary" type="button"> <i class="icon-double-angle-left"> </i>第 一</button>
-                <button class="up btn btn-info" type="button"> <i class="icon-angle-left"></i> 上 移</button>
-                <button class="down btn btn-success" type="button">下 移 <i class="icon-angle-right"></i></button>
-                <button class="bottom btn btn-purple" type="button">最 后 <i class="icon-double-angle-right"></i></button>
+                <button class="top btn btn-white" type="button"> <i class="icon-double-angle-left"> </i>第 一</button>
+                <button class="up btn btn-white" type="button"> <i class="icon-angle-left"></i> 上 移</button>
+                <button class="down btn btn-white" type="button">下 移 <i class="icon-angle-right"></i></button>
+                <button class="bottom btn btn-white" type="button">最 后 <i class="icon-double-angle-right"></i></button>
             </div>
-            <div class="hr hr16 hr-dotted"></div>
-            <div class="clearfix form-actions">
-                <div class="col-xs-12 center">
-                    <button type="submit" class="sort_confirm btn submit-btn btn-success ajax-post no-refresh" target-form="form-horizontal" id="sub-btn">
-                        <i class="icon-ok bigger-110"></i> 确认保存
-                    </button>
-                    <a onclick="history.go(-1)" class="btn btn-info" href="javascript:;">
-                        <i class="icon-reply"></i>返回上一页
-                    </a>
-                </div>
-            </div>
+            <?=ace_srbtn()?>
 		</form>
 	</div>
 </block>
@@ -76,7 +66,7 @@
 			}
 
 			//获取排序并提交
-			$('.sort_confirm').click(function(){
+			$('#sub-btn').click(function(){
 				var arr = new Array();
 				$('.ids').each(function(){
 					arr.push($(this).val());
@@ -88,24 +78,17 @@
 					'ids' :  arr.join(',')
 					},
 					function(data){
-						if (data.status) {
+						if (data.status == 1) {
 	                        updateAlert(data.info + ' 页面即将自动跳转~','alert-success');
 	                    }else{
 	                        updateAlert(data.info,'alert-success');
 	                    }
 	                    setTimeout(function(){
-	                        if (data.status) {
-	                        	$('.sort_cancel').click();
-	                        }
+                            window.location = '<?=U('menu/index')?>'
 	                    },1500);
 					},
 					'json'
 				);
-			});
-
-			//点击取消按钮
-			$('.sort_cancel').click(function(){
-				window.location.href = $(this).attr('url');
 			});
 		})
 	</script>

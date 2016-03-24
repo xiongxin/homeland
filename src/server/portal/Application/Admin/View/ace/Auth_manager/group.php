@@ -14,16 +14,8 @@
             </volist>
             <input type="hidden" name="uid" value="{:I('uid')}">
             <input type="hidden" name="batch" value="true">
-            <div class="clearfix form-actions">
-                <div class="col-xs-12 center">
-                    <button type="submit" target-form="form-horizontal" class="btn btn-success ajax-post no-refresh" id="sub-btn">
-                        <i class="icon-ok bigger-110"></i> 确认保存
-                    </button> 
-                    <a onclick="history.go(-1)" class="btn btn-info" href="javascript:;">
-                        <i class="icon-reply"></i>返回上一页
-                    </a>  
-                </div>
-            </div>
+
+            <?=ace_srbtn()?>
         </form>
     </div>
 </block>

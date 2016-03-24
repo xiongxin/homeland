@@ -19,6 +19,7 @@
             if(event.keyCode===13){
                 $("#search-btn").click();
             }
+            return false;
         });
         
 	//全选的实现

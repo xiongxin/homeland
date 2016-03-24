@@ -1,70 +1,84 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Maccount跳转提示</title>
-<style type="text/css">
-*{ padding: 0; margin: 0; }
-body{ background: #290C0C; font-family: '微软雅黑'; color: #fff; font-size: 16px; }
-.system-message{ padding: 24px 48px; }
-.system-message h1{ font-size: 80px; font-weight: normal; line-height: 120px; margin-bottom: 12px }
-.system-message .jump{ padding-top: 10px;margin-bottom:20px}
-.system-message .jump a{ color: #333;}
-.system-message .success,.system-message .error{ line-height: 1.8em; font-size: 36px }
-.system-message .detail{ font-size: 12px; line-height: 20px; margin-top: 12px; display:none}
-#wait {
-    font-size:46px;
-}
-#btn-stop,#href{
-    display: inline-block;
-    margin-right: 10px;
-    font-size: 16px;
-    line-height: 18px;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    border: 0 none;
-    background-color: #8B0000;
-    padding: 10px 20px;
-    color: #fff;
-    font-weight: bold;
-    border-color: transparent;
-    text-decoration:none;
-}
+<!DOCTYPE html>
+<html lang="cn">
+    <head>
+        <meta charset="utf-8" />
+        
+        <title>{$meta_title}<notempty name="meta_title">|{:C('WEB_SITE_TITLE')}</notempty></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- basic styles -->
+        <link rel="stylesheet" href="__ACE__/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="__ACE__/css/font-awesome.min.css" />
 
-#btn-stop:hover,#href:hover{
-    background-color: #ff0000;
-}
-</style>
-</head>
-<body>
-<div class="system-message">
-<h1>抱歉!</h1>
-<p class="eror"><?php echo($error); ?></p>
-<p class="detail"></p>
-<p class="jump">
-<b id="wait"><?php echo($waitSecond); ?></b> 秒后页面将自动跳转
-</p>
-<div>
-    <a id="href" id="btn-now" href="<?php echo($jumpUrl); ?>">立即跳转</a> 
-    <button id="btn-stop" type="button" onclick="stop()">停止跳转</button> 
-</div>
-</div>
-<script type="text/javascript">
-(function(){
- var wait = document.getElementById('wait'),href = document.getElementById('href').href;
- var interval = setInterval(function(){
-     	var time = --wait.innerHTML;
-     	if(time <= 0) {
-     		location.href = href;
-     		clearInterval(interval);
-     	};
-     }, 1000);
-  window.stop = function (){
-         console.log(111);
-            clearInterval(interval);
- }
- })();
-</script>
+        <!--[if IE 7]>
+          <link rel="stylesheet" href="__ACE__/css/font-awesome-ie7.min.css" />
+        <![endif]-->
+
+        <!-- page specific plugin styles -->
+        <!-- fonts -->
+        <link rel="stylesheet" href="__ACE__/css/font-googleapis.css" />
+        <!-- ace styles -->
+
+        <link rel="stylesheet" href="__ACE__/css/ace.min.css" />
+        <link rel="stylesheet" href="__ACE__/css/ace-rtl.min.css" />
+        <link rel="stylesheet" href="__ACE__/css/ace-skins.min.css" />
+        <link rel="stylesheet" href="__PUBLIC__/Admin/css/common.css" />
+
+        <!--[if lte IE 8]>
+          <link rel="stylesheet" href="__ACE__/css/ace-ie.min.css" />
+        <![endif]-->
+    </head>
+    
+	<body>	
+
+    <div class="main-container" id="main-container">
+			
+
+        <div class="main-container-inner">
+            <div class="row">
+                <div class="col-xs-12">
+                    <!-- PAGE CONTENT BEGINS -->
+
+                    <div class="error-container">
+                        <div class="well">
+                            <h1 class="grey lighter smaller">
+                                <span class="blue bigger-125">
+                                    <i class="icon-random"></i>
+
+                                </span>
+                                非常抱歉
+                            </h1>
+
+                            <hr>
+                            <h3 class="lighter smaller"><?php echo($error); ?>
+                            </h3>
+
+                            <div class="space"></div>
+
+
+                            <hr>
+                            <div class="space"></div>
+
+                            <div class="center">
+                                <a  class="btn btn-grey" href="<?php echo($jumpUrl); ?>">
+                                    <i class="icon-arrow-left"></i>
+                            返回
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PAGE CONTENT ENDS -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+            <!-- /#ace-settings-container -->
+        </div><!-- /.main-container-inner -->
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="icon-double-angle-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+
+    <!-- basic scripts -->
+
+    <!--[if !IE]> -->
 </body>
-</html>

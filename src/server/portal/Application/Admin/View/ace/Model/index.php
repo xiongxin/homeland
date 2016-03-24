@@ -5,51 +5,29 @@
 
      <div class="table-responsive">
         <div class="dataTables_wrapper">  
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="search-form">
-                        <label>
-                            <a class="btn btn-sm btn-primary" href="{:U('Model/add')}"><i class="icon-plus"></i>新增</a>
-                        </label>
-                        <label>
-                            <a class="btn btn-sm btn-pink" href="{:U('Model/generate')}"><i class="icon-beaker"></i>生成</a>
-                        </label>
-                        <label>
-	                        <button class="btn btn-sm btn-success ajax-post" target-form="ids" url="{:U('Model/setStatus',array('status'=>1))}">
-                                <i class="icon-ok"></i>启 用
-	                        </button>
-                        </label>
-                        <label>
-	                        <button class="btn btn-sm btn-inverse ajax-post" target-form="ids" url="{:U('Model/setStatus',array('status'=>0))}">
-                                <i class="icon-ban-circle"></i>暂停
-	                        </button>
-                        </label>
-                    </div>  
-                </div>
-            </div>
-            
+
 			<table class="table table-striped table-bordered table-hover dataTable">
 			    <thead>
 			        <tr>
-					<th class="row-selected">
-					   <label>
-                           <input class="ace check-all" type="checkbox"/>
-                           <span class="lbl"></span>
-                       </label>
-				    </th>
-					<th class="">编号</th>
-					<th class="">标识</th>
-					<th class="">名称</th>
-					<th class="">创建时间</th>
-					<th class="">状态</th>
-					<th class="">操作</th>
+                        <th class="row-selected center">
+                           <label>
+                               <input class="ace check-all" type="checkbox"/>
+                               <span class="lbl"></span>
+                           </label>
+                        </th>
+                        <th class="">编号</th>
+                        <th class="">标识</th>
+                        <th class="">名称</th>
+                        <th class="">创建时间</th>
+                        <th class="">状态</th>
+                        <th class="">操作</th>
 					</tr>
 			    </thead>
 			    <tbody>
 				<notempty name="_list">
 					<volist name="_list" id="vo">
 					<tr>
-			            <td>
+			            <td class="center">
                             <label>
                                 <input class="ace ids" type="checkbox" name="ids[]" value="{$vo.id}" />
                                 <span class="lbl"></span>
@@ -59,13 +37,22 @@
 						<td>{$vo.name}</td>
 						<td><a data-id="{$vo.id}" href="{:U('model/edit?id='.$vo['id'])}">{$vo.title}</a></td>
 						<td><span>{$vo.create_time|time_format}</span></td>
-						<td>{$vo.status_text}</td>
 						<td>
-							<a href="{:U('think/lists?model='.$vo['name'])}">数据</a>
-							<a href="{:U('model/setstatus?ids='.$vo['id'].'&status='.abs(1-$vo['status']))}" class="ajax-get">{$vo.status|show_status_op}</a>
-							<a href="{:U('model/edit?id='.$vo['id'])}">编辑</a>
-							<a href="{:U('model/del?ids='.$vo['id'])}" class="confirm ajax-get">删除</a>
-			            </td>
+                            <label>
+                                <input type="checkbox" class="ace ace-switch ace-switch-6 ajax-get" name="status" value="{$vo.status}" <?=$vo['status'] == '1' ? 'checked' : ''?> url="{:U('model/setstatus?ids='.$vo['id'].'&status='.abs(1-$vo['status']))}">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td>
+                            <a title="删除" href="{:U('model/del?ids='.$vo['id'])}" class="ui-pg-div ui-inline confirm ajax-get">
+                                删除
+                            </a>
+                            <?php if($vo['need_datalist']):?>
+                                <a title="数据列表" href="{:U('think/lists?model='.$vo['name'])}" class="ui-pg-div ui-inline">
+                                    数据列表
+                                </a>
+                            <?php endif;?>
+                        </td>
 					</tr>
 					</volist>
 					<else/>
@@ -73,8 +60,34 @@
 					</notempty>
 				</tbody>
 			    </table>
-                
-                <include file="Public/page"/>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>
+                            <a class="btn btn-white" href="{:U('Model/add')}">
+                                新增
+                            </a>
+                        </label>
+                        <label>
+                            <a class="btn btn-white" href="{:U('Model/generate')}">
+                                生成
+                            </a>
+                        </label>
+                        <label>
+                            <button class="btn btn-white ajax-post" target-form="ids" url="{:U('Model/setStatus',array('status'=>1))}">
+                                启 用
+                            </button>
+                        </label>
+                        <label>
+                            <button class="btn btn-white ajax-post" target-form="ids" url="{:U('Model/setStatus',array('status'=>0))}">
+                                暂停
+                            </button>
+                        </label>
+                    </div>
+                    <div class="col-sm-8">
+                        <include file="Public/page"/>
+                    </div>
+                </div>
 	        </div>
 	    </div>
 </block>

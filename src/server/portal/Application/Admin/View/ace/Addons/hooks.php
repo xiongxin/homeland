@@ -4,17 +4,7 @@
 	<!-- 数据列表 -->
 	<div class="table-responsive">
         <div class="dataTables_wrapper">  
-            
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="search-form">
-                        <?php if (IS_ROOT): ?>
-                			<a class="btn btn-sm btn-primary" href="{:U('addhook')}">新 增</a>
-                		<?php endif ?>
-                    </div>  
-                </div>
-            </div>
-            
+
             <!-- 数据列表 -->
             <table class="table table-striped table-bordered table-hover dataTable">
             
@@ -41,8 +31,17 @@
     					</tr>
     				</volist>
     			</tbody>
-    		</table>        
-            <include file="Public/page"/>
+    		</table>
+            <div class="row">
+                <div class="col-sm-4">
+                    <?php if (IS_ROOT): ?>
+                        <a class="btn btn-white" href="{:U('addhook')}">新 增</a>
+                    <?php endif ?>
+                </div>
+                <div class="col-sm-8">
+                    <include file="Public/page"/>
+                </div>
+            </div>
 		</div>
 	</div>
 </block>

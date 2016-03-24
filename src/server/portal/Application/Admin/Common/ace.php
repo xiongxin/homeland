@@ -1,4 +1,39 @@
 <?php
+function render_td($td,$item,$key){
+    $html = '<tr>
+                <td>';
+    if(!is_array($td)){
+        $html .= '<span>'.$td.'：</span>'.$item[$key];
+    }else{
+        foreach($td as $el=>$label){
+            $html .= '<span>'.$label.'：</span>';
+            switch($el){
+                case 'img':
+                    $html .= '<a href="'.imageView2($item[$key]).'" class="ace-thumbnails" ><img src="'.imageView2($item[$key],100,100).'"/></a>';
+                    break;
+            }
+        }
+    }
+    $html .='
+                </td>
+                    <td>
+                        <div class="control-group">
+                            <label>
+                                <input class="ace" type="radio" value="Y" name="'.$key.'">
+                                <span class="lbl"> 审核通过</span>
+                            </label>
+                            <label>
+                                <input class="ace" type="radio" value="N" name="'.$key.'">
+                                <span class="lbl"> 审核不通过</span>
+                            </label>
+                            <input type="text" name="'.$key.'_msg" placeholder="输入审核未通过原因">
+                        </div>
+                    </td>
+                </tr>';
+
+    return $html;
+}
+
 if ( ! function_exists('ace_html')){
     function ace_html($label_text='', $value = '', $extra = ''){
         $default = array('class'=>'autosize-transition span12 form-control','rows'=>'');
@@ -150,20 +185,15 @@ if ( ! function_exists('ace_label')){
 // ------------------------------------------------------------------------
 
 if ( ! function_exists('ace_srbtn')){
-    function ace_srbtn($sb_content='确认保存',$reset_content='重置'){
+    function ace_srbtn($sb_content='确认保存',$attr=''){
         $html = '<div class="clearfix form-actions">
-                      <div class="col-xs-12 center">
-                          <button id="sub-btn" class="btn btn-success ajax-post no-refresh" target-form="form-horizontal" type="submit">
-                              <i class="icon-ok bigger-110"></i> '.$sb_content.'
+                      <div class="col-xs-12">
+                          <button id="sub-btn" class="btn btn-sm btn-success no-border ajax-post no-refresh" '.$attr.' target-form="form-horizontal" type="submit">
+                              '.$sb_content.'
                           </button> ';
-        if($reset_content){
-            $html .=    '<button id="reset-btn" class="btn" type="reset">
-                              <i class="icon-undo bigger-110"></i> '.$reset_content.'
-                          </button>';
-        }
 
-        $html .='	  <a href="javascript:;" class="btn btn-info" onClick="history.go(-1)">
-                         <i class="icon-reply"></i>返回上一页
+        $html .='	  <a href="javascript:;" class="btn btn-white" onClick="history.go(-1)">
+                         返回
                       </a>';
 
         $html .= '	</div>

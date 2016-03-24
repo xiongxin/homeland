@@ -23,7 +23,6 @@ class ModelController extends AdminController {
     public function index(){
         $map = array('status'=>array('gt',-1));
         $list = $this->lists('Model',$map);
-        int_to_string($list);
         // 记录当前列表页的cookie
         Cookie('__forward__',$_SERVER['REQUEST_URI']);
 
@@ -114,7 +113,7 @@ class ModelController extends AdminController {
         if(!$res){
             $this->error(D('Model')->getError());
         }else{
-            $this->success('删除模型成功！');
+            $this->success('删除模型成功！',U('model/index'));
         }
     }
 

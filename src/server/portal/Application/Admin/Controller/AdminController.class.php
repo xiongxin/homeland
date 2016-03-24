@@ -461,6 +461,7 @@ class AdminController extends Controller {
             $page->setConfig('theme','%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END% %HEADER%');
         }
         $p =$page->show();
+
         $this->assign('_page', $p? $p: '');
         $this->assign('_total',$total);
         $options['limit'] = $page->firstRow.','.$page->listRows;
