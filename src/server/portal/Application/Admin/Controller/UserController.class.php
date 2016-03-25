@@ -390,4 +390,113 @@ class UserController extends AdminController {
         return $error;
     }
 
+    //回访列表
+    public function userReturn() {
+        $search       =   I('search');
+        //$map['um.status']  =   array('egt',0);
+        $map = [];
+        if(is_numeric($search)){
+            $map['c.telephone']=['like', '%' . intval($search) . '%'];//   array(intval($search),array('like','%'.$search.'%'),'_multi'=>true);
+        }elseif(!empty($search)){
+            $map['c.chairman_name|c.chairman_nickname']    =   array('like', '%'.(string)$search.'%');
+        }
+
+        $prefix = C('DB_PREFIX');
+        $model = M()->table($prefix.'user_return_visit urv')
+            ->join($prefix.'company_reg c on c.uid = urv.uid','left')
+            ->join($prefix.'auth_group_access aga on aga.uid=urv.uid', 'left')
+            ->join($prefix.'auth_group ag on ag.id=aga.group_id', 'left')
+            ->join($prefix.'ucenter_member um on um.id=urv.add_user','left');
+
+        $list   = $this->lists($model, $map,'urv.update_time desc','c.*, ag.title, um.username as huifangren, urv.id as urv_id');
+
+        $this->assign('_list', $list);
+        $this->meta_title = '会员回访列表';
+        $this->display();
+    }
+
+    //回访详细页面
+    public function returnShow() {
+        $id = I('get.id');
+        empty($id) && $this->error('参数不能为空！');
+        $prefix = C('DB_PREFIX');
+        $model = M()->table($prefix.'user_return_visit urv');
+
+        if (IS_POST) {
+            $content = I('content');
+            if(!$model->where(array('id'=>$id))
+                ->save(array(
+                    'content'=>$content,
+                    'update_time'=>date("Y-m-d H:m:s", time())))
+            ){
+                $this->error('修改失败！');
+            }
+
+            $this->success('保存成功！',U('user/userReturn'));
+        }
+
+
+        $model = $model
+            ->join($prefix.'company_reg c on c.uid = urv.uid','left')
+            ->join($prefix.'auth_group_access aga on aga.uid=urv.uid', 'left')
+            ->join($prefix.'auth_group ag on ag.id=aga.group_id', 'left')
+            ->join($prefix.'ucenter_member um on um.id=urv.add_user','left');
+        $data = $model->field(array('c.*','urv.*','ag.title', 'c.insert_time as time', 'um.username as huifangren'))
+            ->where(array('urv.id'=>$id))->find();
+        if (empty($data)) {
+            $this->error('该回访不存在!');
+        }
+        $this->assign('item',$data);
+        $this->meta_title = '会员回访详细信息';
+        $this->display();
+    }
+
+
+    //添加回访信息
+    public function addReturn() {
+        $prefix = C('DB_PREFIX');
+        if (IS_POST) {
+            $return = M()->table($prefix.'user_return_visit');
+            $_POST['insert_time'] = date("Y-m-d H:m:s", time());
+            $_POST['update_time'] = date("Y-m-d H:m:s", time());
+            if ($return->create()) {
+                $result = $return->add();
+                if ($result > 0) {
+                    $this->success('保存成功！',U('user/userReturn'));
+                } else {
+                    $this->error('保存失败！');
+                }
+            } else {
+                $this->error('保存失败！');
+            }
+        }
+
+        $search  =  I('search');
+        $data = [];
+        $map = [];
+
+        if (!empty($search)) {
+            if(is_numeric($search)){
+                $map['cr.telephone']=['like', '%' . intval($search) . '%'];
+            }elseif(!empty($search)){
+                $map['cr.chairman_name|cr.chairman_nickname']    =   array('like', '%'.(string)$search.'%');
+            }
+
+            $model = M()->table($prefix.'company_reg cr')
+                ->join($prefix.'ucenter_member um on um.id=cr.uid','left')
+                ->join($prefix.'auth_group_access aga on aga.uid=cr.uid', 'left')
+                ->join($prefix.'auth_group ag on ag.id=aga.group_id', 'left');
+            $data = $model->field(array('cr.*' ,'ag.title', 'cr.insert_time as time'))->where($map)->find();
+
+            if (empty($data)) {
+                $this->error('该用户不存在!');
+            }
+        }
+
+        $this->assign('item', $data);
+        $this->assign('search', $search);
+        $this->meta_title = '添加回访';
+        $this->display();
+    }
+
 }
