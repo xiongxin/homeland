@@ -7,7 +7,7 @@
         </div>
         <div class="weui_opr_area">
             <p class="weui_btn_area">
-                <a href="<?=empty($jumpUrl) ? 'javascript:back();' : $jumpUrl?>" class="weui_btn weui_btn_default"><?=isset($data['btn_text']) ? $data['btn_text'] : '返回'?></a>
+                <a href="<?=empty($jumpUrl) ? 'javascript:history.go(-1);' : $jumpUrl?>" class="weui_btn weui_btn_default"><?=isset($data['btn_text']) ? $data['btn_text'] : '返回'?></a>
             </p>
         </div>
     </div>
