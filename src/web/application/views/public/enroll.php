@@ -133,25 +133,26 @@
         </div>
         <div class="f_body fs_body">
             <?=$item['description']?>
-            <form action="" id="submit-form" method="post">
+            <form action="<?= U('/public/enroll') ?>" id="submit-form" method="post">
+                <input type="hidden" name="meeting_id" value="<?= $_GET['meeting_id'] ?>" >
                 <div class="f_component">
                     <p class="f_cTitle fs_cTitle">您的姓名
                         <span class="f_cValidate fs_cValidate">*</span>
                     </p>
-                    <input type="text" id="name" class="input medium fs_content fs_input" value="" />
+                    <input data-type="name" name="name" type="text" id="name" class="input medium fs_content fs_input" value="" />
                 </div>
                 <div class="f_component">
                     <p class="f_cTitle fs_cTitle">手机号码
                         <span class="f_cValidate fs_cValidate">*</span>
                     </p>
-                    <input type="text" class="input medium fs_content fs_input" value="" />
+                    <input data-type="mobile" name="mobile" type="text" class="input medium fs_content fs_input" value="" />
                 </div>
                 <div class="f_component">
                     <p class="f_cTitle fs_cTitle">年龄
                         <span class="f_cValidate fs_cValidate">*</span>
                     </p>
                     <div class="f_select medium">
-                        <select class="insideSelect fs_content fs_input">
+                        <select data-type="age" name="age" class="insideSelect fs_content fs_input">
                             <option value=""> 请选择 </option>
                             <option value="1"> 30-40岁 </option>
                             <option value="2"> 40-50岁 </option>
@@ -165,7 +166,7 @@
                         <span class="f_cValidate fs_cValidate">*</span>
                     </p>
                     <div class="f_select medium">
-                        <select class="insideSelect fs_content fs_input">
+                        <select name="position" data-type="position" class="insideSelect fs_content fs_input">
                             <option value=""> 请选择 </option>
                             <option value="1"> 董事长 </option>
                             <option value="2"> 总裁 </option>
@@ -175,14 +176,12 @@
                     </div>
                 </div>
                 <div class="f_component">
-                    <p class="f_cTitle fs_cTitle">公司名称<span class="f_cValidate fs_cValidate">*</span></p>
-                    <p class="f_cDescribe fs_cDescribe">请填写真实公司名称</p>
-                    <input type="text" class="input medium fs_content fs_input" value="" />
+                    <p class="f_cTitle fs_cTitle">公司名称<span class="f_cValidate fs_cValidate">*请填写真实公司名称</span></p>
+                    <input type="text" name="company_name" data-type="company" class="input medium fs_content fs_input" value="" />
                 </div>
                 <div class="f_component">
-                    <p class="f_cTitle fs_cTitle">推荐人</p>
-                    <p class="f_cDescribe fs_cDescribe">选填，请填写推荐人手机号码</p>
-                    <input type="text" class="input medium fs_content fs_input" value="" />
+                    <p class="f_cTitle fs_cTitle">推荐人<span class="f_cValidate fs_cValidate">选填，请填写推荐人手机号码</span></p>
+                    <input name="referee" type="text" class="input medium fs_content fs_input" value="" />
                 </div>
                 <div class="f_component">
                     <p class="f_cTitle fs_cTitle" style="text-align:left">活动联系人：<?=$item['contacts']?></p>
@@ -214,28 +213,77 @@
         $(this).closest('.f_component').removeClass('fs_component')
     });
 
-    function show_error(obj){
-        obj.prevAll('.f_cTitle').append('<label class="error">此项为必填项</label>');
+    function show_error(obj, msg){
+        if (obj.prev().has('label').length < 1) {
+            obj.prevAll('.f_cTitle').append('<label class="error">' + msg + '</label>');
+        } else {
+            console.log(obj.prev().find('label'));
+            $(obj.prev().find('label')[0]).text(msg);
+        }
     }
 
+
     $('.f_submitBtn').click(function(){
-        var flag = false;
+        var flag = true;
         $('#submit-form').find('input').each(function(){
-            if($.trim(this.value) == ''){
-                show_error($(this));
-                flag = true;
+            if ($(this).data('type') ==  'name' ) {
+                if ($.trim(this.value) == ''){
+                    show_error($(this), '用户名不能为空');
+                    flag = false
+                }
+            }
+            if ($(this).data('type') ==  'mobile' ) {
+                if ($.trim(this.value) == ''){
+                    show_error($(this), '手机号码不能为空');
+                    flag = false;
+                }
+                else {
+                    var pattern=/(^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$)|(^0{0,1}1[3|4|5|6|7|8|9][0-9]{9}$)/;
+
+                    if(!pattern.test($.trim(this.value))) {
+                        show_error($(this), '手机号码格式不正确');
+                        flag = false;
+                        return false;
+                    }
+                }
+            }
+            if ($(this).data('type') ==  'company' ) {
+                if ($.trim(this.value) == ''){
+                    show_error($(this), '公司名称不能为空');
+                    flag = false
+                }
             }
         });
 
         $('#submit-form').find('select').each(function () {
-            if($.trim(this.value) == ''){
-                show_error($(this).parent());
-                flag = true;
+            if ($(this).data('type') ==  'age' ) {
+                if ($.trim(this.value) == ''){
+                    show_error($(this).parent(), '请选择年龄');
+                    flag = false
+                }
+            }
+
+            if ($(this).data('type') ==  'position' ) {
+                if ($.trim(this.value) == ''){
+                    show_error($(this).parent(), '请选择职位');
+                    flag = false
+                }
             }
         });
 
-        if(!flag){
-            layer.alert('验正通过！');
+        if(flag){
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:$('#submit-form').action,
+                data:$('#submit-form').serialize(),// 你的formid
+                error: function(request) {
+                    layer.alert("Connection error");
+                },
+                success: function(data) {
+                    layer.alert(JSON.parse(data).msg);
+                }
+            });
         }
         return false;
     });
