@@ -48,14 +48,12 @@ class DownloadLogic extends BaseLogic{
             return false;
         }
 
-        $file = json_decode(think_decrypt(I('post.file_id')), true);
-        if(!empty($file)){
-            $data['file_id'] = $file['id'];
-            $data['size']    = $file['size'];
-        } else {
-            $this->error = '获取上传文件信息失败！';
+        $data['file_id'] = I('post.file_id');
+        if(empty($data['file_id'])){
+            $this->error = '请上传附件！';
             return false;
         }
+        $data['size'] = I('size');
 
         /* 添加或更新数据 */
         if(empty($data['id'])){//新增数据

@@ -12,6 +12,7 @@
  * 主要定义后台公共函数库
  */
 require_once(APP_PATH . '/Admin/Common/ace.php');
+require_once(APP_PATH . '/Admin/Common/qiniu.php');
 
 function bfb($num=0){
     return intval($num)>0 ? $num.' %' : $num;

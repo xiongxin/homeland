@@ -6,7 +6,6 @@
 </block>
 
 <block name="body">
-	<script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
 	<div class="page-header">
 		<h1>
 			编辑{$info.model_id|get_document_model='title'} 
@@ -93,94 +92,18 @@
                                 {:hook('adminArticleEdit', array('name'=>$field['name'],'value'=>$field['value']))}
                             </case>
                             <case value="picture">
-                                <div class="controls">
-									<input type="file" id="upload_picture_{$field.name}">
-									<input type="hidden" name="{$field.name}" id="cover_id_{$field.name}"/>
-									<div class="upload-img-box">
-									<notempty name="data[$field['name']]">
-										<div class="upload-pre-item"><img width="120" src="{$data[$field['name']]|get_cover='path'}"/></div>
-									</notempty>
-									</div>
-								</div>
-								<script type="text/javascript">
-								//上传图片
-							    /* 初始化上传插件 */
-								$("#upload_picture_{$field.name}").uploadify({
-							        "height"          : 30,
-							        "swf"             : "__STATIC__/uploadify/uploadify.swf",
-							        "fileObjName"     : "download",
-							        "buttonText"      : "上传图片",
-							        "uploader"        : "{:U('File/uploadPicture',array('session_id'=>session_id()))}",
-							        "width"           : 120,
-							        'removeTimeout'	  : 1,
-							        'fileTypeExts'	  : '*.jpg; *.png; *.gif;',
-							        "onUploadSuccess" : uploadPicture{$field.name},
-							        'onFallback' : function() {
-							            alert('未检测到兼容版本的Flash.');
-							        }
-							    });
-								function uploadPicture{$field.name}(file, data){
-							    	var data = $.parseJSON(data);
-							    	var src = '';
-							        if(data.status){
-							        	$("#cover_id_{$field.name}").val(data.id);
-							        	src = data.url || '__ROOT__' + data.path
-							        	$("#cover_id_{$field.name}").parent().find('.upload-img-box').html(
-							        		'<div class="upload-pre-item"><img width="120" src="' + src + '"/></div>'
-							        	);
-							        } else {
-							        	updateAlert(data.info);
-							        	setTimeout(function(){
-							                $('#top-alert').find('button').click();
-							                $(that).removeClass('disabled').prop('disabled',false);
-							            },1500);
-							        }
-							    }
-								</script>
+                                <div class="upload-wrap">
+                                    <a href="javascript:" class="btn btn-sm btn-success pic-upload" name="{$field.name}" val="{$data[$field['name']]}" >
+                                        <i class="icon-cloud-upload "></i>上传图片
+                                    </a>
+                                </div>
                             </case>
                             <case value="file">
-								<div class="controls">
-									<input type="file" id="upload_file_{$field.name}">
-									<input type="hidden" name="{$field.name}" value="{$data[$field['name']]}"/>
-									<div class="upload-img-box">
-										<present name="data[$field['name']]">
-											<div class="upload-pre-file"><span class="upload_icon_all"></span>{$data[$field['name']]}</div>
-										</present>
-									</div>
-								</div>
-								<script type="text/javascript">
-								//上传图片
-							    /* 初始化上传插件 */
-								$("#upload_file_{$field.name}").uploadify({
-							        "height"          : 30,
-							        "swf"             : "__STATIC__/uploadify/uploadify.swf",
-							        "fileObjName"     : "download",
-							        "buttonText"      : "上传附件",
-							        "uploader"        : "{:U('File/upload',array('session_id'=>session_id()))}",
-							        "width"           : 120,
-							        'removeTimeout'	  : 1,
-							        "onUploadSuccess" : uploadFile{$field.name},
-							        'onFallback' : function() {
-							            alert('未检测到兼容版本的Flash.');
-							        }
-							    });
-								function uploadFile{$field.name}(file, data){
-									var data = $.parseJSON(data);
-							        if(data.status){
-							        	var name = "{$field.name}";
-							        	$("input[name="+name+"]").val(data.data);
-							        	$("input[name="+name+"]").parent().find('.upload-img-box').html(
-							        		"<div class=\"upload-pre-file\"><span class=\"upload_icon_all\"></span>" + data.info + "</div>"
-							        	);
-							        } else {
-							        	updateAlert(data.info);
-							        	setTimeout(function(){
-							                $('#top-alert').find('button').click();
-							                $(that).removeClass('disabled').prop('disabled',false);
-							            },1500);
-							        }
-							    }
-								</script>
+                                <div class="upload-wrap">
+                                    <a href="javascript:" class="btn btn-sm btn-success file-upload" name="{$field.name}" val="{$data[$field['name']]}" >
+                                        <i class="icon-cloud-upload "></i>上传附件
+                                    </a>
+                                </div>
                             </case>
                             <default/>
                             <input type="text" class="width-100" name="{$field.name}" value="{$field.value}">
@@ -219,6 +142,10 @@
 </block>
 
 <block name="script">
+
+<include file="Public/upload.js"/>
+<include file="Public/upload.pic"/>
+<include file="Public/upload.file"/>
 <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
 <php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
 <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
