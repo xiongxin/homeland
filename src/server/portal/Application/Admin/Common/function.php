@@ -670,6 +670,17 @@ function get_action_type($type, $all = false){
 }
 
 
+//返回年龄  0：30岁以下，1：30-40岁，2：40-50岁，3：50-60岁，4：60岁以上
+function get_age($type) {
+    $list = ['30岁以下', '30-40岁', '40-50岁', '50-60岁', '60岁以上'];
+    return $list[$type];
+}
+
+//返回职位 '职位，0：其他，1：董事长，2：总裁，3：总经理',
+function get_position($type) {
+    $list = ['其他', '董事长', '总裁', '总经理'];
+    return $list[$type];
+}
 /**
  * 检查接口返回
  * @param intger $type 类型
