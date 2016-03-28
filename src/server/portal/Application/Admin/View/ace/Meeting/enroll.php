@@ -6,11 +6,11 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="search-form">
-                        <label>会议标题或ID
-                            <input type="text" class="search-input" name="search" value="{:I('search')}" placeholder="会议标题或ID">
+                        <label>会员名称或手机号码
+                            <input type="text" class="search-input" name="search" value="{:I('search')}" placeholder="会员名称或手机号码">
                         </label>
                         <label>
-                            <button class="btn btn-sm btn-primary" type="button" id="search" url="{:U('Meeting/index')}">
+                            <button class="btn btn-sm btn-primary" type="button" id="search" url="{:U('User/userReturn')}">
                                 <i class="icon-search"></i>搜索
                             </button>
                         </label>
@@ -28,13 +28,18 @@
                             <span class="lbl"></span>
                         </label>
                     </th>
-                    <th class="">标题</th>
-                    <th class="">副标题</th>
-                    <th class="">联系人</th>
-                    <th class="">联系电话</th>
-                    <th class="">联系邮箱</th>
-                    <th class="">创建时间</th>
-                    <th class="">编辑</th>
+                    <th class="">姓名</th>
+                    <th class="">手机号码</th>
+                    <th class="">会议</th>
+                    <th class="">公司名称</th>
+                    <th class="">年龄</th>
+                    <th class="">职位</th>
+                    <th class="">推荐人</th>
+                    <th class="">报名时间</th>
+                    <th class="">是否确认</th>
+                    <th class="">是否签到</th>
+                    <th class="">签到时间</th>
+                    <th class="">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,17 +52,30 @@
                                     <span class="lbl"></span>
                                 </label>
                             </td>
-                            <td><a href="{:U('edit',array('id'=>$vo['id']))}">{$vo.title}</a></td>
-                            <td>{$vo.subheading}</td>
-                            <td>{$vo.contacts}</td>
-                            <td>{$vo.contact_phone}</td>
-                            <td>{$vo.contact_email}</td>
-                            <td><span>{$vo.insert_time}</span></td>
+                            <td>{$vo.name}</td>
+                            <td>{$vo.mobile}</td>
+                            <td>{$vo.title}</td>
+                            <td>{$vo.company_name}</td>
+                            <td>{$vo.age|get_age}</td>
+                            <td>{$vo.position|get_position}</td>
+                            <td>{$vo.referee}</td>
+                            <td>{$vo.create_time}</td>
                             <td>
-                                <a title="编辑" href="{:U('edit?id='.$vo['id'])}" class="">
+                                <label>
+                                    <span><?=$vo['is_affirm'] == 'YES' ? '是' : '否'?></span>
+                                </label>
+                            </td>
+                            <td>
+                                <label>
+                                    <span><?=$vo['is_sign'] == 'YES' ? '是' : '否'?></span>
+                                </label>
+                            </td>
+                            <td>{$vo.sign_time}</td>
+                            <td>
+                                <a title="删除" href="{:U('enrollEdit?id='.$vo['id'])}" class="">
                                     编辑
                                 </a>
-                                <a title="删除" href="{:U('meetingDelete?id='.$vo['id'])}" class="confirm ajax-get">
+                                <a title="删除" href="{:U('enrollDelete?id='.$vo['id'])}" class="confirm ajax-get">
                                     删除
                                 </a>
                             </td>
@@ -72,12 +90,12 @@
             <div class="row">
                 <div class="col-sm-4">
                     <label>
-                        <a class="btn btn-white" href="{:U('add')}">
+                        <a class="btn btn-white" href="{:U('enrolladd')}">
                             新增
                         </a>
                     </label>
                     <label>
-                        <button type="button" class="btn btn-white ajax-post" target-form="ids" url="{:U('meetingDelete')}">
+                        <button type="button" class="btn btn-white ajax-post" target-form="ids" url="{:U('enrollDelete')}">
                             删除
                         </button>
                     </label>
@@ -115,6 +133,6 @@
             }
         });
         //导航高亮
-        highlight_subnav('{:U('Meeting/index')}');
+        highlight_subnav('{:U('Meeting/enroll')}');
     </script>
 </block>

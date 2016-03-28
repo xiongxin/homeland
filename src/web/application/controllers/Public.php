@@ -33,7 +33,9 @@ class PublicController extends Mall {
                 'sign_time' => time_format(time())
             ];
             $data = array_merge(I('post.'), $data);
-            if (M('t_enroll')->insert($data)) {
+            if (($id = M('t_enroll')->insert($data)) > 0) {
+                //报名成功之后生成公司注册信息列，关联到报名表
+                M('t_company_reg')->insert(['eid'=>$id]);
                 $this->success('报名成功！三个工作日内客服将与您电话联系!');
             } else {
                 $this->error('报名失败！');
