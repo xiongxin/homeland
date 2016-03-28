@@ -11,7 +11,7 @@ define('IS_GET',        $_SERVER['REQUEST_METHOD'] =='GET' ? true : false);
 define('IS_POST',       $_SERVER['REQUEST_METHOD'] =='POST' ? true : false);
 define ('IS_AJAX',       ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || !empty($_POST['is_ajax']) || !empty($_GET['is_ajax'])) ? true : false);
 
-SeasLog::setLogger('api/lily');
+SeasLog::setLogger('api/homeland');
 $config = json_decode(Qconf::getConf("/homeland/application.json"),true);
 
 $config['application']['directory'] = APP_PATH;
