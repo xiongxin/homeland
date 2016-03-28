@@ -148,10 +148,10 @@ class CallbackController extends Core\Wechat  {
 
         SeasLog::debug($model->last_query());
         SeasLog::debug(var_export($user_info,true));
-        //如果用户不存在,并且应用授权作用域是snsapi_userinfo,则请求微信获取用户详情信息
+
+        //如果用户不存在,并且应用授权作用域是snsapi_userinfo
         //非静默授权
         if(empty($user_info) && $user_token['scope'] == 'snsapi_userinfo'){
-
             //先通过openid直接获取用户信息
             $user_info = $this->wechat->getUserInfo($user_token['openid']);
 
@@ -159,13 +159,10 @@ class CallbackController extends Core\Wechat  {
             if(empty($user_info) || $user_info['subscribe'] != 1){
                 //通过网页授权获取用户基本信息
                 $user_info = $this->wechat->getOauthUserinfo($user_token['access_token'],$user_token['openid']);
-                //再拿不到用户信息,则只能退出了
-                if(empty($user_info)){
-                    $this->redirect('/?status=userinfonull');
-                    die;
+                if(!empty($user_info)){
+                    //将用户特征信息转为json格式
+                    $user_info['privilege'] = json_encode($user_info['privilege'],JSON_UNESCAPED_UNICODE);
                 }
-                //将用户特征信息转为json格式
-                $user_info['privilege'] = json_encode($user_info['privilege'],JSON_UNESCAPED_UNICODE);
                 $user_info['subscribe'] = -1;
             }
 
@@ -177,14 +174,20 @@ class CallbackController extends Core\Wechat  {
             }
         }elseif(empty($user_info) && $user_token['scope'] == 'snsapi_base'){
             //静默授权
-            //未关注公众号的用户,也执行注册流程,只保存openid和unionid,其他内容置为默认项
-            $user_info = [
-                            'openid'=>$user_token['openid'],
-			                'nickname'=>'',
-                            'sex'=>0,
-                            'unionid'=>isset($user_token['unionid']) ? $user_token['unionid'] : '',
-                            'subscribe' => -1
-                        ];
+
+            //通过openid直接获取用户信息
+            $user_info = $this->wechat->getUserInfo($user_token['openid']);
+
+            //未关注公众号的用户,执行注册流程,只保存openid和unionid,其他内容置为默认项
+            if(empty($user_info)){
+                $user_info = [
+                    'openid'=>$user_token['openid'],
+                    'nickname'=>'',
+                    'sex'=>0,
+                    'unionid'=>isset($user_token['unionid']) ? $user_token['unionid'] : '',
+                    'subscribe' => -1
+                ];
+            }
 
             //开始完成用户注册
             $user_info['wx_id'] = $model->reg($user_info);

@@ -53,7 +53,7 @@ class WxUserModel extends Model{
         ];
         return $this->get(
             [
-                '[>]t_ucenter_member(b)'=>['wx_id'=>'wx_id','AND'=>['b.status'=>1]],
+                '[>]t_ucenter_member(b)'=>['wx_id'=>'wx_id','AND'=>['b.status'=>2]],
             ],
             $field,
             ['AND'=>['openid'=>$openid]]

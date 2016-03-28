@@ -12,6 +12,14 @@
  */
 
 /**
+ * 系统非常规MD5加密方法
+ * @param  string $str 要加密的字符串
+ * @return string
+ */
+function think_ucenter_md5($str, $key = 'ThinkUCenter'){
+    return '' === $str ? '' : md5(sha1($str) . $key);
+}
+/**
  * 字符串截取，多余的以...代替
  * @param $text
  * @param $length

@@ -14,4 +14,13 @@ class IndexController extends Mall {
     public function indexAction(){
 //        die('aaa');
     }
+
+    public function signAction(){
+
+    }
+
+    public function searchAction(){
+
+        $this->success('1111');
+    }
 }

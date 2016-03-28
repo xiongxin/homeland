@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <meta name="format-detection" content="telephone=no"/>
     <title><?=isset($meta_title) ? $meta_title.' - ' : ''?>百合花</title>
-    <meta name="Author" Content="" />
-    <meta name="Copyright" Content="深圳麦圈互动科技。All Rights Reserved" />
     <link href="/style/weui.css" rel="stylesheet" type="text/css" />
     <block name="style"></block>
 </head>
 
-<body>
-<article class="index <?php if(isset($title)) echo 'padt8';?>">
+<body ontouchstart>
 
 <block name="header">
 <?php if(isset($title)):?>
@@ -25,10 +21,9 @@
 
 <?php echo $content?>
 
-</article>
-
-<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="http://7xrote.com2.z0.glb.qiniucdn.com/layer.mobile.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="//7xrote.com2.z0.glb.qiniucdn.com/layer.mobile.js"></script>
 <block name="script">
 
 </block>
