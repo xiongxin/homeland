@@ -10,7 +10,7 @@
                             <input type="text" class="search-input" name="search" value="{:I('search')}" placeholder="会议标题或ID">
                         </label>
                         <label>
-                            <button class="btn btn-sm btn-primary" type="button" id="search" url="{:U('User/userReturn')}">
+                            <button class="btn btn-sm btn-primary" type="button" id="search" url="{:U('Meeting/index')}">
                                 <i class="icon-search"></i>搜索
                             </button>
                         </label>
@@ -34,7 +34,7 @@
                     <th class="">联系电话</th>
                     <th class="">联系邮箱</th>
                     <th class="">创建时间</th>
-                    <th class="">详情</th>
+                    <th class="">编辑</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -54,8 +54,11 @@
                             <td>{$vo.contact_email}</td>
                             <td><span>{$vo.insert_time}</span></td>
                             <td>
-                                <a title="详情" href="{:U('edit?id='.$vo['id'])}" class="">
-                                    详情
+                                <a title="编辑" href="{:U('edit?id='.$vo['id'])}" class="">
+                                    编辑
+                                </a>
+                                <a title="删除" href="{:U('meetingDelete?id='.$vo['id'])}" class="confirm ajax-get">
+                                    删除
                                 </a>
                             </td>
                         </tr>
@@ -69,12 +72,12 @@
             <div class="row">
                 <div class="col-sm-4">
                     <label>
-                        <a class="btn btn-white" href="{:U('addReturn')}">
+                        <a class="btn btn-white" href="{:U('add')}">
                             新增
                         </a>
                     </label>
                     <label>
-                        <button type="button" class="btn btn-white ajax-post" target-form="ids" url="{:U('changeStatus?method=deleteUser')}">
+                        <button type="button" class="btn btn-white ajax-post" target-form="ids" url="{:U('meetingDelete')}">
                             删除
                         </button>
                     </label>

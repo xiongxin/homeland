@@ -34,6 +34,7 @@
                     <th class="">公司名称</th>
                     <th class="">年龄</th>
                     <th class="">职位</th>
+                    <th class="">推荐人</th>
                     <th class="">报名时间</th>
                     <th class="">是否确认</th>
                     <th class="">是否签到</th>
@@ -57,41 +58,23 @@
                             <td>{$vo.company_name}</td>
                             <td>{$vo.age|get_age}</td>
                             <td>{$vo.position|get_position}</td>
+                            <td>{$vo.referee}</td>
                             <td>{$vo.create_time}</td>
                             <td>
-                                <?php
-                                $url = U('Meeting/changeAffirm?method=no_affirm&id='.$vo['id']);
-                                if($vo['is_affirm'] == 'NO#'){
-                                    $url = U('Meeting/changeAffirm?method=affirm&id='.$vo['id']);
-                                }
-                                ?>
                                 <label>
-                                    <input type="checkbox"
-                                           class="ace ace-switch ace-switch-6 ajax-get no-refresh"
-                                           name="status"
-                                           value="{$vo.is_affirm}" <?=$vo['is_affirm'] == 'YES' ? 'checked' : ''?>
-                                           url="<?=$url?>">
-                                    <span class="lbl"></span>
+                                    <span><?=$vo['is_affirm'] == 'YES' ? '是' : '否'?></span>
                                 </label>
                             </td>
                             <td>
-                                <?php
-                                $url = U('Meeting/changeSign?method=no_sign&id='.$vo['id']);
-                                if($vo['is_sign'] == 'NO#'){
-                                    $url = U('Meeting/changeSign?method=sign&id='.$vo['id']);
-                                }
-                                ?>
                                 <label>
-                                    <input type="checkbox"
-                                           class="ace ace-switch ace-switch-6 ajax-get no-refresh"
-                                           name="status"
-                                           value="{$vo.is_sign}" <?=$vo['is_sign'] == 'YES' ? 'checked' : ''?>
-                                           url="<?=$url?>">
-                                    <span class="lbl"></span>
+                                    <span><?=$vo['is_sign'] == 'YES' ? '是' : '否'?></span>
                                 </label>
                             </td>
                             <td>{$vo.sign_time}</td>
                             <td>
+                                <a title="删除" href="{:U('enrollEdit?id='.$vo['id'])}" class="">
+                                    编辑
+                                </a>
                                 <a title="删除" href="{:U('enrollDelete?id='.$vo['id'])}" class="confirm ajax-get">
                                     删除
                                 </a>
@@ -107,7 +90,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <label>
-                        <a class="btn btn-white" href="{:U('addReturn')}">
+                        <a class="btn btn-white" href="{:U('enrolladd')}">
                             新增
                         </a>
                     </label>
