@@ -2188,3 +2188,5 @@ body,html {
     -webkit-animation:b .2s forwards;
     animation:b .2s forwards
 }
+
+.hide{ display: none;}
