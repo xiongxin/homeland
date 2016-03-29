@@ -24,41 +24,51 @@
         </div>
 
         <form action="<?=U('/index/sign')?>" class="ajax-form" method="post" success="sign_success">
-            <div class="weui_cells weui_cells_radio hide" style="margin-top: 0;" id="search_show">
-
+            <div class="weui_cells weui_cells_radio <?=isset($item) ? '' : 'hide'?>" style="margin-top: 0;" id="search_show">
+                <?php if(isset($item)):?>
+                    <label class="weui_cell weui_check_label" for="enroll_id<?=$item['id']?>">
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <p><?=$item['mobile'].'-'.$item['chairman_name']?></p>
+                            </div>
+                        <div class="weui_cell_ft">
+                            <input type="radio" class="weui_check" name="enroll_id" value="<?=$item['id']?>" id="enroll_id<?=$item['id']?>" checked>
+                            <span class="weui_icon_checked"></span>
+                            </div>
+                        </label>
+                <?php endif;?>
             </div>
 
-            <div class="bd hide" id="selected-wrap">
+            <div class="bd <?=isset($item) ? '' : 'hide'?>" id="selected-wrap">
                 <div class="weui_cells">
                     <div class="weui_cell">
                         <div class="weui_cell_bd weui_cell_primary">
                             <p>手机号码</p>
                         </div>
-                        <div class="weui_cell_ft" id="mobile"></div>
+                        <div class="weui_cell_ft" id="mobile"><?=isset($item)?$item['mobile']:''?></div>
                     </div>
                     <div class="weui_cell">
                         <div class="weui_cell_bd weui_cell_primary">
                             <p>董事长姓名</p>
                         </div>
-                        <div class="weui_cell_ft" id="chairman_name"></div>
+                        <div class="weui_cell_ft" id="chairman_name"><?=isset($item)?$item['chairman_name']:''?></div>
                     </div>
                     <div class="weui_cell">
                         <div class="weui_cell_bd weui_cell_primary">
                             <p>性别</p>
                         </div>
-                        <div class="weui_cell_ft" id="sex">男</div>
+                        <div class="weui_cell_ft" id="sex"><?=isset($item)?($item['sex'] == 'MAN' ? '男' : '女'):''?></div>
                     </div>
                     <div class="weui_cell">
                         <div class="weui_cell_bd weui_cell_primary">
                             <p>公司</p>
                         </div>
-                        <div class="weui_cell_ft" id="company_name"></div>
+                        <div class="weui_cell_ft" id="company_name"><?=isset($item)?$item['company_name']:''?></div>
                     </div>
                     <div class="weui_cell">
                         <div class="weui_cell_bd weui_cell_primary">
                             <p>报名时间</p>
                         </div>
-                        <div class="weui_cell_ft" id="enroll_time"></div>
+                        <div class="weui_cell_ft" id="enroll_time"><?=isset($item)?$item['create_time']:''?></div>
                     </div>
                 </div>
                 <div class="weui_btn_area">
@@ -156,6 +166,9 @@ function search_success(form,resp){
 
 result_wrap.on('click','.weui_check_label',function(){
     var item = $(this).data('result');
+    if(item == null){
+        return false;
+    }
     $('#mobile').text(item.mobile);
     $('#chairman_name').text(item.chairman_name);
     $('#sex').text(item.sex == 'MAN' ? '男' : '女');
