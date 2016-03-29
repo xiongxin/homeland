@@ -69,7 +69,8 @@ class PublicController extends Mall {
         }
 
         if (IS_POST) {
-            if (M('t_enroll(e)')->get(
+            //用户登录到并且表里有对性的会议和用户id
+            if (!empty($this->user) && M('t_enroll(e)')->get(
                 ["*"],
                 ['AND'=>['e.meeting_id'=>$meeting_id,'e.wx_id'=>$this->user['wx_id']]])){
                 $this->error('您已经报名，请勿重复报名！');
