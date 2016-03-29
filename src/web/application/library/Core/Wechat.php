@@ -36,9 +36,9 @@ class Wechat extends Controller_Abstract{
         $result = $this->wechat->sendTemplateMessage($this->raw_data['body']);
         if(empty($result)){
 
-            echo json_encode(['errcode'=>$this->wechat->errCode,'errmsg'=>$this->wechat->errMsg]);
+            $this->quick_return($this->wechat->errCode,$this->wechat->errMsg);
         }else{
-            echo json_encode($result);
+            $this->ajax_return($result);
         }
     }
 
@@ -51,9 +51,19 @@ class Wechat extends Controller_Abstract{
         $result = $this->wechat->sendCustomMessage($this->raw_data['body']);
         if(empty($result)){
 
-            echo json_encode(['errcode'=>$this->wechat->errCode,'errmsg'=>$this->wechat->errMsg]);
+            $this->quick_return($this->wechat->errCode,$this->wechat->errMsg);
         }else{
-            echo json_encode($result);
+            $this->ajax_return($result);
         }
+    }
+
+    protected function quick_return($code=0,$msg='',$data=''){
+
+        return $this->ajax_return(['errcode'=>$code,'errmsg'=>$msg,'data'=>$data]);
+    }
+
+    protected function ajax_return($data=array()){
+
+        return json_encode($data,JSON_UNESCAPED_UNICODE);
     }
 }
