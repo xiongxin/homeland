@@ -16,6 +16,17 @@ class IndexController extends Mall {
     }
 
     public function signAction(){
+        if(!is_not_wx()){
+            $this->error('本功能仅允许在微信内使用！');
+        }
+
+        if(empty($this->user['uid'])){
+            $this->error('您还没有绑定运营账号！');
+        }
+
+        if($this->user['group_id'] != 1){
+            $this->error('本功能仅允许运营人员使用！');
+        }
 
         if(IS_POST){
             $enroll_id = intval(I('enroll_id'));

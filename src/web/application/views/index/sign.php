@@ -93,7 +93,8 @@
             'onMenuShareTimeline',
             'onMenuShareAppMessage',
             'onMenuShareQQ',
-            'onMenuShareWeibo'
+            'onMenuShareWeibo',
+            'scanQRCode'
         ]
     });
 
