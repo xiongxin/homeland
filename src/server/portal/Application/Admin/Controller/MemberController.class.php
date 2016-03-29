@@ -24,10 +24,14 @@ class MemberController extends AdminController {
             $map['m.nickname']    =   array('like', '%'.(string)$nickname.'%');
         }
 
+        $map['aga.group_id'] = ['in', [5,6]];
         $prefix = C('DB_PREFIX');
         $model = M()->table($prefix.'ucenter_member um')
-            ->join($prefix.'member m on m.uid = um.id','left');
-        $list   = $this->lists($model, $map,'','m.*,um.username,um.id');
+            ->join($prefix.'member m on m.uid = um.id','left')
+            ->join($prefix.'auth_group_access aga on aga.uid = um.id', 'left')
+            ->join($prefix.'company_reg cr on cr.uid = um.id');
+        $list   = $this->lists($model, $map,'','m.*,um.username,um.id,aga.group_id,cr.eid,
+                        cr.position ,cr.company_name, cr.chairman_name, cr.insert_time as reg_time');
         $this->assign('_list', $list);
         $this->meta_title = '用户信息';
         $this->display();
@@ -36,48 +40,50 @@ class MemberController extends AdminController {
     public function add() {
         $prefix = C('DB_PREFIX');
         if (IS_POST) {
+            if(empty(I('group_id'))) $this->error('请选择客户类型!');
             //创建ucenter_member
             $userData['username'] = I('mobile');
             $userData['email'] = I('email');
-            //TODO:判断手机号码是否注册
+            $userData['password'] = '';
             $user = M()->table($prefix.'ucenter_member');
-            if ($newUser = $user->create($userData)) {
-                $userResult = $user->add();
-                if ($userResult > 0) {
+            //判断手机号码是否注册
+            if ($user->where(['username'=>$userData['username']])->find()) {
+                $this->error('该用户手机号码已经被注册!');
+            }
+
+            if (M()->table($prefix.'ucenter_member')->create($userData)) {
+                $user_id = $user->add();
+                if ($user_id > 0) {
                     //创建member
-                    $memberData['uid'] = $newUser->id;
+                    $memberData['uid'] = $user_id;
                     $memberData['nickname'] = I('chairman_nickname');
                     $member = M()->table($prefix.'member');
                     if ($member->create($memberData)) {
                         $memberResult = $member->add();
                         if ($memberResult > 0) {
                             //设置用户级别
-                            
-                            //将company_reg关联到会员
-                            $company_reg = M()->table($prefix.'company_reg');
-                            if ($company_reg->where(['id'=>I('id')])->save(['uid'=>$newUser->id]) === false) {
-
+                            $group = M()->table($prefix.'auth_group_access');
+                            if ($group->create(['uid'=>$user_id,'group_id'=>I('group_id')])){
+                                $groupResult = $group->add();
+                                if ($groupResult> 0) {
+                                    //将company_reg关联到会员
+                                    $company_reg = M()->table($prefix.'company_reg');
+                                    if ($company_reg->where(['id'=>I('id')])->save(['uid'=>$user_id]) === false) {
+                                        $this->error('操作失败');
+                                    }else {
+                                        $this->success('操作成功！', U('index'));
+                                    }
+                                }else {
+                                    $this->error('设置权限失败！');
+                                }
                             }
                         } else {
-                            $this->error('创建用户失败！');
+                            $this->error('创建Member失败！');
                         }
                     }
                 } else {
                     $this->error('创建用户失败！');
                 }
-            }
-            $return = M()->table($prefix.'user_return_visit');
-            $_POST['insert_time'] = date("Y-m-d H:m:s", time());
-            $_POST['update_time'] = date("Y-m-d H:m:s", time());
-            if ($return->create()) {
-                $result = $return->add();
-                if ($result > 0) {
-                    $this->success('保存成功！',U('user/userReturn'));
-                } else {
-                    $this->error('保存失败！');
-                }
-            } else {
-                $this->error('保存失败！');
             }
         }
 
@@ -97,7 +103,6 @@ class MemberController extends AdminController {
             $model = M()->table($prefix.'company_reg cr')
                 ->join($prefix.'enroll e on e.id=cr.eid','left');
             $data = $model->field(array('cr.*'))->where($map)->find();
-            //echo $model->getLastSql();exit();
             if (empty($data)) {
                 $this->error('该用户不存在!');
             }
@@ -108,7 +113,31 @@ class MemberController extends AdminController {
         $this->assign('meetings', $meetings);
         $this->assign('item', $data);
         $this->assign('search', $search);
-        $this->meta_title = '添加回访';
+        $this->meta_title = '注册会员类型';
+        $this->display();
+    }
+
+    public function edit() {
+        $prefix = C('DB_PREFIX');
+        $uid = I('uid');
+        if (empty($uid)) $this->error('参数错误');
+        if (IS_POST) {
+            $group = M()->table($prefix.'auth_group_access');
+            if($group->where(['uid'=>$uid])->save(['group_id'=>I('group_id')])  === false) {
+                $this->error('修改失败!');
+            } else {
+                $this->success('修改成功!',U('index'));
+            }
+        }
+
+        $company = M()->table($prefix.'company_reg cr')
+            ->join($prefix.'auth_group_access aga on aga.uid = cr.uid', 'left')
+            ->where(['cr.uid' => $uid])
+            ->find();
+
+
+        $this->assign('item', $company);
+        $this->meta_title = '修改会员类型';
         $this->display();
     }
 }
