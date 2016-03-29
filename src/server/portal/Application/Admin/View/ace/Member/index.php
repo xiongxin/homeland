@@ -28,12 +28,12 @@
                                <span class="lbl"></span>
                            </label>
                         </th>
-                        <th class="">用户名</th>
-                        <th class="">昵称</th>
-                        <th class="">登录次数</th>
-                        <th class="">最后登录时间</th>
-                        <th class="">最后登录IP</th>
-                        <th class="">状态</th>
+                        <th class="">姓名</th>
+                        <th class="">手机号码</th>
+                        <th class="">职位</th>
+                        <th class="">公司</th>
+                        <th class="">报名时间</th>
+                        <th class="">会员类型</th>
                         <th class="">操作</th>
 					</tr>
 			    </thead>
@@ -41,36 +41,25 @@
 					<notempty name="_list">
 					<volist name="_list" id="vo">
 					<tr>
-
                         <td class="center">
                             <label>
                                 <input class="ace ids" type="checkbox" name="id[]" value="{$vo.id}" />
                                 <span class="lbl"></span>
                             </label>
                         </td>
-						<td><a href="{:U('uedit',array('id'=>$vo['id']))}">{$vo.username}</a></td>
-						<td>{$vo.nickname}</td>
-						<td>{$vo.login}</td>
-						<td><span>{$vo.last_login_time|time_format}</span></td>
-						<td><span>{:long2ip($vo['last_login_ip'])}</span></td>
+						<td><a href="{:U('Meeting/companyedit',array('eid'=>$vo['eid']))}">{$vo.chairman_name}</a></td>
+						<td>{$vo.username}</td>
+						<td>{$vo.position}</td>
+						<td><span>{$vo.company_name}</span></td>
+						<td><span>{$vo.reg_time}</span></td>
 						<td>
-                            <?php
-
-                            $url = U('User/changeStatus?method=resumeUser&id='.$vo['id']);
-                            if($vo['status'] == '1'){
-                                $url = U('User/changeStatus?method=forbidUser&id='.$vo['id']);
-                            }
-                            ?>
-                            <label>
-                                <input type="checkbox" class="ace ace-switch ace-switch-6 ajax-get no-refresh" name="status" value="{$vo.status}" <?=$vo['status'] == '1' ? 'checked' : ''?> url="<?=$url?>">
-                                <span class="lbl"></span>
-                            </label>
+                            <?= $vo['group_id'] == 5 ? "银种子" : '金种子' ?>
                         </td>
                         <td>
-                            <a title="授权" href="{:U('AuthManager/group?uid='.$vo['id'])}" class="">
-                                授权
+                            <a title="编辑" href="{:U('edit?uid='.$vo['id'])}" class="">
+                                编辑
                             </a>
-                            <a title="删除" href="{:U('User/changeStatus?method=deleteUser&id='.$vo['id'])}" class="confirm ajax-get">
+                            <a title="删除" href="{:U('User/changeStatus?method=deleteUser&id='.$vo['uid'])}" class="confirm ajax-get">
                                 删除
                             </a>
                         </td>
@@ -88,21 +77,6 @@
                         <a class="btn btn-white" href="{:U('add')}">
                             新增
                         </a>
-                    </label>
-                    <label>
-                        <button type="button" class="btn btn-white ajax-post" target-form="ids" url="{:U('changeStatus?method=resumeUser')}">
-                            启 用
-                        </button>
-                    </label>
-                    <label>
-                        <button type="button" class="btn btn-white ajax-post" target-form="ids" url="{:U('changeStatus?method=forbidUser')}">
-                            暂停
-                        </button>
-                    </label>
-                    <label>
-                        <button type="button" class="btn btn-white ajax-post" target-form="ids" url="{:U('changeStatus?method=deleteUser')}">
-                            删除
-                        </button>
                     </label>
                 </div>
                 <div class="col-sm-8">
