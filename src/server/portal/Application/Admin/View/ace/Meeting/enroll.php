@@ -72,27 +72,22 @@
                             </td>
                             <td>{$vo.sign_time}</td>
                             <td>
-
-                                <a title="编辑报名信息" href="{:U('enrollEdit?id='.$vo['id'])}" class="">
-                                    编辑报名信息
-                                </a>
                                 <?php
-                                    $prefix = C('DB_PREFIX');
-                                    $company = M()->table($prefix.'company_reg c')
-                                        ->where(['eid'=>$vo['id']])->find();
+                                $prefix = C('DB_PREFIX');
+                                $company = M()->table($prefix.'company_reg c')
+                                    ->where(['eid'=>$vo['id']])->find();
                                 ?>
                                 <if condition="empty($company)">
-                                    <a title="添加企业信息" href="{:U('companyAdd?eid='.$vo['id'])}" class="">
-                                        添加企业信息
+                                    <a title="完善信息" href="{:U('companyAdd?eid='.$vo['id'])}" class="">
+                                        完善信息
                                     </a>
-                                <else/>
-                                    <a title="编辑企业信息" href="{:U('companyEdit?eid='.$vo['id'])}" class="">
-                                        编辑企业信息
+                                    <else/>
+                                    <a title="完善信息" href="{:U('companyEdit?eid='.$vo['id'])}" class="">
+                                        完善信息
                                     </a>
                                 </if>
-
                                 <a title="删除报名信息" href="{:U('enrollDelete?id='.$vo['id'])}" class="confirm ajax-get">
-                                    删除报名信息
+                                    删除
                                 </a>
                             </td>
                         </tr>
