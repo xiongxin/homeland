@@ -58,7 +58,7 @@
                             <td>{$vo.company_name}</td>
                             <td>{$vo.age|get_age}</td>
                             <td>{$vo.position|get_position}</td>
-                            <td>{$vo.referee}</td>
+                            <td><?= $vo['referee']==0?'无':$vo['referee']  ?></td>
                             <td>{$vo.create_time}</td>
                             <td>
                                 <label>
@@ -72,11 +72,27 @@
                             </td>
                             <td>{$vo.sign_time}</td>
                             <td>
-                                <a title="删除" href="{:U('enrollEdit?id='.$vo['id'])}" class="">
-                                    编辑
+
+                                <a title="编辑报名信息" href="{:U('enrollEdit?id='.$vo['id'])}" class="">
+                                    编辑报名信息
                                 </a>
-                                <a title="删除" href="{:U('enrollDelete?id='.$vo['id'])}" class="confirm ajax-get">
-                                    删除
+                                <?php
+                                    $prefix = C('DB_PREFIX');
+                                    $company = M()->table($prefix.'company_reg c')
+                                        ->where(['eid'=>$vo['id']])->find();
+                                ?>
+                                <if condition="empty($company)">
+                                    <a title="添加企业信息" href="{:U('companyAdd?eid='.$vo['id'])}" class="">
+                                        添加企业信息
+                                    </a>
+                                <else/>
+                                    <a title="编辑企业信息" href="{:U('companyEdit?eid='.$vo['id'])}" class="">
+                                        编辑企业信息
+                                    </a>
+                                </if>
+
+                                <a title="删除报名信息" href="{:U('enrollDelete?id='.$vo['id'])}" class="confirm ajax-get">
+                                    删除报名信息
                                 </a>
                             </td>
                         </tr>

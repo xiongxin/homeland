@@ -5,12 +5,6 @@ use Admin\Service\ApiService;
 use Think\Model;
 use User\Api\UserApi;
 
-/**
- * 会议管理控制器
- * User: xiongxin
- * Date: 2016/3/25
- * Time: 20:53
- */
 class MeetingController extends AdminController {
     public function index(){
         $prefix = C('DB_PREFIX');
@@ -91,6 +85,7 @@ class MeetingController extends AdminController {
         }
     }
 
+    //查看所有报名表
     public function enroll() {
         $search       =   I('search');
         //$map['um.status']  =   array('egt',0);
@@ -150,57 +145,122 @@ class MeetingController extends AdminController {
             }
         }
     }
-
-    public function enrollEdit($id) {
-        if (empty($id)) $this->error('参数错误');
+    
+    //添加企业信息
+    public function companyAdd($eid) {
+        if (empty($eid)) $this->error('报名信息不存在!');
         $prefix = C('DB_PREFIX');
-        $model = M()->table($prefix.'company_reg c');
+        if (IS_POST) {
+            $_POST = I('post.');
+            $_POST['eid'] = $eid;
+            $model = M()->table($prefix.'company_reg');
+            $_POST['insert_time'] = date("Y-m-d H:m:s", time());
+            $_POST['update_time'] = date("Y-m-d H:m:s", time());
+            if (strlen($_POST['birthday']) == 0) unset($_POST['birthday']);
+            if (strlen($_POST['founding_time']) == 0) unset($_POST['founding_time']);
+            if ($model->create()) {
+                $result = $model->add();
+                if ($result > 0) {
+                    $this->success('创建成功！',U('Meeting/enroll'));
+                } else {
+                    $this->error('创建失败！');
+                }
+            } else {
+                $this->error('创建失败！');
+            }
+        }
+    
+        $enroll = M()->table($prefix.'enroll e')
+            ->field(['e.*'])
+            ->where(['id'=>$eid])->find();
+        
+        $this->assign('enroll', $enroll);
+        $this->meta_title = '公司注册信息';
+        $this->display();
+    }
+
+    //编辑注册信息
+    public function companyEdit($eid) {
+        if (empty($eid)) $this->error('报名信息不存在!');
+        $prefix = C('DB_PREFIX');
         if (IS_POST) {
             $data = I('post.');
             $id = $data['id'];
             unset($data['id']);
+            $data['eid'] = $eid;
+            $data['update_time'] = date("Y-m-d H:m:s", time());
             if (strlen($data['birthday']) == 0) unset($data['birthday']);
-            if (strlen($data['birthday']) == 0) unset($data['birthday']);
-            if ($model->where(['id'=>$id])->save($data) !== false) {
-                $this->success('保存成功！');
+            if (strlen($data['founding_time']) == 0) unset($data['founding_time']);
+            if( M()->table($prefix.'company_reg')->where(array('id'=>$id))
+                    ->save($data) === false){
+                $this->error('修改失败！');
+            }
+            $this->success('保存成功！',U('Meeting/enroll'));
+        }
+
+        $enroll = M()->table($prefix.'enroll e')
+            ->field(['e.*'])
+            ->where(['id'=>$eid])->find();
+
+        $company = M()->table($prefix.'company_reg')->where(['eid'=>$eid])->find();
+
+        $this->assign('item', $company);
+        $this->assign('enroll', $enroll);
+        $this->meta_title = '公司注册信息';
+        $this->display('companyadd');
+    }
+
+    //编辑报名信息
+    public function enrollEdit($id) {
+        if(empty($id)) $this->error('参数错误');
+        $prefix = C('DB_PREFIX');
+        if (IS_POST) {
+            $data = I('post.');
+            unset($data['parse']);
+            $data['update_time'] = date("Y-m-d H:m:s", time());
+            $data['referee'] = intval($data['referee']);
+            if(M()->table($prefix.'enroll')->where(array('id'=>$id))
+                ->save($data) === false){
+                $this->error('修改失败！');
+            }
+            $this->success('保存成功！',U('Meeting/enroll'));
+        }
+        $meetings = M()->table($prefix.'meeting')->where(['status'=>1])->select();
+        $enroll = M()->table($prefix.'enroll')->where(['id'=>$id])->find();
+        if (empty($enroll)) $this->error('没有找到该报名表');
+        $this->assign('item', $enroll);
+        $this->assign('meetings', $meetings);
+        $this->meta_title = '编辑报名信息';
+        $this->display('enrolladd');
+    }
+
+    //新建报名
+    public function enrollAdd() {
+        $prefix = C('DB_PREFIX');
+        if (IS_POST) {
+            $model = M()->table($prefix.'enroll');
+            $_POST['insert_time'] = date("Y-m-d H:m:s", time());
+            $_POST['update_time'] = date("Y-m-d H:m:s", time());
+            $_POST['referee'] = intval($_POST['referee']);
+            if ($model->create()) {
+                $result = $model->add();
+                if ($result > 0) {
+                    $this->success('创建成功！',U('Meeting/enroll'));
+                } else {
+                    $this->error('创建失败！');
+                }
             } else {
-                $this->error('保存失败！');
+                $this->error('创建失败！');
             }
         }
-
-        $data = $model->field(array('c.*'))
-            ->where(['eid'=>$id])->find();
-        if (empty($data)) {
-            $this->error('公司注册信息不存在!');
-        }
-        $enroll = $model->table($prefix.'enroll e')
-            ->field(['e.*'])
-            ->where(['id'=>$id])->find();
+        $meetings = M()->table($prefix.'meeting m')->where(['status'=>1])->select();
         
-        $this->assign('enroll', $enroll);
-        $this->assign('item',$data);
-        $this->meta_title = '公司注册信息';
+        $this->assign('meetings', $meetings);
+        $this->meta_title = '添加报名信息';
         $this->display();
     }
 
-    public function enrollAdd() {
-        if (IS_POST) {
-//            $data = I('post.');
-//            $id = $data['id'];
-//            unset($data['id']);
-//            if (strlen($data['birthday']) == 0) unset($data['birthday']);
-//            if (strlen($data['birthday']) == 0) unset($data['birthday']);
-//            if ($model->where(['id'=>$id])->save($data) !== false) {
-//                $this->success('保存成功！');
-//            } else {
-//                $this->error('保存失败！');
-//            }
-        }
-
-        $this->meta_title = '公司注册信息';
-        $this->display();
-    }
-
+    //删除报名
     public function enrollDelete(){
         //如存在id字段，则加入该条件
         $id    = array_unique((array)I('id',0));
@@ -210,9 +270,9 @@ class MeetingController extends AdminController {
         $model = M()->table($prefix.'enroll');
         $result = $model->where('id in ('. $id . ')')->save(['status'=>-1]);
         if($result !== false){
-            $this->success('修改成功！',U('enroll'));
+            $this->success('删除成功！',U('enroll'));
         }else{
-            $this->error('修改失败！');
+            $this->error('删除失败！');
         }
     }
 }
