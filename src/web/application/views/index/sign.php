@@ -2,7 +2,7 @@
     <div class="hd">
         <div class="bd spacing">
             <div class="button_sp_area">
-                <a href="javascript:;" class="weui_btn weui_btn_warn">点击扫码签到</a>
+                <a id="wx-scan" href="javascript:;" class="weui_btn weui_btn_warn">点击扫码签到</a>
             </div>
         </div>
     </div>
@@ -69,7 +69,39 @@
     </div>
 </div>
 <block name="script">
-<script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<script type="text/javascript">
+<?php if(!is_not_wx()):?>
+    wx.config({
+        appId: '<?php echo $js_sign['appid']?>',
+        timestamp: <?php echo $js_sign['timestamp']?>,
+        nonceStr: '<?php echo $js_sign['noncestr']?>',
+        signature: '<?php echo $js_sign['signature']?>',
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo'
+        ]
+    });
+
+    wx.ready(function () {
+        $('#wx-scan').click(function(){
+            wx.scanQRCode({
+                needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                success: function (res) {
+                }
+            });
+        })
+    });
+
+    wx.error(function (res) {
+        alert('wx.error: '+JSON.stringify(res));
+    });
+<?php endif; ?>
 $(function(){
 
     var events = {
