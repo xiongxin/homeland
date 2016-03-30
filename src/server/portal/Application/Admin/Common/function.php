@@ -35,6 +35,29 @@ function send_sms($mobile,$content){
     return isset($resp['errcode']) && $resp['errcode'] == 0;
 }
 
+
+/**
+ * 检测短信验证码
+ * @param int $mobile
+ * @param int $verify
+ * @return number
+ */
+function check_sms_verify($mobile,$verify){
+    $sms_auth_info = session('sms-autu-info');
+    if(isset($sms_auth_info['code']) && isset($sms_auth_info['mobile']) && isset($sms_auth_info['time'])){
+        //手机号码验证码必须完全匹配才能通过
+        if($mobile && $verify && $mobile == $sms_auth_info['mobile'] && $verify == $sms_auth_info['code']){
+            session('sms-autu-info',null);
+            //判断验证码是否过期
+            if(time()-intval($sms_auth_info['time']) > intval(C('SMS_EXPIRE',null,10))*60 ){
+                return -3; //验证码过期
+            }
+            return 1;
+        }
+    }
+    return -2;
+}
+
 function bfb($num=0){
     return intval($num)>0 ? $num.' %' : $num;
 }

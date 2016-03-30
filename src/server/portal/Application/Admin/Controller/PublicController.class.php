@@ -9,12 +9,71 @@
 
 namespace Admin\Controller;
 use User\Api\UserApi;
+use User\Model\UcenterMemberModel;
 
 /**
  * 后台首页控制器
  * @author 麦当苗儿 <zuojiazi@vip.qq.com>
  */
 class PublicController extends \Think\Controller {
+
+    /**
+     * 短信+验证码登录
+     * @author 麦当苗儿 <zuojiazi@vip.qq.com>
+     */
+    public function login2($username = null, $password = null, $verify = null){
+
+        if(IS_POST){
+            //载入配置文件
+            require_cache(CUSTOM_CONF_PATH . 'User/config.php');
+
+            $map = array();
+            $map['username'] = $username;
+            $model = new UcenterMemberModel();
+            /* 获取用户数据 */
+            $user = $model->where($map)->find();
+            if(empty($user)) {
+
+                $this->error('用户不存在或被禁用');
+            }
+            //以短信验证码登录
+            $check_result = check_sms_verify($username,$verify);
+            if($check_result > 0){
+                $model->updateLogin($user['id']); //更新用户登录信息
+                /* 登录用户 */
+                $Member = D('Member');
+                if($Member->login($user['id'])){ //登录用户
+                    //TODO:跳转到登录前页面
+                    $this->success('登录成功！', U('Index/index'));
+                } else {
+                    $this->error($Member->getError());
+                }
+            }else{
+
+                switch($check_result) {
+                    case -2: $error = '短信验证码错误！'; break;
+                    case -3: $error = '短信验证码已过期！'; break;
+                    default: $error = '未知错误！'; break; // 0-接口参数错误（调试阶段使用）
+                }
+                $this->error($error);
+            }
+        } else {
+            if(is_login()){
+                $this->redirect('Index/index');
+            }else{
+                /* 读取数据库中的配置 */
+                $config	=	S('DB_CONFIG_DATA');
+                if(!$config){
+                    $config	=	D('Config')->lists();
+                    S('DB_CONFIG_DATA',$config);
+                }
+                C($config); //添加配置
+                $this->assign('meta_title','欢迎您登录');
+                $this->assign('sms_login',true);
+                $this->display('login');
+            }
+        }
+    }
 
     /**
      * 后台用户登录
@@ -59,7 +118,7 @@ class PublicController extends \Think\Controller {
                     S('DB_CONFIG_DATA',$config);
                 }
                 C($config); //添加配置
-                
+
                 $this->display();
             }
         }
@@ -79,7 +138,7 @@ class PublicController extends \Think\Controller {
     public function verify(){
         $verify = new \Think\Verify(['length'=>4]);
         $verify->entry(1);
-	exit;
+	    exit;
     }
 
     /**
@@ -87,26 +146,30 @@ class PublicController extends \Think\Controller {
      */
     public function getAuthCode(){
         $mobileNum = I('post.mobile');
-        if(!preg_match("/^1[0-9]{10}$/",$mobileNum)){
+        if(!preg_match("/^1[0-9]{10}$/",$mobileNum)) {
             $this->error('请输入正确的手机号码');
         }
-        
-        $api    = new \Admin\Service\ApiService();
-        
-        $data   = C('SMS_API');
-        $url    = array_shift($data);
+
+        if(!M('ucenter_member')->where(['username'=>$mobileNum])->getField('id')){
+            $this->error('用户不存在！');
+        }
+        $config	=	S('DB_CONFIG_DATA');
+        if(!$config){
+            $config	=	D('Config')->lists();
+            S('DB_CONFIG_DATA',$config);
+        }
+        C($config); //添加配置
+
         $code   = mt_rand(1000,9999);
         //将短信验证码、手机、创建时间保存至会话中
         session('sms-autu-info',array('code'=>$code,'mobile'=>$mobileNum,'time'=>time()));
         $data['mobileNum']  = $mobileNum;
-        //$data['content']    = urlencode(sprintf($data['content'],$code));
-        $data['content']    = sprintf($data['content'],$code);
-        $resp = $api->setApiUrl($url)->setData2($data,FALSE)->send('');
-       
-        if($resp['errcode'] == 0){ 
+        $content    = sprintf(C('SMS_CODE_TPL'),$code);
+
+        if(send_sms($mobileNum,$content)){
             $this->success('发送验证码成功！');
         }else{
-            $this->error($api->errmsg);
+            $this->error('短信验证码发送失败，请重新再试或联系管理员！');
         }
     }
 
