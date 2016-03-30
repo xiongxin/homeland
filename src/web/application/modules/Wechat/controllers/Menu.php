@@ -40,6 +40,7 @@ class MenuController extends Core\Wechat{
         }else{
             echo $this->ajax_return(['errcode'=>-1,'errmsg'=>'失败！', 'menu' => $menus]);
         }
+        die;
     }
     
 }

@@ -6,6 +6,7 @@
  */
 class MessageController extends Core\Wechat  {
 
+
     public function init(){
         parent::init();
 
@@ -26,7 +27,9 @@ class MessageController extends Core\Wechat  {
 
     public function enrollAffirmAction(){
 
-        $url = DOMAIN.'/index/sign.html?enroll_id='.$this->raw_data['enroll']['id'];
+        $enroll = $this->raw_data['body']['enroll'];
+        $url = DOMAIN.'/index/sign.html?enroll_id='.$enroll['id'];
+
 
         $file_path = '/tmp/qrcode.png';
         \QRcode::png($url, $file_path, QR_ECLEVEL_L, 9, true);
@@ -51,17 +54,17 @@ class MessageController extends Core\Wechat  {
             $link = DOMAIN.'/show/pic.html?pic='.urlencode($link);
         }
 
-        $content = '尊敬的'.$this->raw_data['enroll']['name'].'，您的报名已确认';
+        $content = '尊敬的'.$enroll['name'].'，您的报名已确认';
         $msg = [
-            'touser'=>$this->raw_data['enroll']['openid'],
+            'touser'=>$enroll['openid'],
             'template_id'=>'kjsw2T4m0TpCvuqhD9lad2vGtnOq6AnztKOR1qUnIs4',
             'url'=>$link,
             'topcolor'=>'',
             'data'=>[
                 'first'=>['value'=>$content."\n",'color'=>'#333333'],
-                'keyword1'=>['value'=>$this->raw_data['enroll']['title'],'color'=>'#333333'],
-                'keyword2'=>['value'=>$this->raw_data['enroll']['agenda_date'],'color'=>'#333333'],
-                'keyword3'=>['value'=>$this->raw_data['enroll']['address'],'color'=>'#333333'],
+                'keyword1'=>['value'=>$enroll['title'],'color'=>'#333333'],
+                'keyword2'=>['value'=>$enroll['agenda_date'],'color'=>'#333333'],
+                'keyword3'=>['value'=>$enroll['address'],'color'=>'#333333'],
                 'remark'=>['value'=>"\n感谢你的参与，点击查看报名二维码！",'color'=>'#333333'],
             ],
         ];
@@ -80,7 +83,7 @@ class MessageController extends Core\Wechat  {
 
         if(is_array($result) && isset($result['media_id'])){
             $data = [
-                'touser'=>$this->raw_data['enroll']['openid'],
+                'touser'=>$enroll['openid'],
                 'msgtype'=>'image',
                 'image'=>['media_id'=>$result['media_id']]
             ];
@@ -89,5 +92,6 @@ class MessageController extends Core\Wechat  {
 
 
         echo $this->quick_return('处理成功！');
+        die;
     }
 }
