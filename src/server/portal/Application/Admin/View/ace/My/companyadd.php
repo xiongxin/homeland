@@ -38,7 +38,7 @@
                                 <li>我们承诺为您完全保密</li>
                             </ol>
                         </div>
-                        <form action="{:U()}" method="post" class="form-horizontal">
+                        <form id="company" action="{:U()}" method="post" class="form-horizontal">
                             <div class="step-content row-fluid position-relative" id="step-container">
                                 <div class="step-pane active" id="step1">
                                     <div class="row-fluid">
@@ -455,7 +455,6 @@
                                                 <input type="text" name="marketing_area_domestic" class="width-100"
                                                        value="{$item.marketing_area_domestic}">
                                             </div>
-                                            <span class="check-tips">%</span>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-xs-12 col-sm-2 control-label no-padding-right">
@@ -465,7 +464,6 @@
                                                 <input type="text" name="marketing_area_abroad" class="width-100"
                                                        value="{$item.marketing_area_abroad}">
                                             </div>
-                                            <span class="check-tips">%</span>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-xs-12 col-sm-2 control-label no-padding-right">
@@ -705,49 +703,25 @@
                                                     {$item.need_support_question}</textarea>
                                             </div>
                                         </div>
-                                        <hr>
-                                        <p class="center">
-                                            <i class="icon-circle green"></i>
-                                            为了方便您下次登录管理您的信息，我们将您的种子会员号和手机设成您的民族家园登录帐号，请设置密码，以后方便登录使用
-                                        </p>
-
-                                        <div class="form-group">
-                                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">密码</label>
-                                            <div class="col-xs-12 col-sm-6">
-                                                <input type="password" class="width-100" name="password">
-                                            </div>
-                                            <span class="check-tips"></span>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">确认密码</label>
-                                            <div class="col-xs-12 col-sm-6">
-                                                <input type="password" class="width-100" name="repassword">
-                                            </div>
-                                            <span class="check-tips"></span>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="clearfix form-actions">
                                 <div class="col-xs-12">
-                                    <button id="sub-btn" class="btn btn-sm btn-success no-border ajax-post no-refresh" target-form="form-horizontal" type="submit">
-                                        确认保存
-                                    </button>
                                     <a href="javascript:;" class="btn btn-white" onclick="history.go(-1)">
                                         返回
                                     </a>
                                 </div>
                             </div>
                         </form>
-                        <div class="row-fluid wizard-actions" style="position: absolute; right: 20px;bottom: 50px;">
+                        <div class="row-fluid wizard-actions" style="position: absolute;right: 10px;bottom: 40px;">
                             <button class="btn btn-prev" disabled="disabled">
                                 <i class="icon-arrow-left"></i>
                                 上一步
                             </button>
 
-                            <button class="btn btn-success btn-next" data-last="Finish ">
-                                下一步
+                            <button class="btn btn-success btn-next" data-last="完成">
+                                保存并下一步
                                 <i class="icon-arrow-right icon-on-right"></i>
                             </button>
                         </div>
@@ -763,26 +737,56 @@
     <include file="Public/upload.js"/>
     <include file="Public/upload.pic"/>
     <script src="__ACE__/js/fuelux/fuelux.wizard.min.js"></script>
-    <script src="__ACE__/js/jquery.validate.min.js"></script>
-    <script src="__ACE__/js/additional-methods.min.js"></script>
     <script src="__ACE__/js/bootbox.min.js"></script>
-    <script src="__ACE__/js/jquery.maskedinput.min.js"></script>
-    <script src="__ACE__/js/select2.min.js"></script>
-
-    <!-- ace scripts -->
-
-    <script src="__ACE__/js/ace-elements.min.js"></script>
-    <script src="__ACE__/js/ace.min.js"></script>
 
     <script type="text/javascript">
         jQuery(function($) {
             var $validation = false;
             $('#fuelux-wizard').ace_wizard().on('change' , function(e, info){
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: $('#company').action,
+                    data:$('#company').serialize(),// 你的formid
+                    error: function(request) {
+                        alert("保存失败");
+                    },
+                    success: function(data) {
+                        console.log(data);
+                    }
+                });
                 if(info.step == 1 && $validation) {
                     if(!$('#validation-form').valid()) return false;
                 }
+            }).on('finished', function(e) {
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: $('#company').action,
+                    data:$('#company').serialize(),// 你的formid
+                    error: function(request) {
+                        alert("保存失败");
+                    },
+                    success: function(data) {
+                        bootbox.dialog({
+                            message: "感谢您的支持，您的信息已经保存成功！",
+                            buttons: {
+                                "success" : {
+                                    "label" : "OK",
+                                    "className" : "btn-sm btn-primary"
+                                }
+                            }
+                        });
+                    }
+                });
+            }).on('stepclick', function(e){
+                console.log(e);
             });
 
+            //企业性质
+            var enterprise_nature = $('#enterprise_nature');
+            var eid = enterprise_nature.data('id');
+            if (!!eid)enterprise_nature.val(eid);
 
             //导航高亮
             highlight_subnav('{:U('My/company')}');
