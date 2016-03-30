@@ -36,11 +36,10 @@ class MenuController extends Core\Wechat{
         }
         
         if($this->wechat->createMenu(['button' => $menus])){
-            echo json_encode(['errcode'=>0,'errmsg'=>'成功！']);
+            echo $this->quick_return('成功');
         }else{
-            echo json_encode(['errcode'=>-1,'errmsg'=>'失败！', 'menu' => $menus]);
+            echo $this->ajax_return(['errcode'=>-1,'errmsg'=>'失败！', 'menu' => $menus]);
         }
-        die;
     }
     
 }

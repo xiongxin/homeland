@@ -333,14 +333,16 @@
                         <button id="sub-btn" class="btn btn-sm btn-success no-border ajax-post no-refresh" target-form="form-horizontal" type="submit">
                             确认保存
                         </button>
-                        <a id="sub-btn" class="btn btn-sm btn-warning no-border ajax-post no-refresh" target-form="form-horizontal" type="submit">
-                            发送报名提醒
+                        <a id="affirm-enroll" class="btn btn-sm btn-primary no-border ajax-post no-refresh" target-form="form-horizontal">
+                            确认并发送通知
                         </a>
                         <a href="javascript:;" class="btn btn-white" onclick="history.go(-1)">
                             返回
-                        </a>	</div>
+                        </a>
+                    </div>
                 </div>
             </div>
+            <input id="notify" name="notify" value="" type="hidden">
         </form>
     </div>
 </block>
@@ -350,22 +352,17 @@
     <include file="Public/upload.js"/>
     <include file="Public/upload.pic"/>
     <script type="text/javascript">
-        <present name="info.id">
-        Think.setValue("allow_publish", {$info.allow_publish|default=1});
-        Think.setValue("check", {$info.check|default=0});
-        Think.setValue("model[]", {$info.model|json_encode} || [1]);
-        Think.setValue("model_sub[]", {$info.model_sub|json_encode} || [1]);
-        Think.setValue("type[]", {$info.type|json_encode} || [2]);
-        Think.setValue("display", {$info.display|default=1});
-        Think.setValue("reply", {$info.reply|default=0});
-        Think.setValue("reply_model[]", {$info.reply_model|json_encode} || [1]);
-        </present>
         $(function(){
             showTab();
             $("input[name=reply]").change(function(){
                 var $reply = $(".form-group.reply");
                 parseInt(this.value) ? $reply.show() : $reply.hide();
             }).filter(":checked").change();
+
+            $('#affirm-enroll').click(function(){
+                $('#notify').val(1);
+                $('#sub-btn').trigger('click')
+            });
         });
         //导航高亮
         highlight_subnav('{:U('Meeting/enroll')}');

@@ -14,6 +14,27 @@
 require_once(APP_PATH . '/Admin/Common/ace.php');
 require_once(APP_PATH . '/Admin/Common/qiniu.php');
 
+/**
+ * @param $mobile
+ * @param $content
+ * @return bool
+ */
+function send_sms($mobile,$content){
+
+    $data = [
+        'user'=>C('SMS_USER'),
+        'password'=>C('SMS_PASSWORD'),
+        'gatewayId'=>C('SMS_GWID'),
+        'mobileNum'=>$mobile,
+        'content'=>$content,
+    ];
+    $curl = new \Admin\Service\ApiService(C('SMS_URL'));
+
+    $resp = $curl->setData2($data,false)->send('');
+
+    return isset($resp['errcode']) && $resp['errcode'] == 0;
+}
+
 function bfb($num=0){
     return intval($num)>0 ? $num.' %' : $num;
 }
@@ -169,7 +190,10 @@ function array_value_sort_to_str(Array $array=array()){
  * @return array
  */
 function get_app(){
-    $app = C('APPINFO');
+    $app = [
+        'appId'=>C('API_APPID'),
+        'appKey'=>C('API_APPKEY'),
+    ];
 
     $app['nonce'] = mt_rand(100000, 999999);
     $app['timeStamp'] = time();

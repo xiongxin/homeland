@@ -181,21 +181,48 @@ class MeetingController extends AdminController {
 
     //编辑注册信息
     public function companyEdit($eid) {
-        if (empty($eid)) $this->error('报名信息不存在!');
+        if (empty($eid)) $this->error('参数错误，报名ID不能为空!');
         $prefix = C('DB_PREFIX');
         if (IS_POST) {
             $data = I('post.');
             $id = $data['id'];
             unset($data['id']);
             $data['eid'] = $eid;
-            $data['update_time'] = date("Y-m-d H:m:s", time());
+            $data['update_time'] = time_format();
             if (strlen($data['birthday']) == 0) unset($data['birthday']);
             if (strlen($data['founding_time']) == 0) unset($data['founding_time']);
-            if( M()->table($prefix.'company_reg')->where(array('id'=>$id))
-                    ->save($data) === false){
-                $this->error('修改失败！');
+
+//            M()->startTrans();
+
+            if(!empty($data['notify'])){
+
+                $item = M()->table($prefix.'enroll e')
+                    ->join($prefix.'wx_user b on e.wx_id = b.wx_id','LEFT')
+                    ->join($prefix.'meeting c on e.meeting_id = c.id')
+                    ->field('e.id,e.name,e.mobile,b.openid,b.subscribe,c.title,c.agenda_date,c.address')
+                    ->find();
+
+                if(empty($item)){
+                    $this->error('报名信息不存在！');
+                }
+
+                M('enroll')->where(['id'=>$eid])->save(['is_affirm'=>'YES']);
+                //发送短信通知
+                $content = sprintf(C('SMS_TPL1'),$item['name'],$item['title'],$item['agenda_date'],$item['address']);
+                send_sms($item['mobile'],$content);
+
+                if(!empty($item['openid']) && intval($item['subscribe']) > 0){
+
+                    $api = new ApiService();
+                    $resp = $api->setData(['enroll'=>$item])
+                                ->send('/wechat/message/enrollAffirm');
+                }
             }
-            $this->success('保存成功！',U('Meeting/enroll'));
+            $model = M('company_reg');
+            if($model->create($data) && $model->where(array('id'=>$id))->save()){
+                $this->success('保存成功！',U('Meeting/enroll'));
+            }
+            $this->error('修改失败！');
         }
 
         $enroll = M()->table($prefix.'enroll e')
