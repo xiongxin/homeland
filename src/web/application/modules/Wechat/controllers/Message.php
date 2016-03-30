@@ -49,9 +49,11 @@ class MessageController extends Core\Wechat  {
         ];
         $result = $qiniu->upload([],$file);
         $link = '';
+        $remark_last = '';
         if(is_array($result) && isset($result['key'])){
             $link = 'http://'.$this->config->qiniu->picture->domain.'/'.$result['key'];
             $link = DOMAIN.'/show/pic.html?pic='.urlencode($link);
+            $remark_last = '，点击详情报名二维码';
         }
 
         $content = '尊敬的'.$enroll['name'].'，您的报名已确认';
@@ -65,7 +67,7 @@ class MessageController extends Core\Wechat  {
                 'keyword1'=>['value'=>$enroll['title'],'color'=>'#333333'],
                 'keyword2'=>['value'=>$enroll['agenda_date'],'color'=>'#333333'],
                 'keyword3'=>['value'=>$enroll['address'],'color'=>'#333333'],
-                'remark'=>['value'=>"\n感谢你的参与，点击查看报名二维码！",'color'=>'#333333'],
+                'remark'=>['value'=>"\n感谢你的参与{$remark_last}！",'color'=>'#333333'],
             ],
         ];
 
