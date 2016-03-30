@@ -55,7 +55,7 @@ class WxUserModel extends Model{
         return $this->get(
             [
                 '[>]t_ucenter_member(b)'=>['wx_id'=>'wx_id','AND'=>['b.status'=>2]],
-                '[>]t_auth_group_access(c)'=>['b.id'=>'c.uid','AND'=>['c.group_id'=>1]],
+                '[>]t_auth_group_access(c)'=>['b.id'=>'uid','AND'=>['c.group_id'=>1]],
             ],
             $field,
             ['AND'=>['openid'=>$openid]]

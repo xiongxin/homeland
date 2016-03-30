@@ -16,7 +16,7 @@ class IndexController extends Mall {
     }
 
     public function signAction(){
-        if(!is_not_wx()){
+        if(is_not_wx()){
             $this->error('本功能仅允许在微信内使用！');
         }
 
