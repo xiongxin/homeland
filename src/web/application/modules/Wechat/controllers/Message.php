@@ -11,7 +11,16 @@ class MessageController extends Core\Wechat  {
         parent::init();
 
         $this->raw_data = json_to_array(file_get_contents('php://input'));
-//        $this->raw_data['enroll'] = [
+//        if(!isset($this->raw_data['body']) || empty($this->raw_data['body'])){
+//            throw new \Exception('{"errcode":10000,"errmsg":"body节点不能为空"}',10000);
+//        }
+    }
+
+    public function enrollAffirmAction(){
+
+        $enroll = $this->raw_data['body']['enroll'];
+
+//        $enroll = [
 //            'id'=>12,
 //            'name'=>'王xx',
 //            'openid'=>'oCmwKv9ErXuGDmJYWGV2KSxEYj6A',
@@ -19,15 +28,6 @@ class MessageController extends Core\Wechat  {
 //            'agenda_date'=>'2016-03-30 15:00:00',
 //            'address'=>'成都市锦江区东大街芷泉段6号时代1号3110',
 //        ];
-//
-        if(!isset($this->raw_data['body']) || empty($this->raw_data['body'])){
-            throw new \Exception('{"errcode":10000,"errmsg":"body节点不能为空"}',10000);
-        }
-    }
-
-    public function enrollAffirmAction(){
-
-        $enroll = $this->raw_data['body']['enroll'];
         $url = DOMAIN.'/index/sign.html?enroll_id='.$enroll['id'];
 
 
@@ -79,7 +79,7 @@ class MessageController extends Core\Wechat  {
 //            $this->ajax_return($result);
 //        }
 
-        $result = $this->wechat->uploadMedia(['media'=>'@'.$file_path],'image');
+        $result = $this->wechat->uploadMedia(['media'=>new CURLFile($file_path)],'image');
 
         if(is_array($result) && isset($result['media_id'])){
             $data = [
