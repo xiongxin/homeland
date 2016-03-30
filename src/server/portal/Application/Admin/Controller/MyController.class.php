@@ -52,7 +52,30 @@ class MyController extends AdminController {
     }
     
     public function companyadd() {
-        
+        if (IS_POST) {
+            $prefix = C('DB_PREFIX');
+            $company = M()->table($prefix.'company');
+
+            $data = I('post.');
+
+            //处理没有填或是 0，'' ""
+            foreach ($data as $key => $value) {
+                if (empty($value)) unset($data[$key]);
+            }
+
+            //$data['registered_capital'] = (intval($data['registered_capital']));
+            $data['insert_time'] = time_format();
+            $data['update_time'] = time_format();
+            $data['uid'] = session('user_auth.uid');
+
+            if($company->create($data)) {
+                if($company->add() > 0) {
+                    $this->success('添加成功');
+                } else {
+                    $this->error('添加失败');
+                }
+            }
+        }
         
         $this->meta_title = '我的注册信息';
         $this->display();
@@ -60,7 +83,32 @@ class MyController extends AdminController {
 
 
     public function companyedit() {
-        
+        $prefix = C('DB_PREFIX');
+        $uid = session('user_auth.uid');
+        $company = M()->table($prefix.'company');
+        if (IS_POST) {
+            $data = I('post.');
+            //处理没有填或是 0，'' ""
+            foreach ($data as $key => $value) {
+                if (empty($value)) unset($data[$key]);
+            }
+            $data['update_time'] = time_format();
+
+            if($company->create($data)) {
+                if($company->save() !== false) {
+                    $this->success('添加成功');
+                } else {
+                    $this->error('添加失败');
+                }
+            }
+        }
+
+        $data = $company->where(['uid'=>$uid])->find();
+        if (empty($data)) $this->error('参数错误!');
+
+        $this->assign('item', $data);
+        $this->meta_title = '我的注册信息';
+        $this->display('companyadd');
     }
 
 
@@ -73,10 +121,33 @@ class MyController extends AdminController {
         $map['status'] = 'OK#';
         $list   = $this->lists($courses, $map,'','');
 
-        dump($list);
         $this->assign('_list', $list);
         $this->meta_title = '我的课程记录';
         $this->display();
+    }
+
+    public function courseShow() {
+        $id = I('id');
+        if(empty($id)) $this->error('参数错误');
+
+        $this->meta_title = '课程详细';
+        $this->display();
+    }
+
+    public function courseEdit(){
+        $id = I('id');
+        if(empty($id)) $this->error('参数错误');
+
+        //$this->assign('item', $data);
+        $this->meta_title = '编辑课程';
+        $this->display();
+    }
+
+    public function courseAdd(){
+
+        
+        $this->meta_title = '编辑课程';
+        $this->display('edit');
     }
 
 }
