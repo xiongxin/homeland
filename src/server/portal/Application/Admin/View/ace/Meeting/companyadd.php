@@ -469,7 +469,7 @@
             //企业性质
             var enterprise_nature = $('#enterprise_nature');
             var eid = enterprise_nature.data('id');
-            enterprise_nature.val(eid);
+            if (!!eid)enterprise_nature.val(eid);
 
             //管理经验
             var manage_experience = $('#manage_experience');

@@ -52,7 +52,29 @@ class MyController extends AdminController {
     }
     
     public function companyadd() {
-        
+        if (IS_POST) {
+            $prefix = C('DB_PREFIX');
+            $company = M()->table($prefix.'company');
+
+            $data = I('post.');
+
+            //处理没有填或是 0，'' ""
+            foreach ($data as $key => $value) {
+                if (empty($value)) unset($data[$key]);
+            }
+
+            $data['insert_time'] = time_format();
+            $data['update_time'] = time_format();
+            $data['uid'] = session('user_auth.uid');
+
+            if($company->create($data)) {
+                if($company->add() > 0) {
+                    $this->success('添加成功');
+                } else {
+                    $this->error('添加失败');
+                }
+            }
+        }
         
         $this->meta_title = '我的注册信息';
         $this->display();
@@ -60,7 +82,31 @@ class MyController extends AdminController {
 
 
     public function companyedit() {
-        
+        $prefix = C('DB_PREFIX');
+        $uid = session('user_auth.uid');
+        $company = M()->table($prefix.'company');
+        if (IS_POST) {
+            $data = I('post.');
+            //处理没有填或是 0，'' ""
+            foreach ($data as $key => $value) {
+                if (empty($value)) unset($data[$key]);
+            }
+            $data['update_time'] = time_format();
+
+            if($company->create($data) && $company->where(['uid'=>$uid])->save() !== false) {
+                $this->success('保存成功');
+            } else {
+                $this->error('保存失败');
+            }
+
+        }
+
+        $data = $company->where(['uid'=>$uid])->find();
+        if (empty($data)) $this->error('参数错误!');
+
+        $this->assign('item', $data);
+        $this->meta_title = '我的注册信息';
+        $this->display('companyadd');
     }
 
 
@@ -73,10 +119,115 @@ class MyController extends AdminController {
         $map['status'] = 'OK#';
         $list   = $this->lists($courses, $map,'','');
 
-        dump($list);
         $this->assign('_list', $list);
         $this->meta_title = '我的课程记录';
         $this->display();
+    }
+
+    public function courseShow() {
+        $id = I('id');
+        $prefix = C('DB_PREFIX');
+
+        if (IS_POST) {
+            $data = I('post.');
+            $data['insert_time'] = time_format();
+            $data['uid']= session('user_auth.uid');
+            $comment = M()->table($prefix.'user_courseware_comment');
+            if ($comment->create($data) && $comment->add()) {
+                $this->success('评论成功', U('courseshow?id='.$data['cid']));
+            } else {
+                $this->error('评论失败 ');
+            }
+        }
+
+        if(empty($id)) $this->error('参数错误');
+        $course = M()->table($prefix.'user_courseware uc');
+        $map['uc.id'] = $id;
+        $map['uc.status'] = 'OK#';
+        $data = $course->join($prefix.'user_courseware_att uca on uc.id=uca.cid','left')
+            ->field(['uc.*, uca.att_url, uca.cid'])
+            ->where($map)->find();
+
+        $comments = M()->table($prefix.'user_courseware_comment ucc')
+            ->join($prefix.'ucenter_member um on ucc.uid=um.id');
+        $list   = $this->lists($comments, ['ucc.cid'=>$id],'','ucc.*, um.username');
+
+        $this->assign('_list', $list);
+        $this->assign('item', $data);
+        $this->meta_title = '编辑课程';
+        $this->display();
+    }
+
+    public function courseEdit(){
+        $id = I('id');
+        if(empty($id)) $this->error('参数错误');
+        $prefix = C('DB_PREFIX');
+        $course = M()->table($prefix.'user_courseware uc');
+        if (IS_POST) {
+            $data = I('post.');
+            $data['update_time'] = time_format();
+            if ($course->create($data)
+                 && $course->where(['id'=>$data['id']])->save() !== false) {
+                $course_att = M()->table($prefix.'user_courseware_att');
+                if ($course_att->create($data)
+                    && $course_att->where(['cid'=>$data['cid']])->save() !==false) {
+                    $this->success('修改成功');
+                } else {
+                    $this->error('修改失败');
+                }
+            } else {
+                $this->error('修改失败');
+            }
+        }
+        $map['uc.id'] = $id;
+        $map['uc.status'] = 'OK#';
+        $data = $course->join($prefix.'user_courseware_att uca on uc.id=uca.cid','left')
+            ->field(['uc.*, uca.att_url, uca.cid'])
+            ->where($map)->find();
+        $this->assign('item', $data);
+        $this->meta_title = '编辑课程';
+        $this->display('courseAdd');
+    }
+
+    public function courseAdd(){
+        if (IS_POST) {
+            $prefix = C('DB_PREFIX');
+            $courseware = M()->table($prefix.'user_courseware');
+            $data = I('post.');
+            $data['insert_time'] = time_format();
+            $data['update_time'] = time_format();
+            $data['uid'] = session('user_auth.uid');
+            if($courseware->create($data)) {
+                if(($cid = $courseware->add()) > 0) {
+                    $courseware_att = M()->table($prefix.'user_courseware_att');
+                    $data['cid'] = $cid;
+                    if ($courseware_att->create($data) && $courseware_att->add() > 0) {
+                        $this->success('创建成功', 'courses');
+                    }
+                } else {
+                    $this->error('添加失败');
+                }
+            }
+        }
+
+        $this->meta_title = '添加课程';
+        $this->display();
+    }
+
+
+    public function courseDelete(){
+        //如存在id字段，则加入该条件
+        $id    = array_unique((array)I('id',0));
+        $id    = is_array($id) ? implode(',',$id) : $id;
+        if(empty($id))$this->error('参数错误！');
+        $prefix = C('DB_PREFIX');
+        $model = M()->table($prefix.'user_courseware');
+        $result = $model->where('id in ('. $id . ')')->save(['status'=>'DEL']);
+        if($result !== false){
+            $this->success('删除成功！');
+        }else{
+            $this->error('删除失败！');
+        }
     }
 
 }
