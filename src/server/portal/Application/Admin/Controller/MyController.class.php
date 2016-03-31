@@ -24,14 +24,14 @@ class MyController extends AdminController {
             $data['update_time'] = time_format();
             if (strlen($data['birthday']) == 0) unset($data['birthday']);
             if (strlen($data['founding_time']) == 0) unset($data['founding_time']);
-            if( $company->create($data) && $company->where(array('uid'=>834))
+            if( $company->create($data) && $company->where(array('uid'=>$uid))
                     ->save($data) !== false){
                 $this->success('保存成功！');
             }
             $this->error('修改失败！');
         }
 
-        $item = $company->where(['uid'=>834])->find();
+        $item = $company->where(['uid'=>$uid])->find();
         if (empty($company)){}
         $this->assign('item', $item);
         $this->meta_title = '我的注册信息';

@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    <form action="" class="form-horizontal">
+    <form action="<?=U('')?>" class="form-horizontal">
         <div class="form-group">
             <label class="col-xs-12 col-sm-2 control-label no-padding-right">发表评论</label>
             <div class="col-xs-12 col-sm-7">
