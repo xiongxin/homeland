@@ -36,7 +36,7 @@ class Wechat extends Controller_Abstract{
         $result = $this->wechat->sendTemplateMessage($this->raw_data['body']);
         if(empty($result)){
 
-            $this->quick_return($this->wechat->errCode,$this->wechat->errMsg);
+            $this->quick_return($this->wechat->errMsg,$this->wechat->errCode);
         }else{
             $this->ajax_return($result);
         }
@@ -51,13 +51,13 @@ class Wechat extends Controller_Abstract{
         $result = $this->wechat->sendCustomMessage($this->raw_data['body']);
         if(empty($result)){
 
-            $this->quick_return($this->wechat->errCode,$this->wechat->errMsg);
+            $this->quick_return($this->wechat->errMsg,$this->wechat->errCode);
         }else{
             $this->ajax_return($result);
         }
     }
 
-    protected function quick_return($code=0,$msg='',$data=''){
+    protected function quick_return($msg='',$code=0,$data=''){
 
         return $this->ajax_return(['errcode'=>$code,'errmsg'=>$msg,'data'=>$data]);
     }

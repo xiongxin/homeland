@@ -18,7 +18,8 @@ class ApiService{
     public $error;
     
     public function __construct($api_url=''){
-        $this->api_url = $api_url;
+
+        $this->api_url = empty($api_url) ? C('API_WECHAT') : $api_url;
     }
     
     public function setApiUrl($url){

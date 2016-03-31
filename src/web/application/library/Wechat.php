@@ -1157,7 +1157,7 @@ class Wechat
 	private function http_post($url,$param,$post_file=false,$retry=3){
 	    
 	    $this->log('请求URL:'.$url);
-	    $this->log('发送数据:'.$param);
+	    $this->log('发送数据:'.var_export($param,true));
 	    
 		$oCurl = curl_init();
 		if(stripos($url,"https://")!==FALSE){
