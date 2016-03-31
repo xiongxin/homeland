@@ -11,7 +11,7 @@ use Think\Model;
 /**
  * 会员模型
  */
-class UcenterMemberModel extends Model{
+class  UcenterMemberModel extends Model{
 	/**
 	 * 数据表前缀
 	 * @var string
@@ -215,7 +215,7 @@ class UcenterMemberModel extends Model{
 	 * 更新用户登录信息
 	 * @param  integer $uid 用户ID
 	 */
-	protected function updateLogin($uid){
+	public function updateLogin($uid){
 		$data = array(
 			'id'              => $uid,
 			'last_login_time' => NOW_TIME,
@@ -233,7 +233,7 @@ class UcenterMemberModel extends Model{
 	 * @author huajie <banhuajie@163.com>
 	 */
 	public function updateUserFields($uid, $password, $data){
-		if(empty($uid) || empty($password) || empty($data)){
+		if(empty($uid) || empty($data)){
 			$this->error = '参数错误！';
 			return false;
 		}

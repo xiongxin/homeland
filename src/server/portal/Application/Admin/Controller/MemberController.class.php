@@ -94,7 +94,9 @@ class MemberController extends AdminController {
         $map = [];
 
         if (!empty($search)) {
-            if (intval($meeting_id) <= 0) $this->error('搜索条件不对，请先选择场次，再输入要搜索的名称或手机号码');
+            if (intval($meeting_id) <= 0) {
+                $this->error('搜索条件不对，请先选择场次，再输入要搜索的名称或手机号码');
+            }
             if(is_numeric($search)){
                 $map['cr.telephone']=['like', '%' . intval($search) . '%'];
             }elseif(!empty($search)){
@@ -103,10 +105,8 @@ class MemberController extends AdminController {
             $map['e.meeting_id'] = intval($meeting_id);
             $model = M()->table($prefix.'company_reg cr')
                 ->join($prefix.'enroll e on e.id=cr.eid','left');
+
             $data = $model->field(array('cr.*'))->where($map)->find();
-            if (empty($data)) {
-                $this->error('该用户不存在!');
-            }
         }
 
         $meetings = M()->table($prefix.'meeting')->where(['status'=>1])->select();

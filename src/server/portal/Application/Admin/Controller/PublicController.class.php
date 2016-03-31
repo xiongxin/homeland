@@ -27,18 +27,24 @@ class PublicController extends \Think\Controller {
             //载入配置文件
             require_cache(CUSTOM_CONF_PATH . 'User/config.php');
 
-            $map = array();
-            $map['username'] = $username;
-            $model = new UcenterMemberModel();
-            /* 获取用户数据 */
-            $user = $model->where($map)->find();
-            if(empty($user)) {
-
-                $this->error('用户不存在或被禁用');
-            }
             //以短信验证码登录
             $check_result = check_sms_verify($username,$verify);
             if($check_result > 0){
+
+                $map = array();
+                $map['username'] = $username;
+                $model = new UcenterMemberModel();
+                /* 获取用户数据 */
+                $user = $model->where($map)->find();
+                if(empty($user)) {
+
+                    $this->error('用户不存在或被禁用');
+                }
+                //如果用户未设置密码，会话保存
+                if(empty($user['password'])){
+                    session('user-hasno-pwd',true);
+                }
+
                 $model->updateLogin($user['id']); //更新用户登录信息
                 /* 登录用户 */
                 $Member = D('Member');
