@@ -38,21 +38,20 @@
                 <notempty name="_list">
                     <volist name="_list" id="vo">
                         <tr>
-
-                            <td><a href="{:U('uedit',array('id'=>$vo['id']))}">{$vo.chairman_name}</a></td>
+                            <td><a href="{:U('companyRegShow',array('id'=>$vo['id']))}">{$vo.chairman_name}</a></td>
                             <td>{$vo.mobile}</td>
                             <td>{$vo.position}</td>
                             <td>{$vo.company_name}</td>
                             <td><span>{$vo.insert_time}</span></td>
                             <td><span>{$vo.title}</span></td>
                             <td>
-                                <span>{$vo.c_check_status|get_check_status}</span>
+                                <span>{$vo.check_status|get_check_status}</span>
                             </td>
                             <td>
-                                <span>{$vo.c_check_user}</span>
+                                <span>{$vo.check_user}</span>
                             </td>
                             <td>
-                                <a title="详情" href="{:U('companyShow?id='.$vo['c_id'])}" class="">
+                                <a title="详情" href="{:U('companyRegShow?id='.$vo['id'])}" class="">
                                     详情
                                 </a>
                             </td>

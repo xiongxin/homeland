@@ -184,7 +184,6 @@ class MemberController extends AdminController {
             } else {
                 $this->error('保存失败');
             }
-
         }
 
         $data = $company->where(['id'=>$id])->find();
@@ -197,24 +196,49 @@ class MemberController extends AdminController {
 
     //会员注册审核首页
     public function companyRegIndex() {
-        $nickname       =   I('nickname');
-        $map['m.status']  =   array('egt',0);
-        if(is_numeric($nickname)){
-            $map['uid|nickname']=   array(intval($nickname),array('like','%'.$nickname.'%'),'_multi'=>true);
-        }elseif(!empty($nickname)){
-            $map['m.nickname']    =   array('like', '%'.(string)$nickname.'%');
+        $search       =   I('search');
+        //$map['um.status']  =   array('egt',0);
+        $map = [];
+        if(is_numeric($search)){
+            $map['cr.mobile']=['like', '%' . intval($search) . '%'];
+        }elseif(!empty($search)){
+            $map['cr.chairman_name|cr.chairman_nickname']    =   array('like', '%'.(string)$search.'%');
         }
 
-        $map['aga.group_id'] = ['in', [5,6]];
+        $map['cr.check_status'] = ['neq', ''];
         $prefix = C('DB_PREFIX');
-        $model = M()->table($prefix.'ucenter_member um')
-            ->join($prefix.'member m on m.uid = um.id','left')
-            ->join($prefix.'auth_group_access aga on aga.uid = um.id', 'left')
-            ->join($prefix.'company_reg cr on cr.uid = um.id');
-        $list   = $this->lists($model, $map,'','m.*,um.username,um.id,aga.group_id,cr.eid,
-                        cr.position ,cr.company_name, cr.chairman_name, cr.insert_time as reg_time');
+        $model = M()->table($prefix.'company_reg cr')
+            ->join($prefix.'auth_group_access aga on aga.uid=cr.uid', 'left')
+            ->join($prefix.'auth_group ag on ag.id=aga.group_id', 'left');
+        $list   = $this->lists($model, $map,'','cr.*, aga.group_id, ag.title');
         $this->assign('_list', $list);
         $this->meta_title = '用户信息';
+        $this->display();
+    }
+
+    public function companyRegShow() {
+        $id = I('id');
+        if (empty($id)) $this->error('参数错误!');
+        $prefix = C('DB_PREFIX');
+        $company = M()->table($prefix.'company_reg');
+        if (IS_POST) {
+            $data = I('post.');
+            //处理没有填或是 0，'' ""
+            foreach ($data as $key => $value) {
+                if (empty($value)) unset($data[$key]);
+            }
+            $data['update_time'] = time_format();
+            if($company->create($data)
+                && $company->where(['id'=>$id])->save() !== false) {
+                $this->success('保存成功');
+            } else {
+                $this->error('保存失败');
+            }
+        }
+        $data = $company->where(['id'=>$id])->find();
+        if (empty($data)) $this->error('没有找到该数据!');
+        $this->assign('item', $data);
+        $this->meta_title = '注册信息详情';
         $this->display();
     }
 }
