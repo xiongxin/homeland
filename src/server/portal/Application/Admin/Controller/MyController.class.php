@@ -14,14 +14,13 @@ use User\Api\UserApi;
 class MyController extends AdminController {
     //我的注册信息
     public function reg() {
-        //TODO:需要修改
+        //TODO:需要修改834为$uid
         $prefix = C('DB_PREFIX');
 
         $uid = session('user_auth.uid');
         $company = M()->table($prefix.'company_reg');
         if (IS_POST) {
             $data = I('post.');
-            unset($data['id']);
             $data['update_time'] = time_format();
             if (strlen($data['birthday']) == 0) unset($data['birthday']);
             if (strlen($data['founding_time']) == 0) unset($data['founding_time']);

@@ -6,8 +6,8 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="search-form">
-                        <label>会员名称或手机号码
-                            <input type="text" class="search-input" name="search" value="{:I('search')}" placeholder="会员名称或手机号码">
+                        <label>用户昵称或者手机号码
+                            <input type="text" class="search-input" name="search" value="{:I('search')}" placeholder="请输入用户昵称或者手机号码">
                         </label>
                         <label>
                             <button class="btn btn-sm btn-primary" type="button" id="search" url="{:U('User/userReturn')}">
@@ -22,18 +22,15 @@
             <table class="table table-striped table-bordered table-hover dataTable">
                 <thead>
                 <tr>
-                    <th class="row-selected center">
-                        <label>
-                            <input class="ace check-all" type="checkbox"/>
-                            <span class="lbl"></span>
-                        </label>
-                    </th>
+                    
                     <th class="">姓名</th>
-                    <th class="">手机号码</th>
-                    <th class="">公司名称</th>
-                    <th class="">PPT名称</th>
-                    <th class="">上传时间</th>
-                    <th class="">下载</th>
+                    <th class="">手机号</th>
+                    <th class="">职位</th>
+                    <th class="">公司</th>
+                    <th class="">签约时间</th>
+                    <th class="">签约类型</th>
+                    <th class="">建档审核状态</th>
+                    <th class="">审核人</th>
                     <th class="">操作</th>
                 </tr>
                 </thead>
@@ -41,24 +38,22 @@
                 <notempty name="_list">
                     <volist name="_list" id="vo">
                         <tr>
-                            <td class="center">
-                                <label>
-                                    <input class="ace ids" type="checkbox" name="id[]" value="{$vo.id}" />
-                                    <span class="lbl"></span>
-                                </label>
-                            </td>
-                            <td>{$vo.chairman_name}</td>
+
+                            <td><a href="{:U('uedit',array('id'=>$vo['id']))}">{$vo.chairman_name}</a></td>
                             <td>{$vo.mobile}</td>
+                            <td>{$vo.position}</td>
                             <td>{$vo.company_name}</td>
-                            <td>{$vo.title}</td>
-                            <td>{$vo.insert_time}</td>
-                            <td><a href="<?= get_qiniu_file_durl($vo['att_url']) ?>">下载</a></td>
+                            <td><span>{$vo.insert_time}</span></td>
+                            <td><span>{$vo.title}</span></td>
                             <td>
-                                <a title="点评" href="{:U('My/courseShow?id='.$vo['id'])}" class="">
-                                        点评
-                                </a>
-                                <a title="删除报名信息" href="{:U('My/courseDelete?id='.$vo['id'])}" class="confirm ajax-get">
-                                    删除
+                                <span>{$vo.c_check_status|get_check_status}</span>
+                            </td>
+                            <td>
+                                <span>{$vo.c_check_user}</span>
+                            </td>
+                            <td>
+                                <a title="详情" href="{:U('companyShow?id='.$vo['c_id'])}" class="">
+                                    详情
                                 </a>
                             </td>
                         </tr>
@@ -69,18 +64,6 @@
                 </tbody>
             </table>
 
-            <div class="row">
-                <div class="col-sm-4">
-                    <label>
-                        <button type="button" class="btn btn-white ajax-post" target-form="ids" url="{:U('enrollDelete')}">
-                            删除
-                        </button>
-                    </label>
-                </div>
-                <div class="col-sm-8">
-                    <include file="Public/page"/>
-                </div>
-            </div>
         </div>
     </div>
 </block>
@@ -110,6 +93,6 @@
             }
         });
         //导航高亮
-        highlight_subnav('{:U('Meeting/enroll')}');
+        //highlight_subnav('{:U('User/userReturn')}');
     </script>
 </block>

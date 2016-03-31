@@ -49,8 +49,8 @@
                                 </label>
                             </td>
                             <td><a href="{:U('uedit',array('id'=>$vo['id']))}">{$vo.chairman_name}</a></td>
-                            <td>{$vo.telephone}</td>
-                            <td>董事长</td>
+                            <td>{$vo.mobile}</td>
+                            <td>{$vo.position}</td>
                             <td>{$vo.company_name}</td>
                             <td><span>{$vo.insert_time}</span></td>
                             <td><span>{$vo.title}</span></td>

@@ -326,8 +326,8 @@
 
 
                 <div class="clearfix form-actions">
-                    <if condition="!empty($item)">
-                        <input type="hidden" name="id" value="{$item.id}">
+                    <if condition="empty($item['check_status'])">
+                        <input type="hidden" name="check_status" value="WAT" />
                     </if>
                     <div class="col-xs-12">
                         <button id="sub-btn" class="btn btn-sm btn-success no-border ajax-post no-refresh" target-form="form-horizontal" type="submit">

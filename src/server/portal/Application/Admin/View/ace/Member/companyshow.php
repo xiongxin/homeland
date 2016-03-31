@@ -5,7 +5,7 @@
         <div class="span12">
             <div class="widget-box">
                 <div class="widget-header widget-header-blue widget-header-flat">
-                    <h4 class="lighter">完善档案</h4>
+                    <h4 class="lighter">审核档案</h4>
                 </div>
                 <div class="widget-body" style="position: relative;">
                     <div class="widget-main">
@@ -48,7 +48,7 @@
                                             </label>
                                             <div class="col-xs-12 col-sm-6">
                                                 <input type="text" class="width-100" name="company_name"
-                                                    value="{$item.company_name}">
+                                                       value="{$item.company_name}">
                                             </div>
                                             <span class="check-tips"></span>
                                         </div>
@@ -334,7 +334,7 @@
 
                                     <div class="form-group">
                                         <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                                           目前企业阶段
+                                            目前企业阶段
                                         </label>
                                         <div class="col-xs-12 col-sm-6">
                                             <label>
@@ -376,13 +376,13 @@
                                         <div class="col-xs-12 col-sm-2">
                                             <input type="text" name="turnover_year1" class="width-100"
                                                    value="{$item.turnover_year1}"
-                                            placeholder="营业额">
+                                                   placeholder="营业额">
                                         </div>
                                         <span class="check-tips my-tips">净利润：</span>
                                         <div class="col-xs-12 col-sm-2">
                                             <input type="text" name="net_margin_year1" class="width-100"
                                                    value="{$item.net_margin_year1}"
-                                            placeholder="净利润" />
+                                                   placeholder="净利润" />
                                         </div>
                                     </div>
 
@@ -701,9 +701,45 @@
                                                     {$item.need_support_question}</textarea>
                                             </div>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                                                审核：
+                                            </label>
+                                            <div class="col-xs-12 col-sm-6">
+                                                <label>
+                                                    <input type="radio" <?= $item['check_status']=='WAT' ? 'checked' : '' ?>
+                                                           class="ace" name="check_status" value="WAT">
+                                                    <span class="lbl">待审核&nbsp;</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" <?= $item['check_status']=='OK#' ? 'checked' : '' ?>
+                                                           class="ace" name="check_status" value="OK#">
+                                                    <span class="lbl">通过审核&nbsp;</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" <?= $item['check_status']=='RJT' ? 'checked' : '' ?>
+                                                           class="ace" name="check_status" value="RJT">
+                                                    <span class="lbl">审核不通过&nbsp;</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                                                审核人
+                                            </label>
+                                            <div class="col-xs-12 col-sm-2">
+                                                <input type="text" name="check_user" class="width-100"
+                                                       value="{$item.check_user}"
+                                                       placeholder="审核人姓名">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <input type="hidden" name="id" value="{$item.id}" >
                             <div class="clearfix form-actions">
                                 <div class="col-xs-12">
                                     <a href="javascript:;" class="btn btn-white" onclick="history.go(-1)">
@@ -711,6 +747,8 @@
                                     </a>
                                 </div>
                             </div>
+
+
                         </form>
                         <div class="row-fluid wizard-actions" style="position: absolute;right: 10px;bottom: 40px;">
                             <button class="btn btn-prev" disabled="disabled">
@@ -758,10 +796,6 @@
                 }
             }).on('finished', function(e) {
                 var form = $('#company');
-                //客户完成资料之后提交审核
-                <if condition="empty($item['check_status'])">
-                    form.append('<input type="hidden" name="check_status" value="WAT" />');
-                </if>
                 $.ajax({
                     cache: true,
                     type: "POST",
@@ -772,7 +806,7 @@
                     },
                     success: function(data) {
                         bootbox.dialog({
-                            message: "感谢您的支持，您的信息已经保存成功！",
+                            message: "完成审核！",
                             buttons: {
                                 "success" : {
                                     "label" : "OK",
@@ -792,7 +826,7 @@
             if (!!eid)enterprise_nature.val(eid);
 
             //导航高亮
-            highlight_subnav('{:U('My/company')}');
+            highlight_subnav('{:U('member/companyindex')}');
         })
     </script>
 
