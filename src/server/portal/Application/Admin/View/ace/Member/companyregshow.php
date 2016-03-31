@@ -19,14 +19,14 @@
                 </a>
             </li>
         </ul>
-        <form action="<?= U('reg') ?>" method="post" class="form-horizontal">
+        <form action="<?= U('') ?>" method="post" class="form-horizontal">
             <div class="tab-content">
                 <div id="person" class="tab-pane in active">
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-2 control-label no-padding-right">董事长名称</label>
                         <div class="col-xs-12 col-sm-6">
                             <input type="text" class="width-100" name="chairman_name"
-                                   value="<?= empty($item['chairman_name']) ? $enroll['name'] : $item['chairman_name']?>"/>
+                                   value="{$item.chairman_name}"/>
                         </div>
                         <span class="check-tips"></span>
                     </div>
@@ -322,6 +322,40 @@
                             </div>
                         </div>
                     </div>
+                    <hr>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                            审核：
+                        </label>
+                        <div class="col-xs-12 col-sm-6">
+                            <label>
+                                <input type="radio" <?= $item['check_status']=='WAT' ? 'checked' : '' ?>
+                                       class="ace" name="check_status" value="WAT">
+                                <span class="lbl">待审核&nbsp;</span>
+                            </label>
+                            <label>
+                                <input type="radio" <?= $item['check_status']=='OK#' ? 'checked' : '' ?>
+                                       class="ace" name="check_status" value="OK#">
+                                <span class="lbl">通过审核&nbsp;</span>
+                            </label>
+                            <label>
+                                <input type="radio" <?= $item['check_status']=='RJT' ? 'checked' : '' ?>
+                                       class="ace" name="check_status" value="RJT">
+                                <span class="lbl">审核不通过&nbsp;</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                            审核人
+                        </label>
+                        <div class="col-xs-12 col-sm-2">
+                            <input type="text" name="check_user" class="width-100"
+                                   value="{$item.check_user}"
+                                   placeholder="审核人姓名">
+                        </div>
+                    </div>
                 </div>
 
 
@@ -329,6 +363,7 @@
                     <if condition="empty($item['check_status'])">
                         <input type="hidden" name="check_status" value="WAT" />
                     </if>
+                    <input type="hidden" name="id" value="{$item.id}" />
                     <div class="col-xs-12">
                         <button id="sub-btn" class="btn btn-sm btn-success no-border ajax-post no-refresh" target-form="form-horizontal" type="submit">
                             确认保存

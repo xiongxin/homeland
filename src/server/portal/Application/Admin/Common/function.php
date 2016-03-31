@@ -741,8 +741,9 @@ function get_check_status($type) {
         case 'OK#':
             return '审核通过';
             break;
-        default:
+        case 'RJT':
             return '审核不通过';
+            break;
     }
 }
 
