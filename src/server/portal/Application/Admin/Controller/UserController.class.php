@@ -16,107 +16,35 @@ use User\Api\UserApi;
  */
 class UserController extends AdminController {
 
-    public function paasuview($id=0){
-
-        if(empty($id)){
-            $this->error('ID不能为空！');
+    public function setpwd(){
+        if(!session('user-hasno-pwd')){
+            $this->error('您已经设置了密码！');
         }
-
-        $prefix = C('DB_PREFIX');
-        $model = M()->table($prefix.'user u')
-            ->join($prefix.'user_auth ua on ua.user_id = u.id','left');
-
-        $this->assign('item',$model->where(['id'=>intval($id)])->field('u.*,ua.real_name,identity_no')->find());
-        $this->meta_title = '查看用户详情';
-        $this->display();
-    }
-
-    public function resetpupwd(){
-
         if(IS_POST){
-            $data = [];
-            $where['mobile_num'] = I('mobile_num');
-            if(empty($where['mobile_num'])){
-                $this->error('手机号码不能为空！');
+            $password = I('password');
+            if(empty($password)){
+                $this->error('新密码不能为空！');
             }
-            $where['real_name'] = I('real_name');
-            if(empty($where['real_name'])){
-                $this->error('真实姓名不能为空！');
+            if(strlen($password) < 6){
+                $this->error('密码不能小于6位！');
             }
-            $where['identity_no'] = I('id_num');
-            if(empty($where['identity_no'])){
-                $this->error('身份证号不能为空！');
+            $repassword = I('repassword');
+            if($password != $repassword){
+                $this->error('两次密码输入不一致！');
             }
-            if(I('method') == 'check_user'){
 
-                $prefix = C('DB_PREFIX');
-                $exist = M()->table($prefix.'user u')
-                            ->join($prefix.'user_auth ua on ua.user_id = u.id','inner')
-                            ->where($where)
-                            ->find();
-                if($exist){
-                    $this->success('用户存在!');
-                }else{
-                    $this->error('用户不存在!'.M()->_sql());
-                }
+            $Api    =   new UserApi();
+            $res    =   $Api->updateInfo(UID, '', ['password'=>$password]);
+            if($res['status']){
+                session('user-hasno-pwd',null);
+                $this->success('设置密码成功！',U('index/index'));
+            }else{
+                $this->error($res['info']);
             }
-            $data = [
-                'realName'=>$where['real_name'],
-                'cardID'=>$where['identity_no'],
-                'mobileNum'=>$where['mobile_num'],
-                'operator'=>is_login(),
-            ];
-            $api = new ApiService();
-            $resp = $api->setApiUrl(C('APIURI.paas2'))
-                    ->setData($data)->send('userSecurity/resetPassword');
-            if(!empty($resp) && $resp['errcode'] == '0'){
-                $this->success('重置成功');
-            }
-            $this->error(isset($resp['errmsg']) ? $resp['errmsg'] : '重置失败，请重新再试或联系管理员！');
+
         }
-        $this->meta_title = '重置用户登录密码';
+
         $this->display();
-    }
-
-    /**
-     * 用户管理首页
-     * @author 麦当苗儿 <zuojiazi@vip.qq.com>
-     */
-    public function paasusers(){
-        $nickname       =   I('nickname');
-        if(!empty($nickname)){
-            $map['u.nick_name']    =   array('like', '%'.(string)$nickname.'%');
-        }
-        $mobile_num       =   I('mobile');
-        if(!empty($mobile_num)){
-            $map['u.mobile_num']    =   array('like', '%'.(string)$mobile_num.'%');
-        }
-
-        $prefix = C('DB_PREFIX');
-        $model = M()->table($prefix.'user u')
-                    ->join($prefix.'user_auth ua on ua.user_id = u.id','left');
-        $list   = $this->lists($model, $map,'','u.*,ua.real_name');
-        $this->assign('_list', $list);
-        $this->meta_title = '注册用户列表';
-        $this->display();
-    }
-
-    /**
-     * @param int $id
-     * @param string $status
-     */
-    public function changePuStatus($id=0,$status='OK#'){
-        if(empty($id)){
-            $this->error('修改失败');
-        }
-
-        $status = $status == 'OK#' ? 'OFF' : 'OK#';
-
-        if(M('user')->where(['id'=>$id])->save(['status'=>$status])){
-            $this->success('');
-        }else{
-            $this->error('修改失败，请重新再试！');
-        }
     }
     /**
      * 用户管理首页

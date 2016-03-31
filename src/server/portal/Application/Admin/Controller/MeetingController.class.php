@@ -151,19 +151,34 @@ class MeetingController extends AdminController {
         if (empty($eid)) $this->error('报名信息不存在!');
         $prefix = C('DB_PREFIX');
         if (IS_POST) {
-            $_POST = I('post.');
-            $_POST['eid'] = $eid;
+            $data = I('post.');
+            $data['eid'] = $eid;
+
+            $msg = '';
+            if(!empty($data['notify'])){
+
+                $return = $this->_enroll_notify($eid);
+                if(!$return[0]){
+                    $msg = '发送短信失败！';
+                }
+                if(isset($return[1]) && !$return[1]){
+                    $msg .= '发送微信通知失败！';
+                }
+            }
             $model = M()->table($prefix.'company_reg');
-            $_POST['insert_time'] = date("Y-m-d H:m:s", time());
-            $_POST['update_time'] = date("Y-m-d H:m:s", time());
-            if (strlen($_POST['birthday']) == 0) unset($_POST['birthday']);
-            if (strlen($_POST['founding_time']) == 0) unset($_POST['founding_time']);
+            $data['insert_time'] = date("Y-m-d H:m:s", time());
+            $data['update_time'] = date("Y-m-d H:m:s", time());
+            if (strlen($data['birthday']) == 0) unset($data['birthday']);
+            if (strlen($data['founding_time']) == 0) unset($data['founding_time']);
             if ($model->create()) {
                 $result = $model->add();
                 if ($result > 0) {
-                    $this->success('创建成功！',U('Meeting/enroll'));
+                    if(!empty($msg)){
+                        $this->error('信息保存成功，但'.$msg);
+                    }
+                    $this->success('保存成功！',U('Meeting/enroll'));
                 } else {
-                    $this->error('创建失败！');
+                    $this->error('保存失败！');
                 }
             } else {
                 $this->error('创建失败！');
@@ -179,6 +194,40 @@ class MeetingController extends AdminController {
         $this->display();
     }
 
+    private function _enroll_notify($eid){
+        $prefix = C('DB_PREFIX');
+
+        $item = M()->table($prefix.'enroll e')
+            ->join($prefix.'wx_user b on e.wx_id = b.wx_id','LEFT')
+            ->join($prefix.'meeting c on e.meeting_id = c.id')
+            ->field('e.id,e.name,e.mobile,b.openid,b.subscribe,c.title,c.agenda_date,c.address')
+            ->find();
+
+        if(empty($item)){
+            $this->error('报名信息不存在！');
+        }
+
+        //修改报道确认状态
+        M('enroll')->where(['id'=>$eid])->save(['is_affirm'=>'YES']);
+
+        $return = [];
+        //发送短信通知
+        $content = sprintf(C('SMS_TPL1'),$item['name'],$item['title'],$item['agenda_date'],$item['address']);
+        $return[] = send_sms($item['mobile'],$content);
+//        $return[] = false;
+//        $return[] = false;
+
+        if(!empty($item['openid']) && intval($item['subscribe']) > 0){
+
+            $api = new ApiService();
+            $resp = $api->setData(['enroll'=>$item])
+                ->send('/wechat/message/enrollAffirm');
+            $return[] = check_resp($resp);
+        }
+
+        return $return;
+    }
+
     //编辑注册信息
     public function companyEdit($eid) {
         if (empty($eid)) $this->error('参数错误，报名ID不能为空!');
@@ -192,37 +241,26 @@ class MeetingController extends AdminController {
             if (strlen($data['birthday']) == 0) unset($data['birthday']);
             if (strlen($data['founding_time']) == 0) unset($data['founding_time']);
 
-//            M()->startTrans();
-
+            $msg = '';
             if(!empty($data['notify'])){
 
-                $item = M()->table($prefix.'enroll e')
-                    ->join($prefix.'wx_user b on e.wx_id = b.wx_id','LEFT')
-                    ->join($prefix.'meeting c on e.meeting_id = c.id')
-                    ->field('e.id,e.name,e.mobile,b.openid,b.subscribe,c.title,c.agenda_date,c.address')
-                    ->find();
-
-                if(empty($item)){
-                    $this->error('报名信息不存在！');
+                $return = $this->_enroll_notify($eid);
+                if(!$return[0]){
+                    $msg = '发送短信失败！';
                 }
-
-                M('enroll')->where(['id'=>$eid])->save(['is_affirm'=>'YES']);
-                //发送短信通知
-                $content = sprintf(C('SMS_TPL1'),$item['name'],$item['title'],$item['agenda_date'],$item['address']);
-                send_sms($item['mobile'],$content);
-
-                if(!empty($item['openid']) && intval($item['subscribe']) > 0){
-
-                    $api = new ApiService();
-                    $resp = $api->setData(['enroll'=>$item])
-                                ->send('/wechat/message/enrollAffirm');
+                if(isset($return[1]) && !$return[1]){
+                    $msg .= '发送微信通知失败！';
                 }
             }
+
             $model = M('company_reg');
             if($model->create($data) && $model->where(array('id'=>$id))->save()){
+                if(!empty($msg)){
+                    $this->error('信息保存成功，但'.$msg);
+                }
                 $this->success('保存成功！',U('Meeting/enroll'));
             }
-            $this->error('修改失败！');
+            $this->error('保存失败！');
         }
 
         $enroll = M()->table($prefix.'enroll e')

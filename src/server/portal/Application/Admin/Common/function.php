@@ -21,6 +21,9 @@ require_once(APP_PATH . '/Admin/Common/qiniu.php');
  */
 function send_sms($mobile,$content){
 
+    Think\Log::record($mobile.$content,Think\Log::INFO);
+    return true;
+
     $data = [
         'user'=>C('SMS_USER'),
         'password'=>C('SMS_PASSWORD'),

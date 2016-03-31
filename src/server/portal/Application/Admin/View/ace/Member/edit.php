@@ -2,10 +2,6 @@
 
 <block name="body">
     <!-- 表单 -->
-    <style>
-        td{width:50%;}
-        img{max-width:400px;}
-    </style>
     <div class="table-responsive">
         <div class="dataTables_wrapper">
             <div class="widget-box" style="opacity: 1; z-index: 0;margin-bottom:1em;">
@@ -60,30 +56,7 @@
 </block>
 
 <block name="script">
-    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
-
     <script type="text/javascript">
-        //搜索功能
-        $("#search").click(function(){
-            var url = $(this).attr('url');
-            var query  = $('.search-form').serialize();
-            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g,'');
-            query = query.replace(/^&/g,'');
-            if( url.indexOf('?')>0 ){
-                url += '&' + query;
-            }else{
-                url += '?' + query;
-            }
-            window.location.href = url;
-        });
-        //回车搜索
-        $(".search-input").keyup(function(e){
-            if(e.keyCode === 13){
-                console.info($("#search"));
-                $("#search").click();
-                return false;
-            }
-        });
 
         (function($){
             var meeting_id = $('#meeting_id');
@@ -92,6 +65,6 @@
             meeting_id.val(id);
         })(jQuery);
         //导航高亮
-        highlight_subnav('{:U('User/userReturn')}');
+        highlight_subnav('{:U('member/index')}');
     </script>
 </block>
