@@ -16,10 +16,14 @@
                 <td><span style="color:#999;padding-right:8px;">课程标题:</span>{$item.title}</td>
             </tr>
             <tr>
-                <td><span style="color:#999;padding-right:8px;">课程封面:</span><div class="preview"><img src="<?=imageView2($item['logo'],120,120)?>" width="120"/></div></td>
+                <td><span style="color:#999;padding-right:8px;">课程封面:</span>
+                    <span class="preview">
+                        <img src="<?=imageView2($item['logo'],120,120)?>" width="120"/>
+                    </span>
+                </td>
             </tr>
             <tr>
-                <td><span style="color:#999;padding-right:8px;">课程附件:</span>{$item.att_url}</td>
+                <td><span style="color:#999;padding-right:8px;">课程附件:</span><a href="<?= get_qiniu_file_durl($item['att_url']) ?>">下载</a></td>
             </tr>
             <tr>
                 <td><span style="color:#999;padding-right:8px;">课程描述:</span>{$item.description}</td>

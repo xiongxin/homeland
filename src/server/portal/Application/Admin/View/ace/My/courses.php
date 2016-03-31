@@ -48,7 +48,9 @@
                             <td>{$vo.id}</td>
                             <td><a href="{:U('courseShow',array('id'=>$vo['id']))}">{$vo.title}</a></td>
                             <td>{$vo.insert_time}</td>
-                            <td>{$vo.contacts}</td>
+                            <td><a title="点击查看" href="{:U('courseShow?id='.$vo['id'])}" class="">
+                                    点击查看
+                                </a></td>
                             <td>
                                 <a title="编辑" href="{:U('courseEdit?id='.$vo['id'])}" class="">
                                     编辑

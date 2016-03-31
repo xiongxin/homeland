@@ -36,7 +36,8 @@ class MemberController extends AdminController {
         $this->meta_title = '用户信息';
         $this->display();
     }
-    
+
+    //添加会员
     public function add() {
         $prefix = C('DB_PREFIX');
         if (IS_POST) {
@@ -117,6 +118,7 @@ class MemberController extends AdminController {
         $this->display();
     }
 
+    //编辑会员
     public function edit() {
         $prefix = C('DB_PREFIX');
         $uid = I('uid');
@@ -138,6 +140,81 @@ class MemberController extends AdminController {
 
         $this->assign('item', $company);
         $this->meta_title = '修改会员类型';
+        $this->display();
+    }
+
+    //会员建档审核首页
+    public function companyIndex() {
+        $search       =   I('search');
+        //$map['um.status']  =   array('egt',0);
+        $map = [];
+        if(is_numeric($search)){
+            $map['c.mobile']=['like', '%' . intval($search) . '%'];
+        }elseif(!empty($search)){
+            $map['c.chairman_name|c.chairman_nickname']    =   array('like', '%'.(string)$search.'%');
+        }
+
+        //$map['aga.group_id'] = ['in', [5,6]];
+        $prefix = C('DB_PREFIX');
+        $model = M()->table($prefix.'company c')
+            ->join($prefix.'company_reg cr on cr.uid = c.uid', 'left')
+            ->join($prefix.'auth_group_access aga on aga.uid=c.uid', 'left')
+            ->join($prefix.'auth_group ag on ag.id=aga.group_id', 'left');
+        $list   = $this->lists($model, $map,'','cr.*, aga.group_id, c.check_user as c_check_user,
+                            c.check_status as c_check_status, ag.title, c.id as c_id');
+        $this->assign('_list', $list);
+        $this->meta_title = '用户信息';
+        $this->display();
+    }
+    
+    public function companyShow() {
+        $id = I('id');
+        if (empty($id)) $this->error('参数错误!');
+        $prefix = C('DB_PREFIX');
+        $company = M()->table($prefix.'company');
+        if (IS_POST) {
+            $data = I('post.');
+            //处理没有填或是 0，'' ""
+            foreach ($data as $key => $value) {
+                if (empty($value)) unset($data[$key]);
+            }
+            $data['update_time'] = time_format();
+            if($company->create($data) && $company->where(['id'=>$id])->save() !== false) {
+                $this->success('保存成功');
+            } else {
+                $this->error('保存失败');
+            }
+
+        }
+
+        $data = $company->where(['id'=>$id])->find();
+        if (empty($data)) $this->error('参数错误!');
+
+        $this->assign('item', $data);
+        $this->meta_title = '建档信息详情';
+        $this->display();
+    }
+
+    //会员注册审核首页
+    public function companyRegIndex() {
+        $nickname       =   I('nickname');
+        $map['m.status']  =   array('egt',0);
+        if(is_numeric($nickname)){
+            $map['uid|nickname']=   array(intval($nickname),array('like','%'.$nickname.'%'),'_multi'=>true);
+        }elseif(!empty($nickname)){
+            $map['m.nickname']    =   array('like', '%'.(string)$nickname.'%');
+        }
+
+        $map['aga.group_id'] = ['in', [5,6]];
+        $prefix = C('DB_PREFIX');
+        $model = M()->table($prefix.'ucenter_member um')
+            ->join($prefix.'member m on m.uid = um.id','left')
+            ->join($prefix.'auth_group_access aga on aga.uid = um.id', 'left')
+            ->join($prefix.'company_reg cr on cr.uid = um.id');
+        $list   = $this->lists($model, $map,'','m.*,um.username,um.id,aga.group_id,cr.eid,
+                        cr.position ,cr.company_name, cr.chairman_name, cr.insert_time as reg_time');
+        $this->assign('_list', $list);
+        $this->meta_title = '用户信息';
         $this->display();
     }
 }

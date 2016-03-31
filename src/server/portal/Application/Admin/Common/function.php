@@ -728,6 +728,21 @@ function get_position($type) {
     $list = ['其他', '董事长', '总裁', '总经理'];
     return $list[$type];
 }
+
+//返回审核状态 WAT:待审核，OK#：审核通过，RJT：审核不通过
+function get_check_status($type) {
+    switch ($type) {
+        case 'WAT':
+            return '待审核';
+            break;
+        case 'OK#':
+            return '审核通过';
+            break;
+        default:
+            return '审核不通过';
+    }
+}
+
 /**
  * 检查接口返回
  * @param intger $type 类型
