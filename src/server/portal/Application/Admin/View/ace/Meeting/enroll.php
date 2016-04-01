@@ -5,9 +5,15 @@
         <div class="dataTables_wrapper">
             <div class="row">
                 <div class="col-sm-12">
-                    <form action="" class="search-form">
-                        <label>会员名称或手机号码
+                    <form action="{:U('')}" class="search-form" method="get">
+                        <label>会员名称或手机号码或会议场次
                             <input type="text" class="search-input" name="search" value="{:I('search')}" placeholder="会员名称或手机号码">
+                        </label>
+                        <label>是否确认
+                            <input type="checkbox" name="is_affirm" value="YES" <?= I('is_affirm') == 'YES' ? 'checked' : '' ?>>
+                        </label>
+                        <label>是否签到
+                            <input type="checkbox" name="is_sign" value="YES" <?= I('is_sign') == 'YES' ? 'checked' : '' ?>>
                         </label>
                         <label>
                             <button class="btn btn-sm btn-primary" type="button" id="search-btn" url="<?=U('meeting/enroll')?>">

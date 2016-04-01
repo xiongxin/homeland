@@ -17,73 +17,86 @@
                     </div>
                 </div>
             </div>
-
-            <!-- 数据列表 -->
-            <table class="table table-striped table-bordered table-hover dataTable">
-                <thead>
-                <tr>
-                    <th class="row-selected center">
+            <if condition="$company['check_status'] eq 'OK#'">
+                <!-- 数据列表 -->
+                <table class="table table-striped table-bordered table-hover dataTable">
+                    <thead>
+                    <tr>
+                        <th class="row-selected center">
+                            <label>
+                                <input class="ace check-all" type="checkbox"/>
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th class="">ID</th>
+                        <th class="">PPT名称</th>
+                        <th class="">创建时间</th>
+                        <th class="">老师点评</th>
+                        <th class="">编辑</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <notempty name="_list">
+                        <volist name="_list" id="vo">
+                            <tr>
+                                <td class="center">
+                                    <label>
+                                        <input class="ace ids" type="checkbox" name="id[]" value="{$vo.id}" />
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
+                                <td>{$vo.id}</td>
+                                <td><a href="{:U('courseShow',array('id'=>$vo['id']))}">{$vo.title}</a></td>
+                                <td>{$vo.insert_time}</td>
+                                <td><a title="点击查看" href="{:U('courseShow?id='.$vo['id'])}" class="">
+                                        点击查看
+                                    </a></td>
+                                <td>
+                                    <a title="编辑" href="{:U('courseEdit?id='.$vo['id'])}" class="">
+                                        编辑
+                                    </a>
+                                    <a title="删除" href="{:U('courseDelete?id='.$vo['id'])}" class="confirm ajax-get">
+                                        删除
+                                    </a>
+                                </td>
+                            </tr>
+                        </volist>
+                        <else/>
+                        <td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td>
+                    </notempty>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-4">
                         <label>
-                            <input class="ace check-all" type="checkbox"/>
-                            <span class="lbl"></span>
+                            <a class="btn btn-white" href="{:U('courseAdd')}">
+                                新增
+                            </a>
                         </label>
-                    </th>
-                    <th class="">ID</th>
-                    <th class="">PPT名称</th>
-                    <th class="">创建时间</th>
-                    <th class="">老师点评</th>
-                    <th class="">编辑</th>
-                </tr>
-                </thead>
-                <tbody>
-                <notempty name="_list">
-                    <volist name="_list" id="vo">
-                        <tr>
-                            <td class="center">
-                                <label>
-                                    <input class="ace ids" type="checkbox" name="id[]" value="{$vo.id}" />
-                                    <span class="lbl"></span>
-                                </label>
-                            </td>
-                            <td>{$vo.id}</td>
-                            <td><a href="{:U('courseShow',array('id'=>$vo['id']))}">{$vo.title}</a></td>
-                            <td>{$vo.insert_time}</td>
-                            <td><a title="点击查看" href="{:U('courseShow?id='.$vo['id'])}" class="">
-                                    点击查看
-                                </a></td>
-                            <td>
-                                <a title="编辑" href="{:U('courseEdit?id='.$vo['id'])}" class="">
-                                    编辑
-                                </a>
-                                <a title="删除" href="{:U('courseDelete?id='.$vo['id'])}" class="confirm ajax-get">
-                                    删除
-                                </a>
-                            </td>
-                        </tr>
-                    </volist>
-                    <else/>
-                    <td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td>
-                </notempty>
-                </tbody>
-            </table>
-
-            <div class="row">
-                <div class="col-sm-4">
-                    <label>
-                        <a class="btn btn-white" href="{:U('courseAdd')}">
-                            新增
-                        </a>
-                    </label>
-                    <label>
-                        <button type="button" class="btn btn-white ajax-post" target-form="ids" url="{:U('courseDelete')}">
-                            删除
-                        </button>
-                    </label>
+                        <label>
+                            <button type="button" class="btn btn-white ajax-post" target-form="ids" url="{:U('courseDelete')}">
+                                删除
+                            </button>
+                        </label>
+                    </div>
+                    <div class="col-sm-8">
+                        <include file="Public/page"/>
+                    </div>
                 </div>
-                <div class="col-sm-8">
-                    <include file="Public/page"/>
+            <else/>
+                <div lass="row">
+                    <div class="col-sm-12">
+                        <p class="text-warning bigger-110 orange">
+                            <i class="icon-warning-sign"></i>
+                                <if condition="$company['check_status'] eq 'WAT'">
+                                    您的档案正在审核中，请耐心等待，审核通过即可上传课件！
+                                <else/>
+                                    请先完善我的档案，完善之后即可上传课件！
+                                </if>
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </if>
         </div>
     </div>
 </block>

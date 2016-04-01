@@ -46,6 +46,7 @@ class MemberController extends AdminController {
             $userData['username'] = I('mobile');
             $userData['email'] = I('email');
             $userData['password'] = '';
+            $userData['status'] = 2;
             $user = M()->table($prefix.'ucenter_member');
             //判断手机号码是否注册
             if ($user->where(['username'=>$userData['username']])->find()) {
@@ -58,6 +59,7 @@ class MemberController extends AdminController {
                     //创建member
                     $memberData['uid'] = $user_id;
                     $memberData['nickname'] = I('chairman_nickname');
+                    $memberData['status'] = 1;
                     $member = M()->table($prefix.'member');
                     if ($member->create($memberData)) {
                         $memberResult = $member->add();
@@ -72,7 +74,7 @@ class MemberController extends AdminController {
                                     if ($company_reg->where(['id'=>I('id')])->save(['uid'=>$user_id]) === false) {
                                         $this->error('操作失败');
                                     }else {
-                                        $this->success('操作成功！', U('index'));
+                                        $this->success('操作成功！');
                                     }
                                 }else {
                                     $this->error('设置权限失败！');
@@ -98,21 +100,22 @@ class MemberController extends AdminController {
                 $this->error('搜索条件不对，请先选择场次，再输入要搜索的名称或手机号码');
             }
             if(is_numeric($search)){
-                $map['cr.telephone']=['like', '%' . intval($search) . '%'];
+                $map['cr.mobile']=['like', '%' . intval($search) . '%'];
             }elseif(!empty($search)){
                 $map['cr.chairman_name|cr.chairman_nickname']    =   array('like', '%'.(string)$search.'%');
             }
             $map['e.meeting_id'] = intval($meeting_id);
+            $map['cr.uid'] = ['EXP', 'is null'];
             $model = M()->table($prefix.'company_reg cr')
                 ->join($prefix.'enroll e on e.id=cr.eid','left');
 
-            $data = $model->field(array('cr.*'))->where($map)->find();
+            $data = $model->field(array('cr.*'))->where($map)->select();
         }
 
         $meetings = M()->table($prefix.'meeting')->where(['status'=>1])->select();
 
         $this->assign('meetings', $meetings);
-        $this->assign('item', $data);
+        $this->assign('_list', $data);
         $this->assign('search', $search);
         $this->meta_title = '注册会员类型';
         $this->display();
@@ -160,6 +163,7 @@ class MemberController extends AdminController {
             ->join($prefix.'company_reg cr on cr.uid = c.uid', 'left')
             ->join($prefix.'auth_group_access aga on aga.uid=c.uid', 'left')
             ->join($prefix.'auth_group ag on ag.id=aga.group_id', 'left');
+        $map['c.check_status']='WAT';
         $list   = $this->lists($model, $map,'','cr.*, aga.group_id, c.check_user as c_check_user,
                             c.check_status as c_check_status, ag.title, c.id as c_id');
         $this->assign('_list', $list);
@@ -179,6 +183,7 @@ class MemberController extends AdminController {
                 if (empty($value)) unset($data[$key]);
             }
             $data['update_time'] = time_format();
+            $data['check_user'] = session('user_auth.username');
             if($company->create($data) && $company->where(['id'=>$id])->save() !== false) {
                 $this->success('保存成功');
             } else {
@@ -210,6 +215,7 @@ class MemberController extends AdminController {
         $model = M()->table($prefix.'company_reg cr')
             ->join($prefix.'auth_group_access aga on aga.uid=cr.uid', 'left')
             ->join($prefix.'auth_group ag on ag.id=aga.group_id', 'left');
+        $map['cr.check_status']='WAT';
         $list   = $this->lists($model, $map,'','cr.*, aga.group_id, ag.title');
         $this->assign('_list', $list);
         $this->meta_title = '用户信息';
@@ -228,6 +234,7 @@ class MemberController extends AdminController {
                 if (empty($value)) unset($data[$key]);
             }
             $data['update_time'] = time_format();
+            $data['check_user'] = session('user_auth.username');
             if($company->create($data)
                 && $company->where(['id'=>$id])->save() !== false) {
                 $this->success('保存成功');

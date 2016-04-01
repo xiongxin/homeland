@@ -105,19 +105,21 @@ class MyController extends AdminController {
 
         $this->assign('item', $data);
         $this->meta_title = '我的注册信息';
-        $this->display('companyadd');
+        $this->display();
     }
 
 
     public function courses() {
         $prefix = C('DB_PREFIX');
-
         $uid = session('user_auth.uid');
+        $company = M()->table($prefix.'company c')->where(['uid'=>$uid])->find();
+
         $courses = M()->table($prefix.'user_courseware');
         $map['uid'] =$uid;
         $map['status'] = 'OK#';
         $list   = $this->lists($courses, $map,'','');
 
+        $this->assign('company', $company);
         $this->assign('_list', $list);
         $this->meta_title = '我的课程记录';
         $this->display();
@@ -131,6 +133,7 @@ class MyController extends AdminController {
             $data = I('post.');
             $data['insert_time'] = time_format();
             $data['uid']= session('user_auth.uid');
+            //$data['check_user'] = session('')
             $comment = M()->table($prefix.'user_courseware_comment');
             if ($comment->create($data) && $comment->add()) {
                 $this->success('评论成功', U('courseshow?id='.$data['cid']));
@@ -201,7 +204,7 @@ class MyController extends AdminController {
                     $courseware_att = M()->table($prefix.'user_courseware_att');
                     $data['cid'] = $cid;
                     if ($courseware_att->create($data) && $courseware_att->add() > 0) {
-                        $this->success('创建成功', 'courses');
+                        $this->success('创建成功', U('courses'));
                     }
                 } else {
                     $this->error('添加失败');

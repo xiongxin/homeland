@@ -8,36 +8,6 @@
                     <h4 class="lighter">审核档案</h4>
                 </div>
                 <div class="widget-body" style="position: relative;">
-                    <div class="widget-main">
-                        <div id="fuelux-wizard" class="row-fluid" data-target="#step-container">
-                            <ul class="wizard-steps">
-                                <li data-target="#step1" class="active">
-                                    <span class="step">1</span>
-                                </li>
-                                <li data-target="#step2">
-                                    <span class="step">2</span>
-                                </li>
-                                <li data-target="#step3">
-                                    <span class="step">3</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <hr>
-                        <div class="alert alert-block alert-success">
-                            <button type="button" class="close" data-dismiss="alert">
-                                <i class="icon-remove"></i>
-                            </button>
-
-                            <h4 class="green smaller lighter">温馨提示：</h4>
-                            请认真填写如下内容，以便于我们进行咨询，谢谢您的支持，愿我们共同成长！
-                            <ol>
-                                <li>这个表格认真填写</li>
-                                <li>填写时请尽量理性真实地反映数据</li>
-                                <li>请认真提供尽量多的信息，以便企业情况更准确的分析</li>
-                                <li>我们承诺为您完全保密</li>
-                            </ol>
-                        </div>
                         <form id="company" action="{:U()}" method="post" class="form-horizontal">
                             <div class="step-content row-fluid position-relative" id="step-container">
                                 <div class="step-pane active" id="step1">
@@ -198,8 +168,6 @@
                                         </div>
 
                                     </div>
-                                </div>
-                                <div class="step-pane" id="step2">
                                     <hr>
                                     <h3 class="center">企业人员情况</h3>
                                     <div class="form-group">
@@ -441,9 +409,6 @@
                                                    placeholder="净利润"   />
                                         </div>
                                     </div>
-
-                                </div>
-                                <div class="step-pane" id="step3">
                                     <div class="row-fluid">
                                         <div class="form-group">
                                             <label class="col-xs-12 col-sm-2 control-label no-padding-right">
@@ -708,11 +673,6 @@
                                             </label>
                                             <div class="col-xs-12 col-sm-6">
                                                 <label>
-                                                    <input type="radio" <?= $item['check_status']=='WAT' ? 'checked' : '' ?>
-                                                           class="ace" name="check_status" value="WAT">
-                                                    <span class="lbl">待审核&nbsp;</span>
-                                                </label>
-                                                <label>
                                                     <input type="radio" <?= $item['check_status']=='OK#' ? 'checked' : '' ?>
                                                            class="ace" name="check_status" value="OK#">
                                                     <span class="lbl">通过审核&nbsp;</span>
@@ -724,17 +684,6 @@
                                                 </label>
                                             </div>
                                         </div>
-
-                                        <div class="form-group">
-                                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                                                审核人
-                                            </label>
-                                            <div class="col-xs-12 col-sm-2">
-                                                <input type="text" name="check_user" class="width-100"
-                                                       value="{$item.check_user}"
-                                                       placeholder="审核人姓名">
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -742,6 +691,9 @@
                             <input type="hidden" name="id" value="{$item.id}" >
                             <div class="clearfix form-actions">
                                 <div class="col-xs-12">
+                                    <button id="sub-btn" class="btn btn-sm btn-success no-border ajax-post no-refresh" target-form="form-horizontal" type="submit">
+                                        确认保存
+                                    </button>
                                     <a href="javascript:;" class="btn btn-white" onclick="history.go(-1)">
                                         返回
                                     </a>
@@ -750,17 +702,6 @@
 
 
                         </form>
-                        <div class="row-fluid wizard-actions" style="position: absolute;right: 10px;bottom: 40px;">
-                            <button class="btn btn-prev" disabled="disabled">
-                                <i class="icon-arrow-left"></i>
-                                上一步
-                            </button>
-
-                            <button class="btn btn-success btn-next" data-last="完成">
-                                保存并下一步
-                                <i class="icon-arrow-right icon-on-right"></i>
-                            </button>
-                        </div>
 
                     </div><!-- /widget-main -->
                 </div><!-- /widget-body -->
@@ -777,49 +718,6 @@
 
     <script type="text/javascript">
         jQuery(function($) {
-            var $validation = false;
-            $('#fuelux-wizard').ace_wizard().on('change' , function(e, info){
-                $.ajax({
-                    cache: true,
-                    type: "POST",
-                    url: $('#company').action,
-                    data:$('#company').serialize(),// 你的formid
-                    error: function(request) {
-                        alert("保存失败");
-                    },
-                    success: function(data) {
-                        console.log(data);
-                    }
-                });
-                if(info.step == 1 && $validation) {
-                    if(!$('#validation-form').valid()) return false;
-                }
-            }).on('finished', function(e) {
-                var form = $('#company');
-                $.ajax({
-                    cache: true,
-                    type: "POST",
-                    url: form.action,
-                    data:form.serialize(),
-                    error: function(request) {
-                        alert("保存失败");
-                    },
-                    success: function(data) {
-                        bootbox.dialog({
-                            message: "完成审核！",
-                            buttons: {
-                                "success" : {
-                                    "label" : "OK",
-                                    "className" : "btn-sm btn-primary"
-                                }
-                            }
-                        });
-                    }
-                });
-            }).on('stepclick', function(e){
-                console.log(e);
-            });
-
             //企业性质
             var enterprise_nature = $('#enterprise_nature');
             var eid = enterprise_nature.data('id');

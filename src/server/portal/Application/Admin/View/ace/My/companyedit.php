@@ -751,34 +751,36 @@
                         alert("保存失败");
                     },
                     success: function(data) {
-                        url = "{:U('companyedit')}"
+                        console.log(data);
                     }
                 });
+                if(info.step == 1 && $validation) {
+                    if(!$('#validation-form').valid()) return false;
+                }
             }).on('finished', function(e) {
                 var form = $('#company');
-                //客户完成资料之后提交审核
                 <if condition="empty($item['check_status'])">
                     form.append('<input type="hidden" name="check_status" value="WAT" />');
-                    $.ajax({
-                        cache: true,
-                        type: "POST",
-                        url: url,
-                        data:form.serialize(),
-                        error: function(request) {
-                            alert("保存失败");
-                        },
-                        success: function(data) {
-                            bootbox.dialog({
-                                message: "保存成功，客服人员将在三个工作日内审核！",
-                                buttons: {
-                                    "success" : {
-                                        "label" : "OK",
-                                        "className" : "btn-sm btn-primary"
-                                    }
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: url,
+                    data:form.serialize(),
+                    error: function(request) {
+                        alert("保存失败");
+                    },
+                    success: function(data) {
+                        bootbox.dialog({
+                            message: "保存成功，客服人员将在三个工作日内审核！",
+                            buttons: {
+                                "success" : {
+                                    "label" : "OK",
+                                    "className" : "btn-sm btn-primary"
                                 }
-                            });
-                        }
-                    });
+                            }
+                        });
+                    }
+                });
                 <elseif condition="$item['check_status'] eq 'WAT'"/>
                     $.ajax({
                         cache: true,
