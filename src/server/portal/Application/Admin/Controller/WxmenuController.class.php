@@ -15,7 +15,7 @@ class WxmenuController extends AdminController
     {
         parent::_initialize();
         $this->_api = new ApiService();
-        $resp = $this->_api->setApiUrl(C('APIURI.wechat'))
+        $resp = $this->_api
                     ->setData()
                     ->send('wechat/menu/getMenu');
         if(empty($resp) || $resp['errcode'] != '0'){
@@ -116,7 +116,7 @@ class WxmenuController extends AdminController
     
     private function _createMenu($menu)
     {
-        $resp = $this->_api->setApiUrl(C('APIURI.wechat'))
+        $resp = $this->_api
                     ->setData($menu)
                     ->send('wechat/menu/createMenu');
         if(empty($resp) || $resp['errcode'] != '0'){

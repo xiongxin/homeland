@@ -167,6 +167,7 @@ class MeetingController extends AdminController {
             ->join($prefix.'wx_user b on e.wx_id = b.wx_id','LEFT')
             ->join($prefix.'meeting c on e.meeting_id = c.id')
             ->field('e.id,e.name,e.mobile,b.openid,b.subscribe,c.title,c.agenda_date,c.address')
+            ->where(['e.id'=>$eid])
             ->find();
 
         if(empty($item)){

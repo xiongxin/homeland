@@ -10,6 +10,7 @@
         <!--<a href="javascript:;" class="weui_btn weui_btn_primary">点击展现searchBar</a>-->
         <div class="weui_search_bar" id="search_bar">
             <form action="<?=U('/index/search')?>" class="weui_search_outer ajax-form" success="search_success">
+                <input name="meeting_id" type="hidden" value="<?=$meeting['id']?>">
                 <div class="weui_search_inner">
                     <i class="weui_icon_search"></i>
                     <input type="number" name="keyword" pattern="[0-9]{11}" class="weui_search_input" id="search_input" placeholder="搜索" required/>

@@ -1330,7 +1330,7 @@ a.weui_media_box:active {
 }
 .weui_dialog {
   position: fixed;
-  z-index: 13;
+  z-index: 13000;
   width: 85%;
   top: 50%;
   left: 50%;
@@ -1782,7 +1782,7 @@ a.weui_media_box:active {
 }
 .weui_mask {
   position: fixed;
-  z-index: 1;
+  z-index: 1000;
   width: 100%;
   height: 100%;
   top: 0;

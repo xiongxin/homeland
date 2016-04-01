@@ -18,12 +18,11 @@ class PublicController extends Mall {
         if(is_not_wx() || empty($this->user)){
             $this->error('本功能仅开放给微信用户使用！');
         }
-        if(empty($this->user['uid'])){
+        if(!empty($this->user['uid'])){
             $this->error('您已经绑定了账号，不要来闹了！');
         }
 
         if(IS_POST){
-
             $username = trim(I('username'));
             if(empty($username)){
                 $this->error('请输入用户名！');
@@ -34,7 +33,12 @@ class PublicController extends Mall {
             }
 
             $model = M('t_ucenter_member');
-            $user = $model->get(['id','username','password','wx_id'],['username'=>$username]);
+            $user = $model->get(
+                                [
+                                   '[><]t_auth_group_access(b)'=>['id'=>'uid','AND'=>['b.group_id'=>1]],
+                                ],
+                                ['id','username','password','mobile','wx_id','b.group_id'],['username'=>$username]);
+
             if(empty($user)){
                 $this->error('用户不存在或密码不正确！');
             }
@@ -43,22 +47,33 @@ class PublicController extends Mall {
                 $this->error('该用户已经被绑定！');
             }
 
-            require_once '/var/www/html/conf/paas/onethink/User/config.php';
+            require_once '/var/www/html/conf/homeland/onethink/User/config.php';
             if(think_ucenter_md5($password,UC_AUTH_KEY) != $user['password']){
                 $this->error('用户不存在或密码不正确！');
             }
-
             if($model->update(['wx_id'=>$this->user['wx_id']],['id'=>$user['id']])){
 
                 $this->user['uid'] = $user['id'];
+                $this->user['username'] = $user['username'];
+                $this->user['mobile'] = $user['mobile'];
+                $this->user['group_id'] = $user['group_id'];
                 session('user_auth',$this->user);
 
-                $this->success('绑定成功！',U('/public/bind'));
+                $this->success('',U('/public/bindSuccess'));
             }else{
+
                 $this->error('绑定失败，请重新再试或联系客服人员！');
             }
         }
     }
+    
+    /**
+     * 绑定成功提示页面
+     */
+    public function bindSuccessAction(){
+        $this->success('绑定成功,请点击左上角的关闭按钮继续操作！');
+    }
+
     /**
      * 会议报名
      */
