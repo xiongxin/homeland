@@ -1,7 +1,7 @@
 <extend name="Public/base"/>
 
 <block name="body">
-<form action="<?= empty($item) ? U('companyadd?eid=' . $enroll['id']) : U('companyedit?eid='. $enroll['id']) ?>" method="post" class="form-horizontal">
+<form action="<?= empty($item) ? U('companyadd?eid='.$enroll['id']) : U('companyedit?eid='.$enroll['id']) ?>" method="post" class="form-horizontal">
     <div class="tabbable">
         <ul class="nav nav-tabs">
             <li class="active">
@@ -107,7 +107,7 @@
                         个人简介
                     </label>
                     <div class="col-xs-12 col-sm-6">
-                        <textarea name="chairman_desc" class="form-control"></textarea>
+                        <textarea name="chairman_desc" id="chairman_desc" class="form-control">{$item.chairman_desc}</textarea>
                     </div>
                     <span class="check-tips"></span>
                 </div>
@@ -203,6 +203,16 @@
                     </div>
                     <span class="check-tips"></span>
                 </div>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                        公司描述
+                    </label>
+                    <div class="col-xs-12 col-sm-6">
+                        <textarea name="description" id="description" class="form-control">{$item.description}</textarea>
+                    </div>
+                    <span class="check-tips"></span>
+                </div>
             </div>
         </div>
     </div>
@@ -250,7 +260,7 @@
                         企业规模
                     </label>
                     <div class="col-xs-12 col-sm-6">
-                        <select name="enterprise_nature" id="enterprise_nature" data-id="{$item.enterprise_nature}">
+                        <select name="scale" id="scale" data-id="{$item.scale}">
                             <option value="0">选择企业规模</option>
                             <option value="QIN">1000以上</option>
                             <option value="F2Q">501-1000人</option>
@@ -475,22 +485,23 @@
             //选择企业分类
             var cate = $('#catid');
             var id = cate.data('id');
-            cate.val(id);
-
+            if(!!id)cate.val(id);
             //企业性质
             var enterprise_nature = $('#enterprise_nature');
             var eid = enterprise_nature.data('id');
             if (!!eid)enterprise_nature.val(eid);
-
+            //企业规模
+            var scale = $('#scale');
+            var sid = scale.data('id');
+            if (!!sid)scale.val(sid);
             //管理经验
             var manage_experience = $('#manage_experience');
-            var eid = manage_experience.data('id');
-            manage_experience.val(eid);
-
+            var mid = manage_experience.data('id');
+            if(!!mid) manage_experience.val(mid);
             //学历
             var edu_degree = $('#edu_degree');
-            var eid = edu_degree.data('id');
-            edu_degree.val(eid);
+            var edid = edu_degree.data('id');
+            if (!!edid) edu_degree.val(edid);
         })(jQuery);
     </script>
 </block>

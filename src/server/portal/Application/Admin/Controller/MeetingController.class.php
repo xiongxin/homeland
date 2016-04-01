@@ -22,8 +22,8 @@ class MeetingController extends AdminController {
             unset($data['parse']);
             $prefix = C('DB_PREFIX');
             $return = M()->table($prefix.'meeting');
-            $data['insert_time'] = date("Y-m-d H:m:s", time());
-            $data['update_time'] = date("Y-m-d H:m:s", time());
+            $data['insert_time'] = time_format();
+            $data['update_time'] = time_format();
             if ($return->create()) {
                 $result = $return->add();
                 if ($result > 0) {
@@ -50,7 +50,7 @@ class MeetingController extends AdminController {
         if (IS_POST) {
             $data = I('post.');
             unset($data['parse']);
-            $data['update_time'] = date("Y-m-d H:m:s", time());
+            $data['update_time'] = time_format();
             if(!$model->where(array('id'=>$id))
                 ->save($data)){
                 $this->error('修改失败！');
@@ -93,8 +93,12 @@ class MeetingController extends AdminController {
         if(is_numeric($search)){
             $map['n.mobile']=['like', '%' . intval($search) . '%'];//   array(intval($search),array('like','%'.$search.'%'),'_multi'=>true);
         }elseif(!empty($search)){
-            $map['n.name']  = array('like', '%'.(string)$search.'%');
+            $map['n.name|m.title']  = array('like', '%'.(string)$search.'%');
         }
+
+        if (!empty(I('id'))) $map['m.id'] = I('id');
+        if (!empty(I('is_sign'))) $map['n.is_sign'] = I('is_sign');
+        if (!empty(I('is_affirm'))) $map['n.is_affirm'] = I('is_affirm');
 
         $prefix = C('DB_PREFIX');
         $model = M()->table($prefix.'enroll n')
@@ -105,46 +109,6 @@ class MeetingController extends AdminController {
         $this->meta_title = '报名管理';
         $this->display();
     }
-
-    public function changeAffirm($method, $id) {
-        if (IS_AJAX) {
-            $status = [
-                'affirm' => 'YES',
-                'no_affirm' => 'NO#'
-            ];
-            if (empty($method) || empty($status[$method]) || empty($id)) $this->error('修改失败！');
-
-            $prefix = C('DB_PREFIX');
-            $model = M()->table($prefix.'enroll');
-            $result = $model->where('id =' . $id)->setField('is_affirm', $status[$method]);
-
-            if($result !== false){
-                $this->success('修改成功！');
-            }else{
-                $this->error('修改失败！');
-            }
-        }
-    }
-
-    public function changeSign($method, $id) {
-        if (IS_AJAX) {
-            $status = [
-                'sign' => 'YES',
-                'no_sign' => 'NO#'
-            ];
-            if (empty($method) || empty($status[$method]) || empty($id)) $this->error('修改失败！');
-
-            $prefix = C('DB_PREFIX');
-            $model = M()->table($prefix.'enroll');
-            $result = $model->where('id =' . $id)->setField('is_sign', $status[$method]);
-
-            if($result !== false){
-                $this->success('修改成功！');
-            }else{
-                $this->error('修改失败！');
-            }
-        }
-    }
     
     //添加企业信息
     public function companyAdd($eid) {
@@ -153,7 +117,11 @@ class MeetingController extends AdminController {
         if (IS_POST) {
             $data = I('post.');
             $data['eid'] = $eid;
-
+            $data['insert_time']=time_format();
+            $data['update_time'] = time_format();
+            foreach ($data as $key=>$value) {
+                if (empty($value)) unset($data[$key]);
+            }
             $msg = '';
             if(!empty($data['notify'])){
 
@@ -166,11 +134,9 @@ class MeetingController extends AdminController {
                 }
             }
             $model = M()->table($prefix.'company_reg');
-            $data['insert_time'] = date("Y-m-d H:m:s", time());
-            $data['update_time'] = date("Y-m-d H:m:s", time());
-            if (strlen($data['birthday']) == 0) unset($data['birthday']);
-            if (strlen($data['founding_time']) == 0) unset($data['founding_time']);
-            if ($model->create()) {
+            $data['insert_time'] = time_format();
+            $data['update_time'] = time_format();
+            if ($model->create($data)) {
                 $result = $model->add();
                 if ($result > 0) {
                     if(!empty($msg)){
@@ -234,13 +200,12 @@ class MeetingController extends AdminController {
         $prefix = C('DB_PREFIX');
         if (IS_POST) {
             $data = I('post.');
-            $id = $data['id'];
-            unset($data['id']);
+            $id = $data['id'];unset($data['id']);
             $data['eid'] = $eid;
             $data['update_time'] = time_format();
-            if (strlen($data['birthday']) == 0) unset($data['birthday']);
-            if (strlen($data['founding_time']) == 0) unset($data['founding_time']);
-
+            foreach ($data as $key=>$value) {
+                if (empty($value)) unset($data[$key]);
+            }
             $msg = '';
             if(!empty($data['notify'])){
 
@@ -252,13 +217,12 @@ class MeetingController extends AdminController {
                     $msg .= '发送微信通知失败！';
                 }
             }
-
-            $model = M('company_reg');
-            if($model->create($data) && $model->where(array('id'=>$id))->save()){
+            $modle = M('company_reg');
+            if($modle->where(array('id'=>$id))->save($data)){
                 if(!empty($msg)){
                     $this->error('信息保存成功，但'.$msg);
                 }
-                $this->success('保存成功！',U('Meeting/enroll'));
+                $this->success('保存成功！');
             }
             $this->error('保存失败！');
         }
@@ -282,7 +246,7 @@ class MeetingController extends AdminController {
         if (IS_POST) {
             $data = I('post.');
             unset($data['parse']);
-            $data['update_time'] = date("Y-m-d H:m:s", time());
+            $data['update_time'] = time_format();
             $data['referee'] = intval($data['referee']);
             if(M()->table($prefix.'enroll')->where(array('id'=>$id))
                 ->save($data) === false){
@@ -304,8 +268,8 @@ class MeetingController extends AdminController {
         $prefix = C('DB_PREFIX');
         if (IS_POST) {
             $model = M()->table($prefix.'enroll');
-            $_POST['insert_time'] = date("Y-m-d H:m:s", time());
-            $_POST['update_time'] = date("Y-m-d H:m:s", time());
+            $_POST['insert_time'] = time_format();
+            $_POST['update_time'] = time_format();
             $_POST['referee'] = intval($_POST['referee']);
             if ($model->create()) {
                 $result = $model->add();

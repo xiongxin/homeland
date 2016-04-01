@@ -54,6 +54,9 @@
                             <td>{$vo.contact_email}</td>
                             <td><span>{$vo.insert_time}</span></td>
                             <td>
+                                <a title="查看" href="<?= U('Meeting/enroll', ['id'=>$vo['id'], 'is_affirm'=>'YES', 'is_sign'=>'YES']) ?>" class="">
+                                    查看
+                                </a>
                                 <a title="编辑" href="{:U('edit?id='.$vo['id'])}" class="">
                                     编辑
                                 </a>

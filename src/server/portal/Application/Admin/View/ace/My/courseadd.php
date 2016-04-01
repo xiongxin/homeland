@@ -89,7 +89,7 @@
     <include file="Public/upload.pic"/>
     <script type="text/javascript">
 
-        highlight_subnav('{:U('Meeting/enroll')}');
+        highlight_subnav('{:U('my/courses')}');
 
     </script>
 </block>

@@ -5,17 +5,7 @@
         <ul class="nav nav-tabs">
             <li class="active">
                 <a data-toggle="tab" href="#person">
-                    个人信息
-                </a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#info1">
-                    企业信息
-                </a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#info2">
-                    企业情况
+                    注册信息详情
                 </a>
             </li>
         </ul>
@@ -122,8 +112,6 @@
                         </div>
                         <span class="check-tips"></span>
                     </div>
-                </div>
-                <div id="info1" class="tab-pane">
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-2 control-label no-padding-right">
                             公司名称
@@ -202,8 +190,6 @@
                         </div>
                         <span class="check-tips"></span>
                     </div>
-                </div>
-                <div id="info2" class="tab-pane">
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-2 control-label no-padding-right">
                             企业分类
@@ -329,11 +315,6 @@
                         </label>
                         <div class="col-xs-12 col-sm-6">
                             <label>
-                                <input type="radio" <?= $item['check_status']=='WAT' ? 'checked' : '' ?>
-                                       class="ace" name="check_status" value="WAT">
-                                <span class="lbl">待审核&nbsp;</span>
-                            </label>
-                            <label>
                                 <input type="radio" <?= $item['check_status']=='OK#' ? 'checked' : '' ?>
                                        class="ace" name="check_status" value="OK#">
                                 <span class="lbl">通过审核&nbsp;</span>
@@ -345,24 +326,10 @@
                             </label>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                            审核人
-                        </label>
-                        <div class="col-xs-12 col-sm-2">
-                            <input type="text" name="check_user" class="width-100"
-                                   value="{$item.check_user}"
-                                   placeholder="审核人姓名">
-                        </div>
-                    </div>
                 </div>
 
 
                 <div class="clearfix form-actions">
-                    <if condition="empty($item['check_status'])">
-                        <input type="hidden" name="check_status" value="WAT" />
-                    </if>
                     <input type="hidden" name="id" value="{$item.id}" />
                     <div class="col-xs-12">
                         <button id="sub-btn" class="btn btn-sm btn-success no-border ajax-post no-refresh" target-form="form-horizontal" type="submit">
@@ -382,16 +349,6 @@
     <include file="Public/upload.js"/>
     <include file="Public/upload.pic"/>
     <script type="text/javascript">
-        <present name="info.id">
-            Think.setValue("allow_publish", {$info.allow_publish|default=1});
-        Think.setValue("check", {$info.check|default=0});
-        Think.setValue("model[]", {$info.model|json_encode} || [1]);
-        Think.setValue("model_sub[]", {$info.model_sub|json_encode} || [1]);
-        Think.setValue("type[]", {$info.type|json_encode} || [2]);
-        Think.setValue("display", {$info.display|default=1});
-        Think.setValue("reply", {$info.reply|default=0});
-        Think.setValue("reply_model[]", {$info.reply_model|json_encode} || [1]);
-        </present>
         $(function(){
             showTab();
             $("input[name=reply]").change(function(){
@@ -400,7 +357,7 @@
             }).filter(":checked").change();
         });
         //导航高亮
-        highlight_subnav('{:U('Meeting/enroll')}');
+        highlight_subnav('{:U('member/companyregindex')}');
 
         //生日选择器插件
         (function($){

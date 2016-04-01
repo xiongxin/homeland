@@ -109,6 +109,6 @@
             }
         });
         //导航高亮
-        highlight_subnav('{:U('User/userReturn')}');
+        highlight_subnav('{:U('my/courses')}');
     </script>
 </block>
