@@ -122,6 +122,7 @@
 
 <block name="script">
     <script type="text/javascript">
+
         (function($){
             var meeting_id = <?=intval(I('meeting_id'));?>;
             if(meeting_id > 0){

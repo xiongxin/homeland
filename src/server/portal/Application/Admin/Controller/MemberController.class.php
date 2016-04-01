@@ -37,6 +37,12 @@ class MemberController extends AdminController {
         $this->display();
     }
 
+    private function _enroll_notify($mobile, $name, $group){
+        //发送短信通知
+        $content = sprintf(C('SMS_TPL2'),$name,$group);
+        return send_sms($mobile,$content);
+    }
+
     //添加会员
     public function add() {
         $prefix = C('DB_PREFIX');
@@ -74,7 +80,13 @@ class MemberController extends AdminController {
                                     if ($company_reg->where(['id'=>I('id')])->save(['uid'=>$user_id]) === false) {
                                         $this->error('操作失败');
                                     }else {
-                                        $this->success('操作成功！');
+                                        //发送短信
+                                        $group_name = $this->get_group_name(intval(I('group_id')));//I('mobile');I('chairman_nickname');
+                                        if ($this->_enroll_notify(I('mobile'), I('chairman_nickname'),$group_name)){
+                                            $this->success('操作成功！');
+                                        } else {
+                                            $this->error('数据保存成功，短信发送失败');
+                                        }
                                     }
                                 }else {
                                     $this->error('设置权限失败！');
@@ -120,7 +132,16 @@ class MemberController extends AdminController {
         $this->meta_title = '注册会员类型';
         $this->display();
     }
-
+    private function get_group_name($id){
+        switch ($id){
+            case 5:
+                return '银种子';
+            case 6:
+                return '金种子';
+            default:
+                return $this->error('提交失败');
+        }
+    }
     //编辑会员
     public function edit() {
         $prefix = C('DB_PREFIX');
