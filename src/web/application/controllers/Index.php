@@ -21,9 +21,8 @@ class IndexController extends Mall {
         }
 
         if(empty($this->user['uid'])){
-            $this->error('您还没有绑定运营账号！');
+            $this->error('您还没有绑定运营账号！',U('/public/bind'),['btn_text'=>'去绑定']);
         }
-
         if($this->user['group_id'] != 1){
             $this->error('本功能仅允许运营人员使用！');
         }
