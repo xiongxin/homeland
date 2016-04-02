@@ -309,23 +309,25 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="form-group">
-                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                            审核：
-                        </label>
-                        <div class="col-xs-12 col-sm-6">
-                            <label>
-                                <input type="radio" <?= $item['check_status']=='OK#' ? 'checked' : '' ?>
-                                       class="ace" name="check_status" value="OK#">
-                                <span class="lbl">通过审核&nbsp;</span>
+                    <if condition="$item['check_status'] neq 'OK#'">
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                                审核：
                             </label>
-                            <label>
-                                <input type="radio" <?= $item['check_status']=='RJT' ? 'checked' : '' ?>
-                                       class="ace" name="check_status" value="RJT">
-                                <span class="lbl">审核不通过&nbsp;</span>
-                            </label>
+                            <div class="col-xs-12 col-sm-6">
+                                <label>
+                                    <input type="radio" <?= $item['check_status']=='OK#' ? 'checked' : '' ?>
+                                           class="ace" name="check_status" value="OK#">
+                                    <span class="lbl">通过审核&nbsp;</span>
+                                </label>
+                                <label>
+                                    <input type="radio" <?= $item['check_status']=='RJT' ? 'checked' : '' ?>
+                                           class="ace" name="check_status" value="RJT">
+                                    <span class="lbl">审核不通过&nbsp;</span>
+                                </label>
+                            </div>
                         </div>
-                    </div>
+                    </if>
                 </div>
 
 

@@ -52,8 +52,8 @@
                                 <span>{$vo.c_check_user}</span>
                             </td>
                             <td>
-                                <a title="详情" href="{:U('companyShow?id='.$vo['c_id'])}" class="">
-                                    详情
+                                <a title="审核" href="{:U('companyShow?id='.$vo['c_id'])}" class="">
+                                    审核
                                 </a>
                             </td>
                         </tr>

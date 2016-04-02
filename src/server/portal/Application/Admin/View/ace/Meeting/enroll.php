@@ -6,14 +6,30 @@
             <div class="row">
                 <div class="col-sm-12">
                     <form action="{:U('')}" class="search-form" method="get">
-                        <label>会员名称或手机号码或会议场次
+                        <label>会员名称或手机号码
                             <input type="text" class="search-input" name="search" value="{:I('search')}" placeholder="会员名称或手机号码">
                         </label>
-                        <label>是否确认
-                            <input type="checkbox" name="is_affirm" value="YES" <?= I('is_affirm') == 'YES' ? 'checked' : '' ?>>
+                        <label for="form-field-select-3">
+                            <select name="meeting" class="chosen-select" style="width: 200px;" data-placeholder="Choose a Country...">
+                                <option value="">选择会议场次</option>
+                                <volist name="meetings" id="vo">
+                                    <option value="{$vo.id}">{$vo.title}</option>
+                                </volist>
+                            </select>
                         </label>
-                        <label>是否签到
-                            <input type="checkbox" name="is_sign" value="YES" <?= I('is_sign') == 'YES' ? 'checked' : '' ?>>
+                        <label>
+                            <select name="is_sign" id="is_sign" data-id="">
+                                <option value="">是否签到</option>
+                                <option value="YES">已签到</option>
+                                <option value="NO#">未签到</option>
+                            </select>
+                        </label>
+                        <label>
+                            <select name="is_affirm" id="is_affirm" data-id="">
+                                <option value="">是否确认</option>
+                                <option value="YES">已确认</option>
+                                <option value="NO#">未确认</option>
+                            </select>
                         </label>
                         <label>
                             <button class="btn btn-sm btn-primary" type="button" id="search-btn" url="<?=U('meeting/enroll')?>">
@@ -123,4 +139,28 @@
             </div>
         </div>
     </div>
+</block>
+
+<block name="script">
+    <link rel="stylesheet" href="__ACE__/css/chosen.css">
+    <script src="__ACE__/js/chosen.jquery.min.js"></script>
+    <script type="text/javascript">
+        $(".chosen-select").chosen();
+        $('#chosen-multiple-style').on('click', function(e){
+            var target = $(e.target).find('input[type=radio]');
+            var which = parseInt(target.val());
+            if(which == 2) $('#form-field-select-4').addClass('tag-input-style');
+            else $('#form-field-select-4').removeClass('tag-input-style');
+        });
+
+
+        (function($){
+            var meeting_id = <?=intval(I('meeting_id'));?>;
+            if(meeting_id > 0){
+                $('#meeting_id').val(meeting_id);
+            }
+        })(jQuery);
+        //导航高亮
+        highlight_subnav('{:U('member/index')}');
+    </script>
 </block>

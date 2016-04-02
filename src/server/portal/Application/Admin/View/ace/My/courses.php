@@ -3,6 +3,7 @@
 <block name="body">
     <div class="table-responsive">
         <div class="dataTables_wrapper">
+            <if condition="$company['check_status'] eq 'OK#'">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="search-form">
@@ -17,7 +18,6 @@
                     </div>
                 </div>
             </div>
-            <if condition="$company['check_status'] eq 'OK#'">
                 <!-- 数据列表 -->
                 <table class="table table-striped table-bordered table-hover dataTable">
                     <thead>
@@ -87,11 +87,16 @@
                 <div lass="row">
                     <div class="col-sm-12">
                         <p class="text-warning bigger-110 orange">
-                            <i class="icon-warning-sign"></i>
                                 <if condition="$company['check_status'] eq 'WAT'">
-                                    您的档案正在审核中，请耐心等待，审核通过即可上传课件！
+                                    <div class="alert alert-danger">
+                                        您的档案正在审核中，请耐心等待，通过审核即可上传课件！
+                                        <br>
+                                    </div>
                                 <else/>
-                                    请先完善我的档案，完善之后即可上传课件！
+                                    <div class="alert alert-danger">
+                                        请先完善 <a href="{:U('My/company')}">我的档案</a>，通过审核之后即可上传课件！
+                                        <br>
+                                    </div>
                                 </if>
                         </p>
                     </div>

@@ -51,8 +51,8 @@
                                 <span>{$vo.check_user}</span>
                             </td>
                             <td>
-                                <a title="详情" href="{:U('companyRegShow?id='.$vo['id'])}" class="">
-                                    详情
+                                <a title="审核" href="{:U('companyRegShow?id='.$vo['id'])}" class="">
+                                    审核
                                 </a>
                             </td>
                         </tr>

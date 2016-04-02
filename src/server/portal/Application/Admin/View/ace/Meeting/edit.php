@@ -29,6 +29,7 @@
                 {:hook('adminArticleEdit', array('name'=>'description'))}
             </div>
         </div>
+
         <div class="form-group">
             <label class="col-xs-12 col-sm-2 control-label no-padding-right">联系人</label>
             <div class="col-xs-12 col-sm-7">
@@ -44,12 +45,26 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-xs-12 col-sm-2 control-label no-padding-right">会议时间</label>
+            <div class="col-xs-12 col-sm-7">
+                <input name="agenda_date" class="form-control date-picker" value="{$item.agenda_date}" type="text" data-date-format="dd-mm-yyyy">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-2 control-label no-padding-right">会议地址</label>
+            <div class="col-xs-12 col-sm-7">
+                <input type="text" class="width-100" name="address"
+                       value="<?= empty($item) ? "" : $item['address'] ?>">
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-xs-12 col-sm-2 control-label no-padding-right">联系邮箱</label>
             <div class="col-xs-12 col-sm-7">
                 <input type="text" class="width-100" name="contact_email"
                        value="<?= empty($item) ? "" : $item['contact_email'] ?>">
             </div>
         </div>
+
         <div class="clearfix form-actions">
             <div class="col-xs-12">
                 <if condition="!empty($item)">
@@ -68,7 +83,10 @@
 
 <block name="script">
     <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
-
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
     <script type="text/javascript">
         //搜索功能
         $("#search").click(function(){
@@ -90,6 +108,12 @@
                 $("#search").click();
                 return false;
             }
+        });
+        $('.date-picker').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii:ss',
+            language:"zh-CN",
+            minView:2,
+            autoclose:true
         });
         //导航高亮
         highlight_subnav('{:U('Meeting/index')}');
