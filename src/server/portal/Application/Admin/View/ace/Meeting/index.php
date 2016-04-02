@@ -57,7 +57,7 @@
                                 <a title="签到列表" href="<?= U('Meeting/enroll', ['id'=>$vo['id'], 'is_affirm'=>'YES', 'is_sign'=>'YES']) ?>" class="">
                                     签到列表
                                 </a>
-                                <a title="报名链接" href="<?= C('API_WECHAT') . 'public/enroll?meeting_id=' . $vo['id'] ?>" class="">
+                                <a target="_blank" title="报名链接" href="<?= C('API_WECHAT') . 'public/enroll?meeting_id=' . $vo['id'] ?>" class="">
                                     报名链接
                                 </a>
                                 <a title="删除" href="{:U('meetingDelete?id='.$vo['id'])}" class="confirm ajax-get">
