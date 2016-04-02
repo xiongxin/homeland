@@ -8,16 +8,16 @@
             </h3>
 
             <p>
-                <a href="#" class="btn btn-primary btn-app radius-4">
+                <a href="<?=U('my/reg')?>" class="btn btn-primary btn-app radius-4">
                     <i class="icon-cog bigger-230"></i>
                     注册信息
                 </a>
                 <?php if(!empty($company_info) && $company_info['check_status'] == 'OK#'):?>
-                <a href="#" class="btn btn-success btn-app radius-4">
+                <a href="<?=U('my/companyedit')?>" class="btn btn-success btn-app radius-4">
                     <i class="icon-edit bigger-230"></i>
                     建档信息
                 </a>
-                <a href="#" class="btn btn-pink btn-app radius-4">
+                <a href="<?=U('my/courses')?>" class="btn btn-pink btn-app radius-4">
                     <i class="icon-shopping-cart bigger-230"></i>
                     我的课程
                 </a>
