@@ -188,7 +188,7 @@ class MyController extends AdminController {
             ->where($map)->find();
         $this->assign('item', $data);
         $this->meta_title = '编辑课程';
-        $this->display('courseAdd');
+        $this->display('courseadd');
     }
 
     public function courseAdd(){
