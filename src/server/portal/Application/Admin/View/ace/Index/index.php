@@ -24,9 +24,5 @@
             $(this).find("i").toggleClass("mod-up");
         });
     })
-    $(function(){
-        // $('#main').attr({'id': 'indexMain','class': 'index-main'});
-        $('.copyright').html('<div class="copyright"> ©2013-2015 中经汇通有限责任公司版权所有</div>');
-    })
 </script>
 </block>

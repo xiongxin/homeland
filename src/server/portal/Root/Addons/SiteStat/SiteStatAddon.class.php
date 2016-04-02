@@ -34,16 +34,27 @@ class SiteStatAddon extends Addon{
 
     //实现的AdminIndex钩子方法
     public function AdminIndex($param){
-        $config = $this->getConfig();
-        $this->assign('addons_config', $config);
-        if($config['display']){
-            $info['user']		=	M('Member')->count();
-            $info['action']		=	M('ActionLog')->count();
-            $info['document']	=	M('Document')->count();
-            $info['category']	=	M('Category')->count();
-            $info['model']		=	M('Model')->count();
-            $this->assign('info',$info);
-            $this->display('info');
+        $uid = is_login();
+        $item = M('auth_group_access')->where(['uid'=>$uid,'group_id'=>['in','5,6']])->find();
+
+        if(empty($item)){
+
+            $config = $this->getConfig();
+
+            $this->assign('addons_config', $config);
+            if($config['display']){
+                $info['user']		=	M('Member')->count();
+                $info['action']		=	M('ActionLog')->count();
+                $info['document']	=	M('Document')->count();
+                $info['category']	=	M('Category')->count();
+                $info['model']		=	M('Model')->count();
+                $this->assign('info',$info);
+            }
+        }else{
+            $company_info = M('company')->where(['uid'=>$uid])->field('company_name,check_status')->find();
+            $this->assign('company_info',$company_info);
         }
+
+        $this->display('info');
     }
 }
