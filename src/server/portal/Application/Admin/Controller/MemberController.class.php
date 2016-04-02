@@ -29,9 +29,10 @@ class MemberController extends AdminController {
         $model = M()->table($prefix.'ucenter_member um')
             ->join($prefix.'member m on m.uid = um.id','left')
             ->join($prefix.'auth_group_access aga on aga.uid = um.id', 'left')
-            ->join($prefix.'company_reg cr on cr.uid = um.id');
+            ->join($prefix.'company_reg cr on cr.uid = um.id')
+            ->join($prefix.'company c on c.uid=um.id');
         $list   = $this->lists($model, $map,'','m.*,um.username,um.id,aga.group_id,cr.eid,
-                        cr.position ,cr.company_name, cr.chairman_name, cr.insert_time as reg_time');
+                        cr.position ,cr.company_name, cr.chairman_name, cr.insert_time as reg_time, cr.id as cr_id, c.id as c_id');
         $this->assign('_list', $list);
         $this->meta_title = '用户信息';
         $this->display();
@@ -204,9 +205,9 @@ class MemberController extends AdminController {
                 if (empty($value)) unset($data[$key]);
             }
             $data['update_time'] = time_format();
-            $data['check_user'] = session('user_auth.username');
+            if (!empty($data['check_status'])) $data['check_user'] = session('user_auth.username');
             if($company->create($data) && $company->where(['id'=>$id])->save() !== false) {
-                $this->success('保存成功');
+                $this->success('保存成功', U('companyIndex'));
             } else {
                 $this->error('保存失败');
             }
@@ -255,10 +256,10 @@ class MemberController extends AdminController {
                 if (empty($value)) unset($data[$key]);
             }
             $data['update_time'] = time_format();
-            $data['check_user'] = session('user_auth.username');
+            if (!empty($data['check_status'])) $data['check_user'] = session('user_auth.username');
             if($company->create($data)
                 && $company->where(['id'=>$id])->save() !== false) {
-                $this->success('保存成功');
+                $this->success('保存成功',U('companyRegIndex'));
             } else {
                 $this->error('保存失败');
             }

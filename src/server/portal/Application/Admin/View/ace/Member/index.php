@@ -47,7 +47,7 @@
                                 <span class="lbl"></span>
                             </label>
                         </td>
-						<td><a href="{:U('Meeting/companyedit',array('eid'=>$vo['eid']))}">{$vo.chairman_name}</a></td>
+						<td>{$vo.chairman_name}</td>
 						<td>{$vo.username}</td>
 						<td>{$vo.position}</td>
 						<td><span>{$vo.company_name}</span></td>
@@ -58,6 +58,12 @@
                         <td>
                             <a title="编辑" href="{:U('edit?uid='.$vo['id'])}" class="">
                                 编辑
+                            </a>
+                            <a title="档案" href="{:U('companyShow?id='.$vo['c_id'])}" class="">
+                                档案
+                            </a>
+                            <a title="注册信息" href="{:U('companyRegShow?id='.$vo['cr_id'])}" class="">
+                                注册信息
                             </a>
                             <a title="删除" href="{:U('User/changeStatus?method=deleteUser&id='.$vo['uid'])}" class="confirm ajax-get">
                                 删除

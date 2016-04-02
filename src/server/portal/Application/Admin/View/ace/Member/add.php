@@ -88,7 +88,7 @@
                                             </div>
 
                                             <div class="alert alert-info">
-                                                保存后将会发送短信和微信通知给用户！
+                                                保存后将会发送短信通知给用户！
                                             </div>
 
                                             <div class="clearfix form-actions">

@@ -513,8 +513,7 @@
                                                 企业产品的简介（产品名称、性能、技术及价格、批发、零售、包装等，请罗列出产品的系列及详细的介绍）
                                             </label>
                                             <div class="col-xs-12 col-sm-7">
-                                                <textarea style="height: 120px;" name="tenure_desc" class="form-control">
-                                                    {$item.product_desc}</textarea>
+                                                <textarea style="height: 120px;" name="tenure_desc" class="form-control">{$item.product_desc}</textarea>
                                             </div>
                                         </div>
 
@@ -550,8 +549,7 @@
                                                 您认为企业目前遇到的困难是什么？出现了哪些问题？（请举具体案例说明）
                                             </label>
                                             <div class="col-xs-12 col-sm-7">
-                                                <textarea style="height: 120px;" name="tenure_desc" class="form-control">
-                                                    {$item.enterprise_difficulty_desc}</textarea>
+                                                <textarea style="height: 120px;" name="tenure_desc" class="form-control">{$item.enterprise_difficulty_desc}</textarea>
                                             </div>
                                         </div>
 
@@ -662,28 +660,29 @@
                                                 请列举出该模块内最希望解决的问题
                                             </label>
                                             <div class="col-xs-12 col-sm-7">
-                                                <textarea style="height: 120px;" name="need_support_question" class="form-control">
-                                                    {$item.need_support_question}</textarea>
+                                                <textarea style="height: 120px;" name="need_support_question" class="form-control">{$item.need_support_question}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                                                审核：
-                                            </label>
-                                            <div class="col-xs-12 col-sm-6">
-                                                <label>
-                                                    <input type="radio" <?= $item['check_status']=='OK#' ? 'checked' : '' ?>
-                                                           class="ace" name="check_status" value="OK#">
-                                                    <span class="lbl">通过审核&nbsp;</span>
+                                        <if condition="$item['check_status'] neq 'OK#'">
+                                            <div class="form-group">
+                                                <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                                                    审核：
                                                 </label>
-                                                <label>
-                                                    <input type="radio" <?= $item['check_status']=='RJT' ? 'checked' : '' ?>
-                                                           class="ace" name="check_status" value="RJT">
-                                                    <span class="lbl">审核不通过&nbsp;</span>
-                                                </label>
+                                                <div class="col-xs-12 col-sm-6">
+                                                    <label>
+                                                        <input type="radio" <?= $item['check_status']=='OK#' ? 'checked' : '' ?>
+                                                               class="ace" name="check_status" value="OK#">
+                                                        <span class="lbl">通过审核&nbsp;</span>
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio" <?= $item['check_status']=='RJT' ? 'checked' : '' ?>
+                                                               class="ace" name="check_status" value="RJT">
+                                                        <span class="lbl">审核不通过&nbsp;</span>
+                                                    </label>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </if>
                                     </div>
                                 </div>
                             </div>

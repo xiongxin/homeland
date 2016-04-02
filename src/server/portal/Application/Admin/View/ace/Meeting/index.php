@@ -54,11 +54,11 @@
                             <td>{$vo.contact_email}</td>
                             <td><span>{$vo.insert_time}</span></td>
                             <td>
-                                <a title="查看" href="<?= U('Meeting/enroll', ['id'=>$vo['id'], 'is_affirm'=>'YES', 'is_sign'=>'YES']) ?>" class="">
-                                    查看
+                                <a title="签到列表" href="<?= U('Meeting/enroll', ['id'=>$vo['id'], 'is_affirm'=>'YES', 'is_sign'=>'YES']) ?>" class="">
+                                    签到列表
                                 </a>
-                                <a title="编辑" href="{:U('edit?id='.$vo['id'])}" class="">
-                                    编辑
+                                <a title="报名链接" href="<?= C('API_WECHAT') . 'public/enroll?meeting_id=' . $vo['id'] ?>" class="">
+                                    报名链接
                                 </a>
                                 <a title="删除" href="{:U('meetingDelete?id='.$vo['id'])}" class="confirm ajax-get">
                                     删除

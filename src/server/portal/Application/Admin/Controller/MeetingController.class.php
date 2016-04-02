@@ -87,7 +87,12 @@ class MeetingController extends AdminController {
 
     //查看所有报名表
     public function enroll() {
-        $search       =   I('search');
+
+        $data = I('get.');
+        foreach ($data as $key => $value) {
+            if (empty($value)) unset($data[$key]);
+        }
+        $search       =   $data['search'];
         //$map['um.status']  =   array('egt',0);
         $map['n.status'] = ['egt', 0];
         if(is_numeric($search)){
@@ -96,15 +101,18 @@ class MeetingController extends AdminController {
             $map['n.name|m.title']  = array('like', '%'.(string)$search.'%');
         }
 
-        if (!empty(I('id'))) $map['m.id'] = I('id');
-        if (!empty(I('is_sign'))) $map['n.is_sign'] = I('is_sign');
-        if (!empty(I('is_affirm'))) $map['n.is_affirm'] = I('is_affirm');
+        if (!empty($data['meeting'])) $map['m.id'] = $data['meeting'];
+        if (!empty($data['is_sign'])) $map['n.is_sign'] = $data['is_sign'];
+        if (!empty($data['is_affirm'])) $map['n.is_affirm'] = $data['is_affirm'];
 
         $prefix = C('DB_PREFIX');
         $model = M()->table($prefix.'enroll n')
             ->join($prefix.'meeting m on n.meeting_id=m.id', 'left');
         $list  = $this->lists($model, $map,'','n.*, m.title, m.id as m_id');
 
+
+        $meetings = M()->table($prefix.'meeting')->where(['status'=>['egt', 0]])->select();
+        $this->assign('meetings', $meetings);
         $this->assign('_list', $list);
         $this->meta_title = '报名管理';
         $this->display();
@@ -142,7 +150,7 @@ class MeetingController extends AdminController {
                     if(!empty($msg)){
                         $this->error('信息保存成功，但'.$msg);
                     }
-                    $this->success('保存成功！',U('Meeting/enroll'));
+                    $this->success('保存成功！');
                 } else {
                     $this->error('保存失败！');
                 }
