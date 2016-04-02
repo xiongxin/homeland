@@ -243,7 +243,6 @@
                 minView:2,
                 autoclose:true
             });
-            showTab();
 
             <if condition="C('OPEN_DRAFTBOX') and (ACTION_NAME eq 'add' or $info['status'] eq 3)">
             //保存草稿

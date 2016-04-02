@@ -44,17 +44,7 @@
                         出生日期
                     </label>
                     <div class="col-xs-12 col-sm-6">
-                        <if condition="empty($item['birthday'])">
-                            <select id="sel_year"></select>年
-                            <select id="sel_month"></select>月
-                            <select id="sel_day"></select>日
-                        <else />
-                            <?php $birthday=explode('-', $item['birthday']);?>
-                            <select id="sel_year" rel="{$birthday[0]}"></select>年
-                            <select id="sel_month" rel="{$birthday[1]}"></select>月
-                            <select id="sel_day" rel="{$birthday[2]}"></select>日
-                        </if>
-                        <input id="birthday" type="hidden" name="birthday" value="{$item.birthday}">
+                        <input name="birthday" class="form-control birthday" value="{$item.birthday}" type="text" data-date-format="dd-mm-yyyy">
                     </div>
                 </div>
                 <div class="form-group">
@@ -150,17 +140,7 @@
                         成立时间
                     </label>
                     <div class="col-xs-12 col-sm-6">
-                        <if condition="empty($item['founding_time'])">
-                            <select id="year"></select>年
-                            <select id="month"></select>月
-                            <select id="day"></select>日
-                            <else />
-                            <?php $birthday=explode('-', $item['founding_time']);?>
-                            <select id="year" rel="{$birthday[0]}"></select>年
-                            <select id="month" rel="{$birthday[1]}"></select>月
-                            <select id="day" rel="{$birthday[2]}"></select>日
-                        </if>
-                        <input id="founding_time" type="hidden" name="founding_time" value="{$item.founding_time}">
+                        <input name="founding_time" class="form-control founding_time" value="{$item.founding_time}" type="text" data-date-format="dd-mm-yyyy">
                     </div>
                 </div>
                 <div class="form-group">
@@ -373,6 +353,11 @@
 
     <include file="Public/upload.js"/>
     <include file="Public/upload.pic"/>
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
     <script type="text/javascript">
         $(function(){
             $("input[name=reply]").change(function(){
@@ -387,101 +372,19 @@
         });
         //导航高亮
         highlight_subnav('{:U('Meeting/enroll')}');
-
-        //生日选择器插件
-        (function($){
-            $.extend({
-                ms_DatePicker: function (options) {
-                    var defaults = {
-                        YearSelector: "#sel_year",
-                        MonthSelector: "#sel_month",
-                        DaySelector: "#sel_day",
-                        FirstText: "--",
-                        FirstValue: 0
-                    };
-                    var opts = $.extend({}, defaults, options);
-                    var $YearSelector = $(opts.YearSelector);
-                    var $MonthSelector = $(opts.MonthSelector);
-                    var $DaySelector = $(opts.DaySelector);
-                    var $Input = $(opts.Input);
-                    var FirstText = opts.FirstText;
-                    var FirstValue = opts.FirstValue;
-
-                    // 初始化
-                    var str = "<option value=\"" + FirstValue + "\">" + FirstText + "</option>";
-                    $YearSelector.html(str);
-                    $MonthSelector.html(str);
-                    $DaySelector.html(str);
-
-                    // 年份列表
-                    var yearNow = new Date().getFullYear();
-                    var yearSel = $YearSelector.attr("rel");
-                    for (var i = yearNow; i >= 1900; i--) {
-                        var sed = yearSel==i?"selected":"";
-                        var yearStr = "<option value=\"" + i + "\" " + sed+">" + i + "</option>";
-                        $YearSelector.append(yearStr);
-                    }
-
-
-                    // 月份列表
-                    var monthSel = $MonthSelector.attr("rel");
-                    for (var i = 1; i <= 12; i++) {
-                        var sed = monthSel==i?"selected":"";
-                        var monthStr = "<option value=\"" + i + "\" "+sed+">" + i + "</option>";
-                        $MonthSelector.append(monthStr);
-                    }
-
-                    // 日列表
-                    var daySel = $DaySelector.attr("rel");
-                    for (var i = 1; i <= 31; i++) {
-                        var sed = daySel==i?"selected":"";
-                        var dayStr = "<option value=\"" + i + "\" "+sed+">" + i + "</option>";
-                        $DaySelector.append(dayStr);
-                    }
-                    // 日列表(仅当选择了年月)
-                    function BuildDay() {
-                        var year, month, day;
-                        year = parseInt($YearSelector.val());
-                        month = parseInt($MonthSelector.val());
-                        day = parseInt($DaySelector.val());
-                        if (year.toString().length < 4) year = '0000';
-                        if (month.toString().length < 2) month = '0' + month;
-                        if (day.toString().length < 2) day = '0' + day;
-                        $Input.val(year+ '-' + month + '-' + day)
-
-                    }
-                    $MonthSelector.change(function () {
-                        BuildDay();
-                    });
-                    $YearSelector.change(function () {
-                        BuildDay();
-                    });
-                    $DaySelector.change(function () {
-                        BuildDay();
-                    });
-                } // End ms_DatePicker
-            });
-        })(jQuery);
-        $(function () {
-            $.ms_DatePicker({
-                YearSelector: "#sel_year",
-                MonthSelector: "#sel_month",
-                DaySelector: "#sel_day",
-                Input: '#birthday'
-            });
-            $.ms_DatePicker();
-        });
-
-        $(function () {
-            $.ms_DatePicker({
-                YearSelector: "#year",
-                MonthSelector: "#month",
-                DaySelector: "#day",
-                Input: '#founding_time'
-            });
-            $.ms_DatePicker();
-        });
         (function ($) {
+            $('.birthday').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
+            $('.founding_time').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
             //选择企业分类
             var cate = $('#catid');
             var id = cate.data('id');
