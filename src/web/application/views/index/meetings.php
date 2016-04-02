@@ -1,6 +1,6 @@
 <div class="page slideIn cell">
     <div class="hd">
-        <h1 class="page_title">会议报名</h1>
+        <h1 class="page_title">会议列表</h1>
     </div>
     <div class="weui_panel_bd">
         <?php foreach ($list as $item) { ?>

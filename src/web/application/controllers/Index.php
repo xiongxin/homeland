@@ -138,7 +138,7 @@ class IndexController extends Mall {
             ['a.*'],
             [
                 'AND' => [
-                    'a.agenda_date[>]' => time_format()
+                    'a.agenda_date[>=]' => time_format()
                 ]
             ]
         );
