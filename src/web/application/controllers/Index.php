@@ -132,4 +132,16 @@ class IndexController extends Mall {
 //        SeasLog::info(M()->last_query());
         $this->success('','',['list'=>$list]);
     }
+
+    public function meetingsAction() {
+        $list = M('t_meeting(a)')->select(
+            ['a.*'],
+            [
+                'AND' => [
+                    'a.agenda_date[>]' => time_format()
+                ]
+            ]
+        );
+        $this->assign('list', $list);
+    }
 }
