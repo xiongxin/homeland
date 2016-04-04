@@ -205,6 +205,9 @@ class MemberController extends AdminController {
             }
             $company = M()->table($prefix.'company');
             $data['update_time'] = time_format();
+            if (!empty(I('registered_capital'))) {
+                $data['registered_capital'] =price_dispose(I('registered_capital'));
+            }
             if (!empty($data['check_status'])) $data['check_user'] = session('user_auth.username');
             if($company->create($data) && $company->where(['id'=>$id])->save() !== false) {
                 if(!empty($data['group_id'])) {

@@ -236,7 +236,7 @@ function get_app(){
  */
 function price_dispose($price){
     
-    return intval(floatval($price)*100);
+    return intval(floatval($price));
 }
 
 /**
@@ -784,3 +784,4 @@ function get_subscribe ($subscribe) {
         return '已关注';
     }
  }
+

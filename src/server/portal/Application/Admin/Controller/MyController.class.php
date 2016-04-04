@@ -61,7 +61,9 @@ class MyController extends AdminController {
             foreach ($data as $key => $value) {
                 if (empty($value)) unset($data[$key]);
             }
-
+            if (!empty(I('registered_capital'))) {
+                $data['registered_capital'] =price_dispose(I('registered_capital'));
+            }
             $data['insert_time'] = time_format();
             $data['update_time'] = time_format();
             $data['uid'] = session('user_auth.uid');
@@ -91,7 +93,9 @@ class MyController extends AdminController {
                 if (empty($value)) unset($data[$key]);
             }
             $data['update_time'] = time_format();
-
+            if (!empty(I('registered_capital'))) {
+                $data['registered_capital'] =price_dispose(I('registered_capital'));
+            }
             if($company->create($data) && $company->where(['uid'=>$uid])->save() !== false) {
                 $this->success('保存成功');
             } else {
