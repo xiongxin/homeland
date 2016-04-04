@@ -9,14 +9,17 @@
                 </a>
             </li>
         </ul>
-        <form action="<?= U('') ?>" method="post" class="form-horizontal">
+        <form id="reg" action="<?= U('') ?>" method="post" class="form-horizontal">
             <div class="tab-content">
                 <div id="person" class="tab-pane in active">
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-2 control-label no-padding-right">董事长名称</label>
                         <div class="col-xs-12 col-sm-6">
-                            <input type="text" class="width-100" name="chairman_name"
-                                   value="{$item.chairman_name}"/>
+                            <div class="clearfix">
+                                <input type="text" id="chairman_name" class="width-100" name="chairman_name"
+                                       value="{$item.chairman_name}"/>
+                            </div>
+
                         </div>
                         <span class="check-tips"></span>
                     </div>
@@ -52,7 +55,10 @@
                             身份证号码
                         </label>
                         <div class="col-xs-12 col-sm-6">
-                            <input type="text" name="id_number" class="width-100" value="{$item.id_number|default=''}">
+                            <div class="clearfix">
+                                <input type="text"  id="id_number"
+                                       name="id_number" class="width-100" value="{$item.id_number|default=''}">
+                            </div>
                         </div>
                         <span class="check-tips"></span>
                     </div>
@@ -61,8 +67,10 @@
                             手机号码
                         </label>
                         <div class="col-xs-12 col-sm-6">
-                            <input type="text" class="width-100" name="mobile"
-                                   value="<?= empty($item['mobile']) ? $enroll['mobile'] : $item['mobile']?>"/>
+                            <div class="clearfix">
+                                <input type="text" id="mobile" class="width-100" name="mobile"
+                                       value="<?= empty($item['mobile']) ? $enroll['mobile'] : $item['mobile']?>"/>
+                            </div>
                         </div>
                         <span class="check-tips"></span>
                     </div>
@@ -135,8 +143,10 @@
                             营业执照注册号
                         </label>
                         <div class="col-xs-12 col-sm-6">
-                            <input type="text" name="business_licence_num" class="width-100"
-                                   value="{$item.business_licence_num|default=''}">
+                            <div class="clearfix">
+                                <input type="text" id="business_licence_num" name="business_licence_num" class="width-100"
+                                       value="{$item.business_licence_num|default=''}">
+                            </div>
                         </div>
                         <span class="check-tips"></span>
                     </div>
@@ -314,12 +324,17 @@
                 <div class="clearfix form-actions">
                     <input type="hidden" name="id" value="{$item.id}" />
                     <div class="col-xs-12">
-                        <button id="sub-btn" class="btn btn-sm btn-success no-border ajax-post no-refresh" target-form="form-horizontal" type="submit">
+                        <a id="sub-btn"
+                           class="btn btn-sm btn-success no-border">
+                            确认保存
+                        </a>
+                        <button id="hidebtn" class="btn hide btn-sm btn-success no-border ajax-post no-refresh" target-form="form-horizontal" type="submit">
                             确认保存
                         </button>
                         <a href="javascript:;" class="btn btn-white" onclick="history.go(-1)">
                             返回
-                        </a>	</div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </form>
@@ -327,7 +342,11 @@
 </block>
 
 <block name="script">
-
+    <style>
+        .help-block {
+            color: #d16e6c;
+        }
+    </style>
     <include file="Public/upload.js"/>
     <include file="Public/upload.pic"/>
     <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
@@ -335,14 +354,94 @@
     <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
-
+    <script src="__ACE__/js/query.validate.min.js"></script>
     <script type="text/javascript">
         $(function(){
-            showTab();
-            $("input[name=reply]").change(function(){
-                var $reply = $(".form-group.reply");
-                parseInt(this.value) ? $reply.show() : $reply.hide();
-            }).filter(":checked").change();
+            $('#reg').validate({
+                errorElement: 'div',
+                errorClass: 'help-block',
+                focusInvalid: false,
+                rules: {
+                    id_number: {
+                        number: true,
+                        minlength:18,
+                        maxlength:18,
+                    },
+                    mobile:{
+                        number: true,
+                        minlength:11,
+                        maxlength:11,
+                    },
+                    chairman_name:{
+                        maxlength:5,
+                    },
+                    business_licence_num:{
+                        number: true,
+                        minlength:15,
+                        maxlength:15,
+                    }
+                },
+                messages:{
+                    business_licence_num:{
+                        number: "请输入数字",
+                        minlength:"请输入15位营业执照号",
+                        maxlength:"请输入15位营业执照号"
+                    },
+                    chairman_name:{
+                        maxlength: "最大长度5个字符"
+                    },
+                    id_number: {
+                        number: "请输入数字",
+                        minlength:"请输入18位身份证号",
+                        maxlength:"请输入18位身份证号"
+                    },
+                    mobile : {
+                        number: "请输入数字",
+                        minlength:"请输入11位手机号码",
+                        maxlength:"请输入11位手机号码"
+                    }
+                },
+
+                invalidHandler: function (event, validator) { //display error alert on form submit
+                    $('.alert-danger', $('.login-form')).show();
+                },
+
+                highlight: function (e) {
+                    $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+                },
+
+                success: function (e) {
+                    $(e).closest('.form-group').removeClass('has-error')
+                    $(e).remove();
+                },
+
+                errorPlacement: function (error, element) {
+                    if(element.is(':checkbox') || element.is(':radio')) {
+                        var controls = element.closest('div[class*="col-"]');
+                        if(controls.find(':checkbox,:radio').length > 1) controls.append(error);
+                        else error.insertAfter(element.nextAll('.lbl:eq(0)').eq(0));
+                    }
+                    else if(element.is('.select2')) {
+                        error.insertAfter(element.siblings('[class*="select2-container"]:eq(0)'));
+                    }
+                    else if(element.is('.chosen-select')) {
+                        error.insertAfter(element.siblings('[class*="chosen-container"]:eq(0)'));
+                    }
+                    else error.insertAfter(element.parent());
+                },
+
+                submitHandler: function (form) {
+                },
+                invalidHandler: function (form) {
+                }
+            });
+            $('#sub-btn').click(function (event) {
+                if(!$('#reg').valid()) {
+                    alert("表单填写有错误，请检查！");
+                } else {
+                    $('#hidebtn').click();
+                }
+            });
         });
         //导航高亮
         highlight_subnav('{:U('member/companyregindex')}');

@@ -324,13 +324,14 @@ class UserController extends AdminController {
         //$map['um.status']  =   array('egt',0);
         $map = [];
         if(is_numeric($search)){
-            $map['c.telephone']=['like', '%' . intval($search) . '%'];//   array(intval($search),array('like','%'.$search.'%'),'_multi'=>true);
+            $map['c.mobile']=['like', '%' . intval($search) . '%'];//   array(intval($search),array('like','%'.$search.'%'),'_multi'=>true);
         }elseif(!empty($search)){
             $map['c.chairman_name|c.chairman_nickname']    =   array('like', '%'.(string)$search.'%');
         }
 
         $prefix = C('DB_PREFIX');
         $model = M()->table($prefix.'user_return_visit urv')
+            ->join($prefix.'company com on com.uid = urv.uid','left')
             ->join($prefix.'company_reg c on c.uid = urv.uid','left')
             ->join($prefix.'auth_group_access aga on aga.uid=urv.uid', 'left')
             ->join($prefix.'auth_group ag on ag.id=aga.group_id', 'left')
@@ -355,7 +356,7 @@ class UserController extends AdminController {
             if(!$model->where(array('id'=>$id))
                 ->save(array(
                     'content'=>$content,
-                    'update_time'=>date("Y-m-d H:m:s", time())))
+                    'update_time'=>time_format()))
             ){
                 $this->error('修改失败！');
             }
@@ -405,7 +406,7 @@ class UserController extends AdminController {
 
         if (!empty($search)) {
             if(is_numeric($search)){
-                $map['cr.telephone']=['like', '%' . intval($search) . '%'];
+                $map['cr.mobile']=['like', '%' . intval($search) . '%'];
             }elseif(!empty($search)){
                 $map['cr.chairman_name|cr.chairman_nickname']    =   array('like', '%'.(string)$search.'%');
             }

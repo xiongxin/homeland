@@ -75,6 +75,12 @@ class PublicController extends Mall {
     }
 
     /**
+     * 报名成功提示页面
+     */
+    public function enrollSuccessAction(){
+        $this->success('报名成功！三个工作日内客服将与您电话联系!');
+    }
+    /**
      * 会议报名
      */
     public function enrollAction(){
@@ -99,7 +105,7 @@ class PublicController extends Mall {
             ];
             $data = array_merge(I('post.'), $data);
             if (M('t_enroll')->insert($data)) {
-                $this->success('报名成功！三个工作日内客服将与您电话联系!');
+                $this->success('',U('/public/enrollSuccess'));
             } else {
                 $this->error('报名失败！');
             }

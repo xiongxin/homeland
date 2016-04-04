@@ -150,7 +150,7 @@ class MeetingController extends AdminController {
                     if(!empty($msg)){
                         $this->error('信息保存成功，但'.$msg);
                     }
-                    $this->success('保存成功！');
+                    $this->success('保存成功！',U('enroll'));
                 } else {
                     $this->error('保存失败！');
                 }
@@ -231,7 +231,7 @@ class MeetingController extends AdminController {
                 if(!empty($msg)){
                     $this->error('信息保存成功，但'.$msg);
                 }
-                $this->success('保存成功！');
+                $this->success('保存成功！', U('enroll'));
             }
             $this->error('保存失败！');
         }

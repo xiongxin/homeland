@@ -61,7 +61,10 @@ class MyController extends AdminController {
             foreach ($data as $key => $value) {
                 if (empty($value)) unset($data[$key]);
             }
-
+            $data = $this->getNum($data); //处理金额去掉逗号
+            if (!empty(I('registered_capital'))) {
+                $data['registered_capital'] =price_dispose(I('registered_capital'));
+            }
             $data['insert_time'] = time_format();
             $data['update_time'] = time_format();
             $data['uid'] = session('user_auth.uid');
@@ -78,7 +81,29 @@ class MyController extends AdminController {
         $this->meta_title = '我的注册信息';
         $this->display();
     }
+    private function getNum($data) {
+        if (!empty(I('registered_capital'))) {
+            $data['registered_capital'] =price_dispose(I('registered_capital'));
+        } if (!empty(I('turnover_year1'))) {
+            $data['turnover_year1'] =price_dispose(I('turnover_year1'));
+        } if (!empty(I('net_margin_year1'))) {
+            $data['net_margin_year1'] =price_dispose(I('net_margin_year1'));
+        }if (!empty(I('turnover_year2'))) {
+            $data['turnover_year2'] =price_dispose(I('turnover_year2'));
+        } if (!empty(I('net_margin_year2'))) {
+            $data['net_margin_year2'] =price_dispose(I('net_margin_year2'));
+        }if (!empty(I('turnover_year3'))) {
+            $data['turnover_year3'] =price_dispose(I('turnover_year3'));
+        } if (!empty(I('net_margin_year3'))) {
+            $data['net_margin_year3'] =price_dispose(I('net_margin_year3'));
+        }if (!empty(I('turnover_year4'))) {
+            $data['turnover_year4'] =price_dispose(I('turnover_year4'));
+        } if (!empty(I('net_margin_year4'))) {
+            $data['net_margin_year4'] =price_dispose(I('net_margin_year4'));
+        }
 
+        return $data;
+    }
 
     public function companyedit() {
         $prefix = C('DB_PREFIX');
@@ -91,7 +116,10 @@ class MyController extends AdminController {
                 if (empty($value)) unset($data[$key]);
             }
             $data['update_time'] = time_format();
-
+            $data = $this->getNum($data); //处理金额去掉逗号
+            if (!empty(I('registered_capital'))) {
+                $data['registered_capital'] =price_dispose(I('registered_capital'));
+            }
             if($company->create($data) && $company->where(['uid'=>$uid])->save() !== false) {
                 $this->success('保存成功');
             } else {

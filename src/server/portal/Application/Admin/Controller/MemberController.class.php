@@ -192,28 +192,63 @@ class MemberController extends AdminController {
         $this->meta_title = '用户信息';
         $this->display();
     }
-    
+    private function getNum($data) {
+        if (!empty(I('registered_capital'))) {
+            $data['registered_capital'] =price_dispose(I('registered_capital'));
+        } if (!empty(I('turnover_year1'))) {
+            $data['turnover_year1'] =price_dispose(I('turnover_year1'));
+        } if (!empty(I('net_margin_year1'))) {
+            $data['net_margin_year1'] =price_dispose(I('net_margin_year1'));
+        }if (!empty(I('turnover_year2'))) {
+            $data['turnover_year2'] =price_dispose(I('turnover_year2'));
+        } if (!empty(I('net_margin_year2'))) {
+            $data['net_margin_year2'] =price_dispose(I('net_margin_year2'));
+        }if (!empty(I('turnover_year3'))) {
+            $data['turnover_year3'] =price_dispose(I('turnover_year3'));
+        } if (!empty(I('net_margin_year3'))) {
+            $data['net_margin_year3'] =price_dispose(I('net_margin_year3'));
+        }if (!empty(I('turnover_year4'))) {
+            $data['turnover_year4'] =price_dispose(I('turnover_year4'));
+        } if (!empty(I('net_margin_year4'))) {
+            $data['net_margin_year4'] =price_dispose(I('net_margin_year4'));
+        }
+
+        return $data;
+    }
     public function companyShow() {
         $id = I('id');
-        if (empty($id)) $this->error('参数错误!');
+        if (empty($id)) $this->error('用户尚未填写档案，请及时通知该用户填写档案！');
         $prefix = C('DB_PREFIX');
-        $company = M()->table($prefix.'company');
         if (IS_POST) {
             $data = I('post.');
             //处理没有填或是 0，'' ""
             foreach ($data as $key => $value) {
                 if (empty($value)) unset($data[$key]);
             }
+            $company = M()->table($prefix.'company');
             $data['update_time'] = time_format();
+            $data = $this->getNum($data); //处理金额去掉逗号
             if (!empty($data['check_status'])) $data['check_user'] = session('user_auth.username');
             if($company->create($data) && $company->where(['id'=>$id])->save() !== false) {
-                $this->success('保存成功', U('companyIndex'));
+                if(!empty($data['group_id'])) {
+                    $group = M()->table($prefix.'auth_group_access');
+                    if ($group->where(['uid'=>$data['uid']])->save(['group_id'=>$data['group_id']]) !== false) {
+                        if (empty($data['check_status'])) {
+                            $this->success('保存成功',U('Member/index'));
+                        }
+                    }
+                } else {
+                    $this->success('保存成功', U('companyIndex'));
+                }
             } else {
                 $this->error('保存失败');
             }
         }
 
-        $data = $company->where(['id'=>$id])->find();
+        $company = M()->table($prefix.'company c');
+        $data = $company->join($prefix.'auth_group_access aga on aga.uid=c.uid', 'left')
+            ->field('c.*, aga.group_id')
+            ->where(['id'=>$id])->find();
         if (empty($data)) $this->error('参数错误!');
 
         $this->assign('item', $data);
