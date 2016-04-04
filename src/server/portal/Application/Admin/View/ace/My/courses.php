@@ -70,7 +70,7 @@
                     <div class="col-sm-4">
                         <label>
                             <a class="btn btn-white" href="{:U('courseAdd')}">
-                                新增
+                                上传功课
                             </a>
                         </label>
                         <label>

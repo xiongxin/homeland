@@ -195,25 +195,37 @@ class MemberController extends AdminController {
     
     public function companyShow() {
         $id = I('id');
-        if (empty($id)) $this->error('参数错误!');
+        if (empty($id)) $this->error('用户尚未填写档案，请及时通知该用户填写档案！');
         $prefix = C('DB_PREFIX');
-        $company = M()->table($prefix.'company');
         if (IS_POST) {
             $data = I('post.');
             //处理没有填或是 0，'' ""
             foreach ($data as $key => $value) {
                 if (empty($value)) unset($data[$key]);
             }
+            $company = M()->table($prefix.'company');
             $data['update_time'] = time_format();
             if (!empty($data['check_status'])) $data['check_user'] = session('user_auth.username');
             if($company->create($data) && $company->where(['id'=>$id])->save() !== false) {
-                $this->success('保存成功', U('companyIndex'));
+                if(!empty($data['group_id'])) {
+                    $group = M()->table($prefix.'auth_group_access');
+                    if ($group->where(['uid'=>$data['uid']])->save(['group_id'=>$data['group_id']]) !== false) {
+                        if (empty($data['check_status'])) {
+                            $this->success('保存成功',U('Member/index'));
+                        }
+                    }
+                } else {
+                    $this->success('保存成功', U('companyIndex'));
+                }
             } else {
                 $this->error('保存失败');
             }
         }
 
-        $data = $company->where(['id'=>$id])->find();
+        $company = M()->table($prefix.'company c');
+        $data = $company->join($prefix.'auth_group_access aga on aga.uid=c.uid', 'left')
+            ->field('c.*, aga.group_id')
+            ->where(['id'=>$id])->find();
         if (empty($data)) $this->error('参数错误!');
 
         $this->assign('item', $data);

@@ -1,6 +1,11 @@
 <extend name="Public/base"/>
 
 <block name="body">
+    <style>
+        .help-block {
+            color: #d16e6c;
+        }
+    </style>
     <div class="row-fluid">
         <div class="span12">
             <div class="widget-box">
@@ -38,8 +43,8 @@
                                 <li>我们承诺为您完全保密</li>
                             </ol>
                         </div>
-                        <form id="company" action="{:U()}" method="post" class="form-horizontal">
-                            <div class="step-content row-fluid position-relative" id="step-container">
+                        <div class="step-content row-fluid position-relative" id="step-container">
+                            <form id="company" action="{:U()}" method="post" class="form-horizontal">
                                 <div class="step-pane active" id="step1">
                                     <div class="row-fluid">
                                         <div class="form-group">
@@ -48,7 +53,7 @@
                                             </label>
                                             <div class="col-xs-12 col-sm-6">
                                                 <input type="text" class="width-100" name="company_name"
-                                                    value="{$item.company_name}">
+                                                       value="{$item.company_name}">
                                             </div>
                                             <span class="check-tips"></span>
                                         </div>
@@ -83,8 +88,10 @@
                                                 企业注册资本
                                             </label>
                                             <div class="col-xs-12 col-sm-6">
-                                                <input type="text" name="registered_capital" class="width-100"
-                                                       value="{$item.registered_capital}">
+                                                <div class="clearfix">
+                                                    <input type="text" name="registered_capital" id="registered_capital" class="width-100"
+                                                           value="{$item.registered_capital}">
+                                                </div>
                                             </div>
                                             <span class="check-tips">（单位：元）</span>
                                         </div>
@@ -93,8 +100,10 @@
                                                 股东人数
                                             </label>
                                             <div class="col-xs-12 col-sm-6">
-                                                <input type="text" name="shareholder_num" class="width-100"
-                                                       value="{$item.shareholder_num}">
+                                                <div class="clearfix">
+                                                    <input type="text" name="shareholder_num" id="shareholder_num" class="width-100"
+                                                           value="{$item.shareholder_num}">
+                                                </div>
                                             </div>
                                             <span class="check-tips"></span>
                                         </div>
@@ -103,9 +112,9 @@
                                                 在企业内任职情况
                                             </label>
                                             <div class="col-xs-12 col-sm-7">
-                                                <textarea name="shareholder_num" class="form-control">{$item.shareholder_num}</textarea>
+                                                <textarea name="tenure_desc" class="form-control">{$item.shareholder_num}</textarea>
                                             </div>
-                                            <span class="help-block col-xs-12 col-sm-reset inline">
+                                            <span class="col-xs-12 col-sm-reset inline">
                                                 企业股东结构及在企业内任职情况
                                             </span>
                                         </div>
@@ -171,8 +180,10 @@
                                                 总资产周转率
                                             </label>
                                             <div class="col-xs-12 col-sm-6">
-                                                <input type="text" name="total_asset_turnover" class="width-100"
-                                                       value="{$item.total_asset_turnover}">
+                                                <div class="clearfix">
+                                                    <input type="text" name="total_asset_turnover" id="total_asset_turnover" class="width-100"
+                                                           value="{$item.total_asset_turnover}">
+                                                </div>
                                             </div>
                                             <span class="check-tips">%</span>
                                         </div>
@@ -181,8 +192,10 @@
                                                 应收帐款周转率
                                             </label>
                                             <div class="col-xs-12 col-sm-6">
-                                                <input type="text" class="width-100" name="accounts_receivable_turnover"
-                                                       value="{$item.accounts_receivable_turnover}">
+                                                <div class="clearfix">
+                                                    <input type="text" class="width-100" id="accounts_receivable_turnover" name="accounts_receivable_turnover"
+                                                           value="{$item.accounts_receivable_turnover}">
+                                                </div>
                                             </div>
                                             <span class="check-tips">%</span>
                                         </div>
@@ -191,69 +204,95 @@
                                                 毛利润率
                                             </label>
                                             <div class="col-xs-12 col-sm-6">
-                                                <input type="text" name="gross_profit_margin" class="width-100"
-                                                       value="{$item.gross_profit_margin}">
+                                                <div class="clearfix">
+                                                    <input type="text" name="gross_profit_margin" id="gross_profit_margin" class="width-100"
+                                                           value="{$item.gross_profit_margin}">
+                                                </div>
                                             </div>
                                             <span class="check-tips">%</span>
                                         </div>
 
                                     </div>
                                 </div>
+                            </form>
+                            <form id="company1" action="{:U('companyedit')}" method="post" class="form-horizontal">
                                 <div class="step-pane" id="step2">
-                                    <hr>
                                     <h3 class="center">企业人员情况</h3>
-                                    <div class="form-group">
-                                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                                            总人数
-                                        </label>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="total_people_count" class="width-100"
-                                                   value="{$item.total_people_count}">
+                                    <script id="rtpl" type="text/regular">
+                                        <div class="form-group">
+                                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                                                生产人员数量
+                                            </label>
+                                            <div class="col-xs-12 col-sm-2">
+                                                <div class="clearfix">
+                                                    <input type="text" r-model={production_people_count} name="production_people_count" id="production_people_count" class="width-100"
+                                                           value="{$item.production_people_count}" placeholder="（单位：人）">
+                                                </div>
+
+                                            </div>
+                                            <span class="check-tips"></span>
+                                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                                                管理人员数量
+                                            </label>
+                                            <div class="col-xs-12 col-sm-2">
+                                                <div class="clearfix">
+                                                    <input type="text" r-model={manage_people_count} name="manage_people_count" id="manage_people_count" class="width-100"
+                                                           value="{$item.manage_people_count}" placeholder="（单位：人）">
+                                                </div>
+
+                                            </div>
+                                            <span class="check-tips"></span>
+                                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                                                营销人员数量
+                                            </label>
+                                            <div class="col-xs-12 col-sm-2">
+                                                <div class="clearfix">
+                                                    <input type="text" r-model={marketing_people_count} name="marketing_people_count" id="marketing_people_count" class="width-100"
+                                                           value="{$item.marketing_people_count}" placeholder="（单位：人）">
+                                                </div>
+
+                                            </div>
+                                            <span class="check-tips"></span>
                                         </div>
-                                        <span class="check-tips"></span>
-                                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                                            管理人员数量
-                                        </label>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="manage_people_count" class="width-100"
-                                                   value="{$item.manage_people_count}">
+                                        <div class="form-group">
+
+                                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                                                技术人员数量
+                                            </label>
+                                            <div class="col-xs-12 col-sm-2">
+                                                <div class="clearfix">
+                                                    <input type="text" r-model={technology_people_count} name="technology_people_count" id="technology_people_count" class="width-100"
+                                                           value="{$item.technology_people_count}" placeholder="（单位：人）">
+                                                </div>
+
+                                            </div>
+                                            <span class="check-tips"></span>
+                                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                                                其他人员数量
+                                            </label>
+                                            <div class="col-xs-12 col-sm-2">
+                                                <div class="clearfix">
+                                                    <input type="text" r-model={other_people_count} name="other_people_count" id="other_people_count" class="width-100"
+                                                           value="{$item.other_people_count}" placeholder="（单位：人）">
+                                                </div>
+                                            </div>
+                                            <span class="check-tips"></span>
+                                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                                                总人数
+                                            </label>
+                                            <div class="col-xs-12 col-sm-2">
+                                                <div class="clearfix">
+                                                    <input r-model="total_people_count" disabled="disabled" type="text" name="total_people_count" id="total_people_count" class="width-100"
+                                                            value="{$item.total_people_count}" placeholder="（单位：人）">
+                                                </div>
+                                            </div>
+                                            <span class="check-tips"></span>
                                         </div>
-                                        <span class="check-tips"></span>
-                                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                                            营销人员数量
-                                        </label>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="marketing_people_count" class="width-100"
-                                                   value="{$item.marketing_people_count}">
-                                        </div>
-                                        <span class="check-tips"></span>
+                                    </script>
+                                    <div id="rapp">
+
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                                            生产人员数量
-                                        </label>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="production_people_count" class="width-100"
-                                                   value="{$item.production_people_count}">
-                                        </div>
-                                        <span class="check-tips"></span>
-                                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                                            技术人员数量
-                                        </label>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="technology_people_count" class="width-100"
-                                                   value="{$item.technology_people_count}">
-                                        </div>
-                                        <span class="check-tips"></span>
-                                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                                            其他人员数量
-                                        </label>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="other_people_count" class="width-100"
-                                                   value="{$item.other_people_count}">
-                                        </div>
-                                        <span class="check-tips"></span>
-                                    </div>
+
 
                                     <hr>
                                     <h3 class="center">员工年龄分布</h3>
@@ -262,24 +301,31 @@
                                             20岁以下
                                         </label>
                                         <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="people_age_count1" class="width-100"
-                                                   value="{$item.people_age_count1}">
+                                            <div class="clearfix">
+                                                <input type="text" name="people_age_count1" id="people_age_count1" class="width-100"
+                                                       value="{$item.people_age_count1}" placeholder="（单位：人）">
+                                            </div>
                                         </div>
                                         <span class="check-tips"></span>
                                         <label class="col-xs-12 col-sm-2 control-label no-padding-right">
                                             20-25岁
                                         </label>
                                         <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="people_age_count2" class="width-100"
-                                                   value="{$item.people_age_count2}">
+                                            <div class="clearfix">
+                                                <input type="text" name="people_age_count2" id="people_age_count2" class="width-100"
+                                                       value="{$item.people_age_count2}" placeholder="（单位：人）">
+                                            </div>
                                         </div>
                                         <span class="check-tips"></span>
                                         <label class="col-xs-12 col-sm-2 control-label no-padding-right">
                                             25-30岁
                                         </label>
                                         <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="people_age_count3" class="width-100"
-                                                   value="{$item.people_age_count3}">
+                                            <div class="clearfix">
+                                                <input type="text" name="people_age_count3" id="people_age_count3" class="width-100"
+                                                       value="{$item.people_age_count3}" placeholder="（单位：人）">
+                                            </div>
+
                                         </div>
                                         <span class="check-tips"></span>
                                     </div>
@@ -288,24 +334,30 @@
                                             30-35岁
                                         </label>
                                         <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="people_age_count4" class="width-100"
-                                                   value="{$item.people_age_count4}">
+                                            <div class="clearfix">
+                                                <input type="text" name="people_age_count4" id="people_age_count4" class="width-100"
+                                                       value="{$item.people_age_count4}" placeholder="（单位：人）">
+                                            </div>
                                         </div>
                                         <span class="check-tips"></span>
                                         <label class="col-xs-12 col-sm-2 control-label no-padding-right">
                                             35-40岁
                                         </label>
                                         <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="people_age_count5" class="width-100"
-                                                   value="{$item.people_age_count5}">
+                                            <div class="clearfix">
+                                                <input type="text" name="people_age_count5" id="people_age_count5" class="width-100"
+                                                       value="{$item.people_age_count5}" placeholder="（单位：人）">
+                                            </div>
                                         </div>
                                         <span class="check-tips"></span>
                                         <label class="col-xs-12 col-sm-2 control-label no-padding-right">
                                             40以上
                                         </label>
                                         <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="people_age_count6" class="width-100"
-                                                   value="{$item.people_age_count6}">
+                                            <div class="clearfix">
+                                                <input type="text" name="people_age_count6" id="people_age_count6" class="width-100"
+                                                       value="{$item.people_age_count6}" placeholder="（单位：人）">
+                                            </div>
                                         </div>
                                         <span class="check-tips"></span>
                                     </div>
@@ -326,15 +378,17 @@
                                             员工流失率（上年度员工流失率）
                                         </label>
                                         <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="employee_turnover" class="width-100"
-                                                   value="{$item.employee_turnover}">
+                                            <div class="clearfix">
+                                                <input type="text" name="employee_turnover" id="employee_turnover" class="width-100"
+                                                       value="{$item.employee_turnover}">
+                                            </div>
                                         </div>
                                         <span class="check-tips">%</span>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                                           目前企业阶段
+                                            目前企业阶段
                                         </label>
                                         <div class="col-xs-12 col-sm-6">
                                             <label>
@@ -368,81 +422,34 @@
                                     <style>
                                         .my-tips{float: left;font-size: 14px;margin-left: 10px;height: 25px;line-height: 21px;padding-top: 4px;}
                                     </style>
-                                    <div class="form-group">
-                                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                                            <?= intval(date('Y')) - 3 ?>年企业收入情况
-                                        </label>
-                                        <span class="check-tips my-tips">营业额：</span>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="turnover_year1" class="width-100"
-                                                   value="{$item.turnover_year1}"
-                                            placeholder="营业额">
-                                        </div>
-                                        <span class="check-tips my-tips">净利润：</span>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="net_margin_year1" class="width-100"
-                                                   value="{$item.net_margin_year1}"
-                                            placeholder="净利润" />
-                                        </div>
-                                    </div>
+                                    <?php $years = [3,2,1,0]; ?>
+                                    <volist name="years" id="vo" key="k">
+                                        <div class="form-group">
+                                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                                                <?= intval(date('Y')) - $vo ?>年企业收入情况
+                                            </label>
+                                            <span class="check-tips my-tips">营业额：</span>
+                                            <div class="col-xs-12 col-sm-2">
+                                                <div class="clearfix">
+                                                    <input type="text" name="turnover_year{$k}" id="turnover_year{$k}" class="width-100"
+                                                           value="{$item.turnover_year1}"
+                                                           placeholder="（单位：元）">
+                                                </div>
 
-                                    <div class="form-group">
-                                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                                            <?= intval(date('Y')) - 2 ?>年企业收入情况
-                                        </label>
-                                        <span class="check-tips my-tips">营业额：</span>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="turnover_year2" class="width-100"
-                                                   value="{$item.turnover_year2}"
-                                                   placeholder="营业额">
+                                            </div>
+                                            <span class="check-tips my-tips">净利润：</span>
+                                            <div class="col-xs-12 col-sm-2">
+                                                <div class="clearfix">
+                                                    <input type="text" name="net_margin_year{$k}" id="net_margin_year{$k}" class="width-100"
+                                                           value="{$item.net_margin_year1}"
+                                                           placeholder="（单位：元）" />
+                                                </div>
+                                            </div>
                                         </div>
-                                        <span class="check-tips my-tips">净利润：</span>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="net_margin_year2" class="width-100"
-                                                   value="{$item.net_margin_year2}"
-                                                   placeholder="净利润"   />
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                                            <?= intval(date('Y')) - 1 ?>年企业收入情况
-                                        </label>
-                                        <span class="check-tips my-tips">营业额：</span>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="turnover_year3" class="width-100"
-                                                   value="{$item.turnover_year3}"
-                                                   placeholder="营业额">
-                                        </div>
-                                        <span class="check-tips my-tips">净利润：</span>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="net_margin_year3" class="width-100"
-                                                   value="{$item.net_margin_year3}"
-                                                   placeholder="净利润"   />
-                                        </div>
-                                        <span class="check-tips"></span>
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">
-                                            <?= intval(date('Y')) ?>年企业收入情况
-                                        </label>
-                                        <span class="check-tips my-tips">营业额：</span>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="turnover_year4" class="width-100"
-                                                   value="{$item.turnover_year4}"
-                                                   placeholder="营业额">
-                                        </div>
-                                        <span class="check-tips my-tips">净利润：</span>
-                                        <div class="col-xs-12 col-sm-2">
-                                            <input type="text" name="net_margin_year4" class="width-100"
-                                                   value="{$item.net_margin_year4}"
-                                                   placeholder="净利润"   />
-                                        </div>
-                                    </div>
-
+                                    </volist>
                                 </div>
+                            </form>
+                            <form id="company2" action="{:U('companyedit')}" method="post" class="form-horizontal">
                                 <div class="step-pane" id="step3">
                                     <div class="row-fluid">
                                         <div class="form-group">
@@ -548,7 +555,8 @@
                                                 企业产品的简介（产品名称、性能、技术及价格、批发、零售、包装等，请罗列出产品的系列及详细的介绍）
                                             </label>
                                             <div class="col-xs-12 col-sm-7">
-                                                <textarea style="height: 120px;" name="product_desc" class="form-control">{$item.product_desc}</textarea>
+                                                <textarea style="height: 120px;" name="product_desc" class="form-control">
+                                                    {$item.product_desc}</textarea>
                                             </div>
                                         </div>
 
@@ -584,7 +592,8 @@
                                                 您认为企业目前遇到的困难是什么？出现了哪些问题？（请举具体案例说明）
                                             </label>
                                             <div class="col-xs-12 col-sm-7">
-                                                <textarea style="height: 120px;" name="enterprise_difficulty_desc" class="form-control">{$item.enterprise_difficulty_desc}</textarea>
+                                                <textarea style="height: 120px;" name="enterprise_difficulty_desc" class="form-control">
+                                                    {$item.enterprise_difficulty_desc}</textarea>
                                             </div>
                                         </div>
 
@@ -695,20 +704,21 @@
                                                 请列举出该模块内最希望解决的问题
                                             </label>
                                             <div class="col-xs-12 col-sm-7">
-                                                <textarea style="height: 120px;" name="need_support_question" class="form-control">{$item.need_support_question}</textarea>
+                                                <textarea style="height: 120px;" name="need_support_question" class="form-control">
+                                                    {$item.need_support_question}</textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </form>
+                        </div>
+                        <div class="clearfix form-actions">
+                            <div class="col-xs-12">
+                                <a href="javascript:;" class="btn btn-white" onclick="history.go(-1)">
+                                    返回
+                                </a>
                             </div>
-                            <div class="clearfix form-actions">
-                                <div class="col-xs-12">
-                                    <a href="javascript:;" class="btn btn-white" onclick="history.go(-1)">
-                                        返回
-                                    </a>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
                         <div class="row-fluid wizard-actions" style="position: absolute;right: 10px;bottom: 40px;">
                             <button class="btn btn-prev" disabled="disabled">
                                 <i class="icon-arrow-left"></i>
@@ -733,35 +743,385 @@
     <include file="Public/upload.pic"/>
     <script src="__ACE__/js/fuelux/fuelux.wizard.min.js"></script>
     <script src="__ACE__/js/bootbox.min.js"></script>
+    <script src="__ACE__/js/query.validate.min.js"></script>
+    <script src="__ACE__/js/regular.js"></script>
 
     <script type="text/javascript">
         jQuery(function($) {
-            var $validation = false;
+            $('#company').validate({
+                errorElement: 'div',
+                errorClass: 'help-block',
+                focusInvalid: false,
+                rules: {
+                    registered_capital: {
+                        number: true
+                    },
+                    shareholder_num: {
+                        number: true
+                    },
+                    total_asset_turnover: {
+                        number: true,
+                    },
+                    accounts_receivable_turnover: {
+                        number: true,
+                        max: 100
+                    },
+                    gross_profit_margin:{
+                        number: true,
+                        max: 100
+                    }
+                },
+                messages: {
+                    gross_profit_margin:{
+                        number:"请输入数字",
+                        max: '最大值100%'
+                    },
+                    accounts_receivable_turnover:{
+                        number: "请输入数字",
+                        max: "最大值100%"
+                    },
+                    total_asset_turnover: {
+                        number: "请输入数字"
+                    },
+                    registered_capital: {
+                        number: "请输入数字"
+                    },
+                    shareholder_num: {
+                        number: "请输入数字"
+                    }
+                }
+                ,
+
+                invalidHandler: function (event, validator) { //display error alert on form submit
+                    $('.alert-danger', $('.login-form')).show();
+                },
+
+                highlight: function (e) {
+                    $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+                },
+
+                success: function (e) {
+                    $(e).closest('.form-group').removeClass('has-error')
+                    $(e).remove();
+                },
+
+                errorPlacement: function (error, element) {
+                    if(element.is(':checkbox') || element.is(':radio')) {
+                        var controls = element.closest('div[class*="col-"]');
+                        if(controls.find(':checkbox,:radio').length > 1) controls.append(error);
+                        else error.insertAfter(element.nextAll('.lbl:eq(0)').eq(0));
+                    }
+                    else if(element.is('.select2')) {
+                        error.insertAfter(element.siblings('[class*="select2-container"]:eq(0)'));
+                    }
+                    else if(element.is('.chosen-select')) {
+                        error.insertAfter(element.siblings('[class*="chosen-container"]:eq(0)'));
+                    }
+                    else error.insertAfter(element.parent());
+                },
+
+                submitHandler: function (form) {
+                },
+                invalidHandler: function (form) {
+                }
+            });
+            function toThousands() {
+                var regStrs = [
+                    ['^0(\\d|.+)$', '$1'], //禁止录入整数部分两位以上，但首位为0
+                    [/[^\d.]/g, ''], //禁止录入任何非数字和点
+                    [/,/g, ''], //禁止录入任何非数字和点
+                    ['\\.(\\d?)\\.+', '.$1'], //禁止录入两个以上的点
+                    ['^(\\d+\\.\\d{2}).+', '$1'] //禁止录入小数点后两位以上
+                ];
+                for(i=0; i<regStrs.length; i++){
+                    var reg = new RegExp(regStrs[i][0]);
+                    this.value = this.value.replace(reg, regStrs[i][1]);
+                }
+                this.value = (this.value || '').replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
+            }
+            $(document).on('blur','#registered_capital',toThousands);
+            function getInt(val) {
+                return isNaN(parseInt(val)) ? 0 : parseInt(val);
+            }
+            //自动累加人员总数
+            var Rapp = Regular.extend({
+                template: '#rtpl',
+                computed: {
+                    total_people_count:{
+                        get: function (data) {
+                            return getInt(data.production_people_count) +
+                                getInt(data.manage_people_count) +
+                                getInt(data.marketing_people_count) +
+                                getInt(data.technology_people_count) +
+                                getInt(data.other_people_count);
+                        }
+                    }
+                }
+            });
+            var rapp = new Rapp().$inject("#rapp");
+            $('#company1').validate({
+                errorElement: 'div',
+                errorClass: 'help-block',
+                focusInvalid: false,
+                rules: {
+                    registered_capital: {
+                        number:true
+                    },
+                    shareholder_num: {
+                        number:true
+                    },
+                    total_asset_turnover:{
+                        number:true,
+                    },
+                    accounts_receivable_turnover:{
+                        number:true,
+                        max: 100
+                    },
+                    production_people_count:{
+                        number:true,
+                    },
+                    gross_profit_margin:{
+                        number:true,
+                        max: 100
+                    },
+                    manage_people_count:{
+                        number:true,
+                    },
+                    marketing_people_count:{
+                        number:true,
+                    },
+                    technology_people_count:{
+                        number:true,
+                    },
+                    other_people_count:{
+                        number:true,
+                    },
+                    people_age_count1:{
+                        number:true,
+                    },
+                    people_age_count2:{
+                        number:true,
+                    },
+                    people_age_count3:{
+                        number:true,
+                    },
+                    people_age_count4:{
+                        number:true,
+                    },
+                    people_age_count5:{
+                        number:true,
+                    },
+                    people_age_count6:{
+                        number:true,
+                    },
+                    employee_turnover:{
+                        number:true,
+                        max:100
+                    },
+                    turnover_year1:{
+                        number:true,
+                    },
+                    net_margin_year1: {
+                        number:true,
+                    },
+                    turnover_year2:{
+                        number:true,
+                    },
+                    net_margin_year2: {
+                        number:true,
+                    },
+                    turnover_year3:{
+                        number:true,
+                    },
+                    net_margin_year3: {
+                        number:true,
+                    },
+                    turnover_year4:{
+                        number:true,
+                    },
+                    net_margin_year4: {
+                        number:true,
+                    },
+                },
+
+                messages: {
+                    turnover_year1:{
+                        number:"请输入数字",
+                    },
+                    net_margin_year1: {
+                        number:"请输入数字",
+                    },
+                    turnover_year2:{
+                        number:"请输入数字",
+                    },
+                    net_margin_year2: {
+                        number:"请输入数字",
+                    },
+                    turnover_year3:{
+                        number:"请输入数字",
+                    },
+                    net_margin_year3: {
+                        number:"请输入数字",
+                    },
+                    turnover_year4:{
+                        number:"请输入数字",
+                    },
+                    net_margin_year4: {
+                        number:"请输入数字",
+                    },
+                    employee_turnover: {
+                        number:"请输入数字",
+                        max: '最大值100%'
+                    },
+                    people_age_count1: {
+                        number:"请输入数字",
+                    },
+                    people_age_count2: {
+                        number:"请输入数字",
+                    },
+                    people_age_count3: {
+                        number:"请输入数字",
+                    },
+                    people_age_count4: {
+                        number:"请输入数字",
+                    },
+                    people_age_count5: {
+                        number:"请输入数字",
+                    },
+                    people_age_count6: {
+                        number:"请输入数字",
+                    },
+
+                    other_people_count:{
+                        number:"请输入数字",
+                    },
+                    technology_people_count:{
+                        number:"请输入数字",
+                    },
+                    gross_profit_margin:{
+                        number:"请输入数字",
+                        max: '最大值100%'
+                    },
+                    production_people_count:{
+                        number: "请输入数字"
+                    },
+                    accounts_receivable_turnover:{
+                        number: "请输入数字",
+                        max: "最大值100%"
+                    },
+                    total_asset_turnover: {
+                        number: "请输入数字"
+                    },
+                    registered_capital: {
+                        number: "请输入数字"
+                    },
+                    shareholder_num: {
+                        number: "请输入数字"
+                    },
+                },
+
+                invalidHandler: function (event, validator) { //display error alert on form submit
+                    $('.alert-danger', $('.login-form')).show();
+                },
+
+                highlight: function (e) {
+                    $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+                },
+
+                success: function (e) {
+                    $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+                    $(e).remove();
+                },
+
+                errorPlacement: function (error, element) {
+                    if(element.is(':checkbox') || element.is(':radio')) {
+                        var controls = element.closest('div[class*="col-"]');
+                        if(controls.find(':checkbox,:radio').length > 1) controls.append(error);
+                        else error.insertAfter(element.nextAll('.lbl:eq(0)').eq(0));
+                    }
+                    else if(element.is('.select2')) {
+                        error.insertAfter(element.siblings('[class*="select2-container"]:eq(0)'));
+                    }
+                    else if(element.is('.chosen-select')) {
+                        error.insertAfter(element.siblings('[class*="chosen-container"]:eq(0)'));
+                    }
+                    else error.insertAfter(element.parent());
+                },
+
+                submitHandler: function (form) {
+                },
+                invalidHandler: function (form) {
+                }
+            });
             var url = $('#company').action;
             $('#fuelux-wizard').ace_wizard().on('change' , function(e, info){
-                $.ajax({
-                    cache: true,
-                    type: "POST",
-                    url: url,
-                    data:$('#company').serialize(),// 你的formid
-                    error: function(request) {
-                        alert("保存失败");
-                    },
-                    success: function(data) {
-                        console.log(data);
+                if(info.step==1) {
+                    if(!$('#company').valid()) {
+                        bootbox.dialog({
+                            message: '<p class="text-warning bigger-110 orange"><i class="icon-warning-sign"></i>表单填写出错，请重新检查</p>',
+                            buttons: {
+                                "success" : {
+                                    "label" : "OK",
+                                    "className" : "btn-sm btn-primary"
+                                }
+                            }
+                        });
+
+                        return false;
+                    }else {
+                        $.ajax({
+                            cache: true,
+                            type: "POST",
+                            url: url,
+                            data:$('#company1').serialize(),// 你的formid
+                            error: function(request) {
+                                alert("保存失败");
+                            },
+                            success: function(data) {
+                                url = "{:U('companyedit')}"
+                            }
+                        });
                     }
-                });
-                if(info.step == 1 && $validation) {
-                    if(!$('#validation-form').valid()) return false;
+
                 }
+                if(info.step==2) {
+                    if(!$('#company1').valid()) {
+                        bootbox.dialog({
+                            message: '<p class="text-warning bigger-110 orange"><i class="icon-warning-sign"></i>表单填写出错，请重新检查</p>',
+                            buttons: {
+                                "success" : {
+                                    "label" : "OK",
+                                    "className" : "btn-sm btn-primary"
+                                }
+                            }
+                        });
+
+                        return false;
+                    }else {
+                        $.ajax({
+                            cache: true,
+                            type: "POST",
+                            url: $('#company1').action,
+                            data:$('#company1').serialize(),// 你的formid
+                            error: function(request) {
+                                alert("保存失败");
+                            },
+                            success: function(data) {
+                                url = "{:U('companyedit')}"
+                            }
+                        });
+                    }
+                }
+
             }).on('finished', function(e) {
-                var form = $('#company');
+                var form = $('#company2');
+                //客户完成资料之后提交审核
                 <if condition="empty($item['check_status'])">
                     form.append('<input type="hidden" name="check_status" value="WAT" />');
                 $.ajax({
                     cache: true,
                     type: "POST",
-                    url: url,
+                    url: form.action,
                     data:form.serialize(),
                     error: function(request) {
                         alert("保存失败");
@@ -782,7 +1142,7 @@
                     $.ajax({
                         cache: true,
                         type: "POST",
-                        url: url,
+                        url: form.action,
                         data:form.serialize(),
                         error: function(request) {
                             alert("保存失败");
@@ -803,7 +1163,7 @@
                     $.ajax({
                         cache: true,
                         type: "POST",
-                        url: url,
+                        url: form.action,
                         data:form.serialize(),
                         error: function(request) {
                             alert("保存失败");
