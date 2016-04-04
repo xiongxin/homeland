@@ -236,7 +236,7 @@ function get_app(){
  */
 function price_dispose($price){
     
-    return intval(floatval($price));
+    return intval(str_replace(',','',$price));
 }
 
 /**

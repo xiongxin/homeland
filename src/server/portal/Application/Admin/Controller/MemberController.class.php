@@ -192,7 +192,29 @@ class MemberController extends AdminController {
         $this->meta_title = '用户信息';
         $this->display();
     }
-    
+    private function getNum($data) {
+        if (!empty(I('registered_capital'))) {
+            $data['registered_capital'] =price_dispose(I('registered_capital'));
+        } if (!empty(I('turnover_year1'))) {
+            $data['turnover_year1'] =price_dispose(I('turnover_year1'));
+        } if (!empty(I('net_margin_year1'))) {
+            $data['net_margin_year1'] =price_dispose(I('net_margin_year1'));
+        }if (!empty(I('turnover_year2'))) {
+            $data['turnover_year2'] =price_dispose(I('turnover_year2'));
+        } if (!empty(I('net_margin_year2'))) {
+            $data['net_margin_year2'] =price_dispose(I('net_margin_year2'));
+        }if (!empty(I('turnover_year3'))) {
+            $data['turnover_year3'] =price_dispose(I('turnover_year3'));
+        } if (!empty(I('net_margin_year3'))) {
+            $data['net_margin_year3'] =price_dispose(I('net_margin_year3'));
+        }if (!empty(I('turnover_year4'))) {
+            $data['turnover_year4'] =price_dispose(I('turnover_year4'));
+        } if (!empty(I('net_margin_year4'))) {
+            $data['net_margin_year4'] =price_dispose(I('net_margin_year4'));
+        }
+
+        return $data;
+    }
     public function companyShow() {
         $id = I('id');
         if (empty($id)) $this->error('用户尚未填写档案，请及时通知该用户填写档案！');
@@ -205,9 +227,7 @@ class MemberController extends AdminController {
             }
             $company = M()->table($prefix.'company');
             $data['update_time'] = time_format();
-            if (!empty(I('registered_capital'))) {
-                $data['registered_capital'] =price_dispose(I('registered_capital'));
-            }
+            $data = $this->getNum($data); //处理金额去掉逗号
             if (!empty($data['check_status'])) $data['check_user'] = session('user_auth.username');
             if($company->create($data) && $company->where(['id'=>$id])->save() !== false) {
                 if(!empty($data['group_id'])) {

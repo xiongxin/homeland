@@ -432,7 +432,7 @@
                                             <div class="col-xs-12 col-sm-2">
                                                 <div class="clearfix">
                                                     <input type="text" name="turnover_year{$k}" id="turnover_year{$k}" class="width-100"
-                                                           value="{$item.turnover_year1}"
+                                                           value="<?= $item['turnover_year'.$k] ?>"
                                                            placeholder="（单位：元）">
                                                 </div>
 
@@ -441,7 +441,7 @@
                                             <div class="col-xs-12 col-sm-2">
                                                 <div class="clearfix">
                                                     <input type="text" name="net_margin_year{$k}" id="net_margin_year{$k}" class="width-100"
-                                                           value="{$item.net_margin_year1}"
+                                                           value="<?= $item['net_margin_year'.$k] ?>"
                                                            placeholder="（单位：元）" />
                                                 </div>
                                             </div>
@@ -840,6 +840,16 @@
                 this.value = (this.value || '').replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
             }
             $(document).on('blur','#registered_capital',toThousands);
+            $(document).on('blur','#turnover_year1',toThousands);
+            $(document).on('blur','#net_margin_year1',toThousands);
+            $(document).on('blur','#turnover_year2',toThousands);
+            $(document).on('blur','#net_margin_year2',toThousands);
+            $(document).on('blur','#turnover_year3',toThousands);
+            $(document).on('blur','#net_margin_year3',toThousands);
+            $(document).on('blur','#turnover_year3',toThousands);
+            $(document).on('blur','#net_margin_year3',toThousands);
+            $(document).on('blur','#turnover_year4',toThousands);
+            $(document).on('blur','#net_margin_year4',toThousands);
             function getInt(val) {
                 return isNaN(parseInt(val)) ? 0 : parseInt(val);
             }
@@ -1029,7 +1039,7 @@
                 },
 
                 success: function (e) {
-                    $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+                    $(e).closest('.form-group').removeClass('has-error')
                     $(e).remove();
                 },
 
