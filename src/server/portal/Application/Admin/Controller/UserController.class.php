@@ -425,7 +425,6 @@ class UserController extends AdminController {
 
 
         }
-        dump($data);
         $this->assign('item', $data);
         $this->assign('search', $search);
         $this->meta_title = '添加回访';
