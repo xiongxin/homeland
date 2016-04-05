@@ -1067,7 +1067,9 @@
                 invalidHandler: function (form) {
                 }
             });
-            var url = $('#company').action;
+            var url = $('#company').attr('action');
+            console.log(document.getElementById('company'));
+            console.log(url);
             $('#fuelux-wizard').ace_wizard().on('change' , function(e, info){
                 if(info.step==1) {
                     if(!$('#company').valid()) {
@@ -1087,7 +1089,7 @@
                             cache: true,
                             type: "POST",
                             url: url,
-                            data:$('#company1').serialize(),// 你的formid
+                            data:$('#company').serialize(),// 你的formid
                             error: function(request) {
                                 alert("保存失败");
                             },
@@ -1109,13 +1111,15 @@
                                 }
                             }
                         });
-                        
                         return false;
                     }else {
+                        console.log($('#company')[0].action);
+                        console.log($('#company1')[0].action);
+                        console.log($('#company2')[0].action);
                         $.ajax({
                             cache: true,
                             type: "POST",
-                            url: $('#company1').action,
+                            url: $('#company1').attr('action'),
                             data:$('#company1').serialize(),// 你的formid
                             error: function(request) {
                                 alert("保存失败");
@@ -1129,13 +1133,14 @@
 
             }).on('finished', function(e) {
                 var form = $('#company2');
+                console.log(form.action);
                 //客户完成资料之后提交审核
                 <if condition="empty($item['check_status'])">
                     form.append('<input type="hidden" name="check_status" value="WAT" />');
                     $.ajax({
                         cache: true,
                         type: "POST",
-                        url: form.action,
+                        url: form.attr('action'),
                         data:form.serialize(),
                         error: function(request) {
                             alert("保存失败");
@@ -1156,7 +1161,7 @@
                     $.ajax({
                         cache: true,
                         type: "POST",
-                        url: form.action,
+                        url: form.attr('action'),
                         data:form.serialize(),
                         error: function(request) {
                             alert("保存失败");
@@ -1177,7 +1182,7 @@
                     $.ajax({
                         cache: true,
                         type: "POST",
-                        url: form.action,
+                        url: form.attr('action'),
                         data:form.serialize(),
                         error: function(request) {
                             alert("保存失败");

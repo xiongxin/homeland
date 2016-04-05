@@ -38,7 +38,7 @@
                                 <td><span style="color:#999;padding-right:8px;">姓名:</span>{$item.chairman_name}</td>
                             </tr>
                             <tr>
-                                <td><span style="color:#999;padding-right:8px;">手机号码:</span>{$item.telephone}</td>
+                                <td><span style="color:#999;padding-right:8px;">手机号码:</span>{$item.mobile}</td>
                             </tr>
                             <tr>
                                 <td><span style="color:#999;padding-right:8px;">签约类型:</span>{$item.title}</td>

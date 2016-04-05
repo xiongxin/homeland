@@ -58,10 +58,11 @@ class UserController extends AdminController {
         }elseif(!empty($nickname)){
             $map['m.nickname']    =   array('like', '%'.(string)$nickname.'%');
         }
-
+        //$map['aga.group_id'] = ['not in', '5,6'];
         $prefix = C('DB_PREFIX');
         $model = M()->table($prefix.'ucenter_member um')
-                    ->join($prefix.'member m on m.uid = um.id','left');
+                    ->join($prefix.'member m on m.uid = um.id','left')
+                    ->join($prefix.'auth_group_access aga on aga.uid=um.id', 'left');
         $list   = $this->lists($model, $map,'','m.*,um.username,um.id');
         $this->assign('_list', $list);
         $this->meta_title = '用户信息';

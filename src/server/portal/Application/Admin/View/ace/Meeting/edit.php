@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-xs-12 col-sm-2 control-label no-padding-right">回访记录</label>
+            <label class="col-xs-12 col-sm-2 control-label no-padding-right">会议描述</label>
             <div class="col-xs-12 col-sm-7">
                 <textarea  name="description">{$item.description}</textarea>
                 {:hook('adminArticleEdit', array('name'=>'description'))}
