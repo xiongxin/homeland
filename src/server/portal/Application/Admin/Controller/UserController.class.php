@@ -412,17 +412,20 @@ class UserController extends AdminController {
                 $map['cr.chairman_name|cr.chairman_nickname']    =   array('like', '%'.(string)$search.'%');
             }
 
-            $model = M()->table($prefix.'company_reg cr')
+            $model = M()->table($prefix.'company c')
+                ->join($prefix.'company_reg cr on cr.uid = c.uid','left')
                 ->join($prefix.'ucenter_member um on um.id=cr.uid','left')
                 ->join($prefix.'auth_group_access aga on aga.uid=cr.uid', 'left')
                 ->join($prefix.'auth_group ag on ag.id=aga.group_id', 'left');
             $data = $model->field(array('cr.*' ,'ag.title', 'cr.insert_time as time'))->where($map)->find();
 
             if (empty($data)) {
-                $this->error('该用户不存在!');
+                $this->error('找不到该用户，请重新输入姓名或手机号码查询');
             }
-        }
 
+
+        }
+        dump($data);
         $this->assign('item', $data);
         $this->assign('search', $search);
         $this->meta_title = '添加回访';

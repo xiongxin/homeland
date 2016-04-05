@@ -189,7 +189,7 @@
                 </div>
                 <div class="f_error"></div>
                 <div class="f_submit">
-                    <a class="f_submitBtn fs_submitBtn validate_submit">提交</a>
+                    <a id="sbt" class="f_submitBtn fs_submitBtn validate_submit">提交</a>
                 </div>
             </form>
         </div>
@@ -272,18 +272,7 @@
         });
 
         if(flag){
-            $.ajax({
-                cache: true,
-                type: "POST",
-                url:$('#submit-form').action,
-                data:$('#submit-form').serialize(),// 你的formid
-                error: function(request) {
-                    layer.alert("Connection error");
-                },
-                success: function(data) {
-                    layer.alert(JSON.parse(data).msg);
-                }
-            });
+            $("#submit-form").submit();
         }
         return false;
     });
