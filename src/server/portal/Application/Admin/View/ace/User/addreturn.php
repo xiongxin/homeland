@@ -58,10 +58,9 @@
                     </div>
                     <form action="" class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">回访记录</label>
+                            <label class="col-xs-12 col-sm-2 control-label no-padding-right">内容</label>
                             <div class="col-xs-12 col-sm-7">
-                                <textarea  name="content"></textarea>
-                                {:hook('adminArticleEdit', array('name'=>'content'))}
+                                <textarea style="height: 100px;width: 100%"  name="content"></textarea>
                             </div>
                         </div>
 

@@ -19,7 +19,7 @@ class MemberController extends AdminController {
         $nickname       =   I('nickname');
         $map['m.status']  =   array('egt',0);
         if(is_numeric($nickname)){
-            $map['uid|nickname']=   array(intval($nickname),array('like','%'.$nickname.'%'),'_multi'=>true);
+            $map['c.uid|cr.mobile']=   ['like', '%' . intval($nickname) . '%'];
         }elseif(!empty($nickname)){
             $map['m.nickname']    =   array('like', '%'.(string)$nickname.'%');
         }
@@ -81,12 +81,18 @@ class MemberController extends AdminController {
                                     if ($company_reg->where(['id'=>I('id')])->save(['uid'=>$user_id]) === false) {
                                         $this->error('操作失败');
                                     }else {
-                                        //发送短信
-                                        $group_name = $this->get_group_name(intval(I('group_id')));//I('mobile');I('chairman_nickname');
-                                        if ($this->_enroll_notify(I('mobile'), I('chairman_nickname'),$group_name)){
-                                            $this->success('操作成功！');
-                                        } else {
-                                            $this->error('数据保存成功，短信发送失败');
+                                        $company = M()->table($prefix.'company');
+                                        $company_data = I('post.');
+                                        $company_data['uid'] = $user_id;
+                                        if ($company->create($company_data) &&
+                                            $company->add() > 0) {
+                                            //发送短信
+                                            $group_name = $this->get_group_name(intval(I('group_id')));//I('mobile');I('chairman_nickname');
+                                            if ($this->_enroll_notify(I('mobile'), I('chairman_nickname'),$group_name)){
+                                                $this->success('操作成功！',U('index'));
+                                            } else {
+                                                $this->error('数据保存成功，短信发送失败');
+                                            }
                                         }
                                     }
                                 }else {
@@ -119,6 +125,8 @@ class MemberController extends AdminController {
             }
             $map['e.meeting_id'] = intval($meeting_id);
             $map['cr.uid'] = ['EXP', 'is null'];
+            //$map['e.is_affirm'] = 'YES';
+            //$map['e.is_sign'] = 'YES';
             $model = M()->table($prefix.'company_reg cr')
                 ->join($prefix.'enroll e on e.id=cr.eid','left');
 
@@ -221,27 +229,20 @@ class MemberController extends AdminController {
         $prefix = C('DB_PREFIX');
         if (IS_POST) {
             $data = I('post.');
-            //处理没有填或是 0，'' ""
-            foreach ($data as $key => $value) {
-                if (empty($value)) unset($data[$key]);
-            }
             $company = M()->table($prefix.'company');
             $data['update_time'] = time_format();
             $data = $this->getNum($data); //处理金额去掉逗号
-            if (!empty($data['check_status'])) $data['check_user'] = session('user_auth.username');
-            if($company->create($data) && $company->where(['id'=>$id])->save() !== false) {
-                if(!empty($data['group_id'])) {
+            $data['check_status'] = 'OK#';
+            $data['check_user'] = session('user_auth.username');
+            $group_id = $data['group_id'];
+            unset($data['group_id']);
+            if(($company->where(['id'=>$id])->save($data) !== false)) {
                     $group = M()->table($prefix.'auth_group_access');
-                    if ($group->where(['uid'=>$data['uid']])->save(['group_id'=>$data['group_id']]) !== false) {
-                        if (empty($data['check_status'])) {
-                            $this->success('保存成功',U('Member/index'));
-                        }
+                    if ($group->where(['uid'=>$data['uid']])->save(['group_id'=>$group_id]) !== false) {
+                        $this->success('保存成功',U('Member/index'));
                     }
-                } else {
-                    $this->success('保存成功', U('companyIndex'));
-                }
             } else {
-                $this->error('保存失败');
+                $this->error('保存失败!!!!!');
             }
         }
 

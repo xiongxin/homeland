@@ -96,17 +96,40 @@ class PublicController extends Mall {
                 ['AND'=>['e.meeting_id'=>$meeting_id,'e.wx_id'=>$this->user['wx_id']]])){
                 $this->error('您已经报名，请勿重复报名！');
             }
-
             $data = [
                 'wx_id' => $this->user['wx_id'],
                 'create_time' => time_format(time()),
                 'update_time' => time_format(time()),
-                'sign_time' => time_format(time())
+                'sign_time' => time_format(time()),
+                'meeting_id' => $meeting_id,
+                'name' => I('post.name'),
+                'mobile' => I('post.mobile'),
+                'position' => I('post.position'),
+                'company_name' => I('post.company_name'),
+                'referee' => I('post.referee'),
             ];
-            $data = array_merge(I('post.'), $data);
-            if (M('t_enroll')->insert($data)) {
-                $this->success('',U('/public/enrollSuccess'));
-            } else {
+            $company_reg = [
+                'chairman_name' => I('post.name'),
+                'company_name' => I('post.company_name'),
+                'position' => I('post.position'),
+                'email' => I('post.email'),
+                'mobile' => I('post.mobile'),
+                'founding_time' => I('post.founding_time'),
+                'business_licence_num' => I('post.business_licence_num'),
+                'industry_id' => I('post.industry_id'),
+                'enterprise_nature' => I('post.enterprise_nature'),
+                'scale' => I('post.scale'),
+                'insert_time' => time_format(time()),
+                'update_time' => time_format(time()),
+            ];
+            //$data = array_merge(I('post.'), $data);
+            //$company_reg = array_merge(I('post.'), $company_reg);
+            if ( $last = M('t_enroll')->insert($data) ){
+                $company_reg['eid'] = $last;
+                if (M('t_company_reg')->insert($company_reg)) {
+                    $this->redirect(U('/public/enrollSuccess'));
+                }
+            }  else {
                 $this->error('报名失败！');
             }
         }

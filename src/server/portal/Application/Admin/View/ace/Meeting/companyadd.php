@@ -13,7 +13,7 @@
             <div class="tab-content">
                 <div id="person" class="tab-pane in active">
                     <div class="form-group">
-                        <label class="col-xs-12 col-sm-2 control-label no-padding-right">董事长名称</label>
+                        <label class="col-xs-12 col-sm-2 control-label no-padding-right"><?= $item['position'] ?>姓名</label>
                         <div class="col-xs-12 col-sm-6">
                             <div class="clearfix">
                                 <input type="text" id="chairman_name" class="width-100" name="chairman_name"

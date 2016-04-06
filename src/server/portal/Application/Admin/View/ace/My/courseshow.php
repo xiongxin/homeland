@@ -63,8 +63,7 @@
         <div class="form-group">
             <label class="col-xs-12 col-sm-2 control-label no-padding-right">发表评论</label>
             <div class="col-xs-12 col-sm-7">
-                <textarea  name="content"></textarea>
-                {:hook('adminArticleEdit', array('name'=>'content'))}
+                <textarea style="width: 100%;height: 100px;" name="content"></textarea>
             </div>
         </div>
 
