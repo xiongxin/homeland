@@ -30,9 +30,9 @@
                     </th>
                     <th class="">辅导主题</th>
                     <th class="">公司名称</th>
+                    <th class="">负责人</th>
                     <th class="">主持人</th>
                     <th class="">地址</th>
-                    <th class="">记录人</th>
                     <th class="">辅导时间</th>
                     <th class="">操作</th>
                 </tr>
@@ -49,9 +49,9 @@
                             </td>
                             <td>{$vo.title}</td>
                             <td><span>{$vo.company_name}</span></td>
+                            <td><span>{$vo.person}</span></td>
                             <td>{$vo.emcee}</td>
                             <td><span>{$vo.address}</span></td>
-                            <td><span>{$vo.record}</span></td>
                             <td><span>{$vo.insert_time}</span></td>
                             <td>
                                 <a title="详情" href="{:U('edit?id='.$vo['id'])}" class="">

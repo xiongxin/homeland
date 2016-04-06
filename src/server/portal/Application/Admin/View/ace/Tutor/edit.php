@@ -42,6 +42,15 @@
 
                                 <div class="form-group">
                                     <label class="col-xs-12 col-sm-2 control-label no-padding-right">
+                                        辅导负责人
+                                    </label>
+                                    <div class="col-xs-12 col-sm-7">
+                                        <input name="person" class="form-control" value="{$item.person}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-xs-12 col-sm-2 control-label no-padding-right">
                                         辅导时间
                                     </label>
                                     <div class="col-xs-12 col-sm-6">
