@@ -13,7 +13,6 @@
 
     <style type="text/css">
         html {
-            background-color: #ae7ac5;
             color: #000000;
             background-position: left top;
         }
@@ -63,7 +62,7 @@
         }
 
         .fs_cValidate {
-            color: #7c4593;
+            color: <?= $item['font_color'] ?>;
         }
 
         .fs_cDescribe a, .fs_cDescribe a:visited {
@@ -83,8 +82,7 @@
         }
 
         .fs_component {
-            background-color: #cab8d3;
-            color: #7c4593
+            background-color: #ccc;
         }
 
         .fs_header {
@@ -93,31 +91,12 @@
         }
 
         .fs_main {
-            background-color: #f9eefe;
-            color: #7c4593;
-        }
-
-        .fs_submitBtn,.fs_mobile_vcode_btn {
-            background-color: #9553b1;
-            color: #fff;
-            box-shadow: 0 2px 4px -2px #ac6dc6;
-        }
-
-        .fs_submitBtn:hover,.fs_mobile_vcode_btn:hover {
-            background-color: #ac6dc6
+            background-color: #fff;
+            color: <?= $item['font_color'] ?>;
         }
 
         .f_copyright .fs_powerby {
             color: #EEE;
-        }
-
-        .Zebra_DatePicker td.dp_selected {
-            background-color: #9553b1;
-            color: #fff;
-        }
-
-        .Zebra_DatePicker td.dp_current {
-            color: #ac6dc6
         }
     </style>
 </head>
