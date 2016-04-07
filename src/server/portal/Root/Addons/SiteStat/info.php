@@ -1,7 +1,6 @@
  <div class="row">
     <div class="col-sm-12">
-
-    <?php if(isset($company_info)):?>
+    <?php if(isset($is_member)):?>
         <div class="col-xs-12">
             <h3 class="header smaller lighter green">
                 快捷入口
@@ -29,7 +28,7 @@
                 <div class="alert alert-danger">
                     您需要先完善了建档，才能进行课程相关的操作！
                 </div>
-                <a href="<?=U('my/companyedit')?>" class="btn btn-success">完善建档信息</a>
+                <a href="<?=U('my/companyadd')?>" class="btn btn-success">完善建档信息</a>
             </p>
             <?php elseif($company_info['check_status'] == 'WAT'):?>
             <div class="alert alert-info">

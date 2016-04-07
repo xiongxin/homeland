@@ -52,7 +52,11 @@ class SiteStatAddon extends Addon{
             }
         }else{
             $company_info = M('company')->where(['uid'=>$uid])->field('company_name,check_status')->find();
+            if(empty($company_info)){
+                redirect(U('my/companyadd'));
+            }
             $this->assign('company_info',$company_info);
+            $this->assign('is_member',true);
         }
 
         $this->display('info');
