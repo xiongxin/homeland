@@ -94,20 +94,9 @@
                             </td>
                             <td>{$vo.sign_time}</td>
                             <td>
-                                <?php
-                                $prefix = C('DB_PREFIX');
-                                $company = M()->table($prefix.'company_reg c')
-                                    ->where(['eid'=>$vo['id']])->find();
-                                ?>
-                                <if condition="empty($company)">
-                                    <a title="完善信息" href="{:U('companyAdd?eid='.$vo['id'])}" class="">
-                                        完善信息
-                                    </a>
-                                    <else/>
-                                    <a title="完善信息" href="{:U('companyEdit?eid='.$vo['id'])}" class="">
-                                        完善信息
-                                    </a>
-                                </if>
+                                <a title="完善信息" href="{:U('companyEdit?eid='.$vo['id'])}" class="">
+                                    完善信息
+                                </a>
                                 <a title="删除报名信息" href="{:U('enrollDelete?id='.$vo['id'])}" class="confirm ajax-get">
                                     删除
                                 </a>

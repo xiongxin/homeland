@@ -97,6 +97,9 @@
                                                     <input type="hidden" name="mobile" value="{$vo.mobile}"/>
                                                     <input type="hidden" name="email" value="{$vo.email}"/>
                                                     <input type="hidden" name="chairman_nickname" value="{$vo.chairman_name}"/>
+                                                    <input type="hidden" name="company_name" value="{$vo.company_name}"/>
+                                                    <input type="hidden" name="corporation_name" value="{$vo.chairman_name}"/>
+                                                    <input type="hidden" name="enterprise_nature" value="{$vo.enterprise_nature}"/>
                                                     <button type="submit" target-form="form-horizontal{$vo.id}"
                                                             class="btn btn-sm btn-success no-border ajax-post no-refresh" id="sub-btn">
                                                         保存并发送通知
