@@ -114,7 +114,7 @@
         <div class="f_body fs_body">
             <?=$item['description']?>
             <form action="<?= U('/public/enroll') ?>" id="submit-form" method="post">
-                <input type="hidden" name="meeting_id" value="<?= $_GET['meeting_id'] ?>" >
+                <input type="hidden" name="meeting_id" value="<?= $item['id'] ?>" >
                 <div class="f_component">
                     <p class="f_cTitle fs_cTitle">您的姓名
                         <span class="f_cValidate fs_cValidate">*</span>
