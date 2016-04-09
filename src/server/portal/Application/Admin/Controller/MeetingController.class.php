@@ -24,7 +24,7 @@ class MeetingController extends AdminController {
             $return = M()->table($prefix.'meeting');
             $data['insert_time'] = time_format();
             $data['update_time'] = time_format();
-            if ($return->create()) {
+            if ($return->create($data)) {
                 $result = $return->add();
                 if ($result > 0) {
                     $this->success('创建成功！',U('Meeting/index'));

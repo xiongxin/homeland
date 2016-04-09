@@ -493,7 +493,7 @@ input.weui_btn_plain_default {
 }
 .weui_label {
   display: block;
-  width: 3em;
+  width: 4em;
 }
 .weui_input {
   width: 100%;
@@ -564,10 +564,10 @@ input.weui_btn_plain_default {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .weui_cell_select {
-  padding: 0;
+  /*padding: 0;*/
 }
 .weui_cell_select .weui_select {
-  padding-right: 30px;
+  /*padding-right: 30px;*/
 }
 .weui_cell_select .weui_cell_bd:after {
   content: " ";
@@ -593,10 +593,10 @@ input.weui_btn_plain_default {
   background-color: transparent;
   width: 100%;
   font-size: inherit;
-  height: 44px;
+  /*height: 44px;*/
   position: relative;
   z-index: 1;
-  padding-left: 15px;
+  /*padding-left: 15px;*/
 }
 .weui_select_before {
   padding-right: 15px;
@@ -852,7 +852,7 @@ input.weui_btn_plain_default {
   font-size: 15px;
 }
 .weui_article section {
-  margin-bottom: 1.5em;
+  /*margin-bottom: 1.5em;*/
 }
 .weui_article h1 {
   font-size: 17px;
@@ -2016,7 +2016,7 @@ body,html {
     background-color:#fbf9fe
 }
 .container {
-    overflow:hidden
+    /*overflow:hidden*/
 }
 .container,.page {
     position:absolute;
@@ -2026,7 +2026,7 @@ body,html {
     left:0
 }
 .hd {
-    padding:2em 0
+    padding:2em 0 1em 0;
 }
 .page_desc {
     text-align:center;
@@ -2039,7 +2039,7 @@ body,html {
 .page_title {
     text-align:center;
     font-size:34px;
-    color:#3cc51f;
+    /*color:#3cc51f;*/
     font-weight:400;
     margin:0 15%
 }
