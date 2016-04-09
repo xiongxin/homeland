@@ -22,11 +22,32 @@
                        value="<?= empty($item) ? "" : $item['subheading'] ?>">
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-2 control-label no-padding-right">会议主题图片</label>
+            <div class="col-xs-12 col-sm-6">
+                <div class="upload-wrap">
+                    <a href="javascript:" class="btn btn-sm btn-success pic-upload" name="pic_url" val="{$item['pic_url']|default=''}" >
+                        <i class="icon-cloud-upload "></i>上传图片
+                    </a>
+                    <notempty name="item['pic_url']">
+                        <div class="preview"><img src="<?=imageView2($item['pic_url'],340,150)?>" /></div>
+                    </notempty>
+                </div>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-xs-12 col-sm-2 control-label no-padding-right">会议描述</label>
             <div class="col-xs-12 col-sm-7">
-                <textarea  name="description">{$item.description}</textarea>
-                {:hook('adminArticleEdit', array('name'=>'description'))}
+                <textarea  style="width: 100%;height: 100px;" name="description">{$item.description}</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-2 control-label no-padding-right">会议流程</label>
+            <div class="col-xs-12 col-sm-7">
+                <textarea style="width: 100%;height: 100px;" name="process">{$item.process}</textarea>
             </div>
         </div>
 

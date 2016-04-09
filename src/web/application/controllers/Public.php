@@ -142,4 +142,13 @@ class PublicController extends Mall {
 
         $this->layout->setLayoutFile(null);
     }
+    
+    public function signAction() {
+        $meeting_id = intval(I('meeting_id'));
+        if(empty($meeting_id)){
+            $this->error('参数错误，会议ID为空！');
+        }
+
+        $this->layout->setLayoutFile(null);
+    }
 }
