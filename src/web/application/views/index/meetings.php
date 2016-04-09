@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>报名表-<?=$item['title']?></title>
+    <title>会议列表</title>
     <link href="/style/weui.css" rel="stylesheet" type="text/css" />
     <style>
         .hd {background-color: #E3AA1F;color: #ffffff}
@@ -22,8 +22,8 @@
             <h1 class="page_title">会议列表</h1>
         </div>
         <div class="bd">
-            <article class="weui_article">
-                <?php foreach ($list as $item) { ?>
+            <?php foreach ($list as $item) { ?>
+                <article class="weui_article">
                 <section>
                     <h2 class="title"><?= $item['title'] ?></h2>
                     <section class="content">
@@ -40,8 +40,8 @@
                         </div>
                     </section>
                 </section>
-                <?php } ?>
-            </article>
+               </article>
+                 <?php } ?>
         </div>
     </div></div>
 </body>
