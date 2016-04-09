@@ -143,5 +143,6 @@ class IndexController extends Mall {
             ]
         );
         $this->assign('list', $list);
+        $this->layout->setLayoutFile(null);
     }
 }

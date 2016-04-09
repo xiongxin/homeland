@@ -148,7 +148,13 @@ class PublicController extends Mall {
         if(empty($meeting_id)){
             $this->error('参数错误，会议ID为空！');
         }
-
+        
+        
+        $item = M('t_meeting')->get('*',['id'=>$meeting_id]);
+        if(empty($item)){
+            $this->error('会议不存在！');
+        }
+        $this->assign('item',$item);
         $this->layout->setLayoutFile(null);
     }
 }

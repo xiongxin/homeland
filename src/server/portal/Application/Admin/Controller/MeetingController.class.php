@@ -24,6 +24,7 @@ class MeetingController extends AdminController {
             $return = M()->table($prefix.'meeting');
             $data['insert_time'] = time_format();
             $data['update_time'] = time_format();
+            $data['process'] = str_replace(chr(13),'<br>',$data['process']);
             if ($return->create($data)) {
                 $result = $return->add();
                 if ($result > 0) {
@@ -51,6 +52,7 @@ class MeetingController extends AdminController {
             $data = I('post.');
             unset($data['parse']);
             $data['update_time'] = time_format();
+            $data['process'] = str_replace(chr(13),'<br>',$data['process']);
             if(!$model->where(array('id'=>$id))
                 ->save($data)){
                 $this->error('修改失败！');
@@ -65,6 +67,7 @@ class MeetingController extends AdminController {
         if (empty($data)) {
             $this->error('该回访不存在!');
         }
+        $data['process'] = str_replace('<br>',chr(13),$data['process']);
         $this->assign('item',$data);
         $this->meta_title = '会员回访详细信息';
         $this->display();
