@@ -8,7 +8,7 @@
 <body>
 <div class="container" id="container">
     <div class="cell">
-        <form>
+        <form id="submit-form" action="<?= U('enroll') ?>" method="post">
             <div class="bd">
                 <div class="weui_cells weui_cells_form">
                     <div class="weui_cell">
@@ -21,6 +21,12 @@
                         <div class="weui_cell_hd"><label class="weui_label">手机</label></div>
                         <div class="weui_cell_bd weui_cell_primary">
                             <input class="weui_input" name="mobile" type="number" placeholder="请输入您的手机号码">
+                        </div>
+                    </div>
+                    <div class="weui_cell">
+                        <div class="weui_cell_hd"><label class="weui_label">邮箱</label></div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <input class="weui_input" name="email" type="text" placeholder="请输入您的邮箱">
                         </div>
                     </div>
                     <div class="weui_cell weui_cell_select">
@@ -37,7 +43,7 @@
                     <div class="weui_cell">
                         <div class="weui_cell_hd"><label class="weui_label">公司</label></div>
                         <div class="weui_cell_bd weui_cell_primary">
-                            <input class="weui_input" name="company_name" type="number" placeholder="请输入您的公司名称">
+                            <input class="weui_input" name="company_name" type="text" placeholder="请输入您的公司名称">
                         </div>
                     </div>
                     <div class="weui_cell weui_cell_select">
@@ -94,7 +100,7 @@
                     <div class="weui_cell">
                         <div class="weui_cell_hd"><label class="weui_label">成立时间</label></div>
                         <div class="weui_cell_bd weui_cell_primary">
-                            <input class="weui_input" type="date" value="">
+                            <input class="weui_input" name="founding_time" type="date" value="">
                         </div>
                     </div>
 
@@ -118,9 +124,13 @@
                         <div class="weui_cell_hd"><label class="weui_label">推荐人</label></div>
                         <div class="weui_cell_bd weui_cell_primary">
                             <input class="weui_input" name="referee" type="text" placeholder="请输入您的推荐人(选填)">
+                            <input type="hidden" name="meeting_id" value="<?= $item['id'] ?>">
                         </div>
                     </div>
                 </div>
+            </div>
+            <div style="padding:0 1.5em 1.5em 1.5em;">
+                 <a id="sbt" style="background-color: #EBBD45;margin-top: 2em;font-size: 20px;font-weight: bold;"  class="weui_btn weui_btn_primary">立即报名</a>
             </div>
         </form>
     </div>
@@ -128,115 +138,146 @@
 <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://7xrote.com2.z0.glb.qiniucdn.com/layer.mobile.js"></script>
 <script>
-    jQuery(function ($) {
-        $('#founding_time').datepicker({
-            format: 'yyyy-mm-dd',
-            language:"zh-CN",
-            minView:2,
-            autoclose:true
-        });
-    })
-    $("input,select").focus(function(){
-        $(this).closest('.f_component').addClass('fs_component');
-    }).blur(function(){
-        $(this).closest('.f_component').removeClass('fs_component')
-    });
-
-    function show_error(obj, msg){
-        if (obj.prev().has('label').length < 1) {
-            obj.prevAll('.f_cTitle').append('<label class="error">' + msg + '</label>');
-        } else {
-            console.log(obj.prev().find('label'));
-            $(obj.prev().find('label')[0]).text(msg);
+    //weui_cell_warn
+    function show_error(obj){
+        if (!obj.parent().parent().hasClass('weui_cell_warn')) {
+            obj.parent().parent().addClass('weui_cell_warn');
+            obj.parent().parent().append('<div class="weui_cell_ft"><i class="weui_icon_warn"></i></div>');
         }
     }
 
+    function  select_show_error(obj){
+        if (!obj.parent().parent().hasClass('weui_cell_warn')) {
+            obj.parent().parent().addClass('weui_cell_warn');
+        }
+    }
 
-    $('.f_submitBtn').click(function(){
+    function remove_error(obj){
+        obj.parent().parent().removeClass('weui_cell_warn');
+        obj.parent().parent().remove('<div class="weui_cell_ft"><i class="weui_icon_warn"></i></div>');
+    }
+    $('#submit-form').find('input').each(function () {
+        var self = $(this);
+        self.focus(function () {
+            if (self.parent().parent().hasClass('weui_cell_warn')) {
+                self.parent().parent().removeClass('weui_cell_warn')
+                self.parent().parent().find('.weui_cell_ft').remove();
+            }
+       });
+    });
+
+    $('#submit-form').find('select').each(function () {
+        var self = $(this);
+        self.change(function () {
+            if (self.parent().parent().hasClass('weui_cell_warn')) {
+                self.parent().parent().removeClass('weui_cell_warn')
+                self.parent().parent().find('.weui_cell_ft').remove();
+            }
+        });
+    });
+    $('#sbt').click(function(){
         var flag = true;
         $('#submit-form').find('input').each(function(){
-            if ($(this).data('type') ==  'name' ) {
+            if ($(this).attr('name') ==  'name' ) {
                 if ($.trim(this.value) == ''){
-                    show_error($(this), '用户名不能为空');
-                    flag = false
+                    show_error($(this));
+                    layer.alert('名字不能为空！');
+                    flag =false;
                 }
             }
-            if ($(this).data('type') ==  'founding_time' ) {
+
+            if ($(this).attr('name') ==  'mobile' ) {
                 if ($.trim(this.value) == ''){
-                    show_error($(this), '成立时间不能为空');
-                    flag = false
-                }
-            }
-            if ($(this).data('type') ==  'primary_business' ) {
-                if ($.trim(this.value) == ''){
-                    show_error($(this), '主营业务及产品不能为空');
-                    flag = false
-                }
-            }
-            if ($(this).data('type') ==  'mobile' ) {
-                if ($.trim(this.value) == ''){
-                    show_error($(this), '手机号码不能为空');
-                    flag = false;
+                    show_error($(this));
+                    layer.alert('手机号码不能为空！');
+                    flag =false;
                 }
                 else {
                     var pattern=/(^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$)|(^0{0,1}1[3|4|5|6|7|8|9][0-9]{9}$)/;
 
                     if(!pattern.test($.trim(this.value))) {
-                        show_error($(this), '手机号码格式不正确');
-                        flag = false;
+                        show_error($(this));
+                        layer.alert('手机号码格式不正确！');
+                        flag =false;
                     }
                 }
             }
-            if($(this).data('type') == 'email') {
+
+            if ($(this).attr('name') ==  'company_name' ) {
+                if ($.trim(this.value) == ''){
+                    show_error($(this));
+                    layer.alert('公司名称不能为空！');
+                    flag =false;
+                }
+            }
+
+
+            if ($(this).attr('name') ==  'founding_time' ) {
+                if ($.trim(this.value) == ''){
+                    show_error($(this));
+                    layer.alert('成立时间不能为空！');
+                    flag =false;
+                }
+            }
+
+
+            if ($(this).attr('name') ==  'primary_business' ) {
+                if ($.trim(this.value) == ''){
+                    show_error($(this));
+                    layer.alert('主营业务及产品不能为空！');
+                    flag =false;
+                }
+            }
+
+            if($(this).attr('name') == 'email') {
                 if($.trim(this.value) == '') {
-                    show_error($(this),'邮箱不能为空');
-                    flag = false;
+                    show_error($(this));
+                    layer.alert('邮箱不能为空！');
+                    flag =false;
                 }
                 else {
                     var reg=/^[a-z0-9](\w|\.|-)*@([a-z0-9]+-?[a-z0-9]+\.){1,3}[a-z]{2,4}$/i;
                     if(!reg.test($.trim(this.value))) {
-                        show_error($(this), '邮箱格式不正确');
-                        flag = false;
+                        show_error($(this));
+                        layer.alert('邮箱格式不正确！');
+                        flag =false;
                     }
                 }
             }
-
-            if ($(this).data('type') ==  'company' ) {
-                if ($.trim(this.value) == ''){
-                    show_error($(this), '公司名称不能为空');
-                    flag = false
-                }
-            }
         });
-
         $('#submit-form').find('select').each(function () {
-            if ($(this).data('type') ==  'age' ) {
+            if ($(this).attr('name') ==  'age' ) {
                 if ($.trim(this.value) == ''){
-                    show_error($(this).parent(), '请选择年龄');
+                    layer.alert('请选择年龄！');
+                    select_show_error($(this), '请选择年龄');
                     flag = false
                 }
             }
-            if ($(this).data('type') ==  'position' ) {
+            if ($(this).attr('name') ==  'position' ) {
                 if ($.trim(this.value) == ''){
-                    show_error($(this).parent(), '请选择职位');
+                    layer.alert('请选择职位！');
+                    select_show_error($(this), '请选择职位');
                     flag = false
                 }
             }
-            if ($(this).data('type') ==  'industry_id' ) {
+            if ($(this).attr('name') ==  'industry_id' ) {
                 if ($.trim(this.value) == ''){
-                    show_error($(this).parent(), '请选择企业分类');
+                    layer.alert('请选择企业分类！');
+                    select_show_error($(this), '请选择企业分类');
                     flag = false
                 }
             }
-            if ($(this).data('type') ==  'enterprise_nature' ) {
+            if ($(this).attr('name') ==  'enterprise_nature' ) {
                 if ($.trim(this.value) == ''){
-                    show_error($(this).parent(), '请选择企业性质');
+                    layer.alert('请选择企业性质！');
+                    select_show_error($(this), '请选择企业性质');
                     flag = false
                 }
             }
-            if ($(this).data('type') ==  'scale' ) {
+            if ($(this).attr('name') ==  'scale' ) {
                 if ($.trim(this.value) == ''){
-                    show_error($(this).parent(), '请选择企业规模');
+                    layer.alert('请选择企业规模！');
+                    select_show_error($(this), '请选择企业规模');
                     flag = false
                 }
             }
@@ -245,6 +286,7 @@
         if(flag){
             $("#submit-form").submit();
         }
+
         return false;
     });
 </script>

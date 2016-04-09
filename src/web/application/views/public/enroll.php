@@ -30,7 +30,6 @@
                     <h2 class="title">会议流程</h2>
                     <section>
                         <p><?=$item['process']?></p>
-                        <p><?=$item['process']?></p>
                     </section>
                 </section>
             </article>
@@ -58,9 +57,7 @@
                         </p>
                     </section>
                     <section>
-                        <p>
                             <a href="<?= U('sign?meeting_id='.$item['id']) ?>" style="background-color: #EBBD45;margin-top: 2em;font-size: 20px;font-weight: bold;"  class="weui_btn weui_btn_primary">立即报名</a>
-                        </p>
                     </section>
                 </section>
             </article>
