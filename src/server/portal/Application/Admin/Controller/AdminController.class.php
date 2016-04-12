@@ -221,6 +221,13 @@ class AdminController extends Controller {
         $map['id'] = array('in',$ids);
         switch ($status){
             case -1 :
+                foreach ($ids as $id) {
+                    //删除微信端数据
+                    //更新内容到维信
+                    $api = new ApiService();
+                    $api->setData(['id'=>$id])
+                        ->send('/wechat/article/delete');
+                }
                 $this->delete($Model, $map, array('success'=>'删除成功','error'=>'删除失败'));
                 break;
             case 0  :
