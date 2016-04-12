@@ -28,7 +28,6 @@ class ArticleController extends Core\Wechat  {
             ],
             [
                 'AND'=>[
-                    'a.status[>]'=>0,
                     'a.id' => $article_id
                 ]
             ]);
@@ -43,8 +42,7 @@ class ArticleController extends Core\Wechat  {
                 'thumb_media_id' => $result['media_id'],
                 'digest' => $item['description'],
                 'show_cover_pic' => 1,
-                'content' => $item['content'],
-                'content_source_url' => urlencode('www.baidu.com')
+                'content' => $item['content']
             ];
             //上传文章
             $result = $this->wechat->uploadForeverArticles(['articles'=>[$data]]);
@@ -71,7 +69,6 @@ class ArticleController extends Core\Wechat  {
             ],
             [
                 'AND'=>[
-                    'a.status[>]'=>0,
                     'a.id' => $article_id
                 ]
             ]);

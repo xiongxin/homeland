@@ -10,6 +10,7 @@ namespace Admin\Controller;
 use Think\Controller;
 use Admin\Model\AuthRuleModel;
 use Admin\Model\AuthGroupModel;
+use Admin\Service\ApiService;
 /**
  * 后台首页控制器
  * @author 麦当苗儿 <zuojiazi@vip.qq.com>
@@ -135,6 +136,7 @@ class AdminController extends Controller {
      * @author 朱亚杰  <zhuyajie@topthink.net>
      */
     final protected function editRow ( $model ,$data, $where , $msg ){
+        $ids = I('request.ids');
         $id    = array_unique((array)I('id',0));
         $id    = is_array($id) ? implode(',',$id) : $id;
         //如存在id字段，则加入该条件
@@ -145,6 +147,18 @@ class AdminController extends Controller {
 
         $msg   = array_merge( array( 'success'=>'操作成功！', 'error'=>'操作失败！', 'url'=>'' ,'ajax'=>IS_AJAX) , (array)$msg );
         if( M($model)->where($where)->save($data) ) {
+            //删除多条微信端素材
+            if (is_array($ids)) {
+                foreach ($ids as $id) {
+                    $api = new ApiService();
+                    $api->setData(['id'=>$id])
+                        ->send('/wechat/article/delete');
+                }
+            } else { //删除单条维信素材
+                $api = new ApiService();
+                $api->setData(['id'=>$ids])
+                    ->send('/wechat/article/delete');
+            }
             $this->success($msg['success'],$msg['url'],$msg['ajax']);
         }else{
             $this->error($msg['error'],$msg['url'],$msg['ajax']);
@@ -221,13 +235,8 @@ class AdminController extends Controller {
         $map['id'] = array('in',$ids);
         switch ($status){
             case -1 :
-                foreach ($ids as $id) {
-                    //删除微信端数据
-                    //更新内容到维信
-                    $api = new ApiService();
-                    $api->setData(['id'=>$id])
-                        ->send('/wechat/article/delete');
-                }
+
+
                 $this->delete($Model, $map, array('success'=>'删除成功','error'=>'删除失败'));
                 break;
             case 0  :

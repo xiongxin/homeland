@@ -72,12 +72,12 @@ class BaseLogic extends Model {
                 $this->error = '新增数据失败！';
                 return false;
             }
-            
             //添加内容到维信
             $api = new ApiService();
-            $api->setData(['id'=>$id])
+            $api->setData(['id'=>$data['id']])
                 ->send('/wechat/article/add');
         } else { //更新数据
+            $id = $data['id'];
             $status = $this->save($data);
             if (false === $status) {
                 $this->error = '更新数据失败！';
