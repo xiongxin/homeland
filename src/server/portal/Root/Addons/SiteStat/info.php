@@ -1,27 +1,56 @@
+<style>
+    .col-xs-4 p,.col-xs-4 h2 {text-align: center;}
+    .col-xs-4 p>a>i {
+        display: inline-block;
+        font-size: 42px;
+        margin: 0 0 4px;
+        height: 180px;
+        min-width: 180px;
+        padding: 0;
+    }
+    .col-xs-4 .course i { background: url("__ACE__/images/background/reg.png") no-repeat;}
+    .col-xs-4 .company i { background: url("__ACE__/images/background/company.png") no-repeat;}
+    .col-xs-4 .reg i { background: url("__ACE__/images/background/course.png") no-repeat;}
+
+</style>
  <div class="row">
     <div class="col-sm-12">
     <?php if(isset($is_member)):?>
         <div class="col-xs-12">
-            <h3 class="header smaller lighter green">
-                快捷入口
-            </h3>
-
-            <p>
-                <a href="<?=U('my/reg')?>" class="btn btn-primary btn-app radius-4">
-                    <i class="icon-cog bigger-230"></i>
+            <div class="col-xs-4">
+                <p>
+                    <a href="<?=U('my/reg')?>" class="course">
+                        <i></i>
+                    </a>
+                </p>
+                <h2>
                     注册信息
-                </a>
-                <?php if(!empty($company_info) && $company_info['check_status'] == 'OK#'):?>
-                <a href="<?=U('my/companyedit')?>" class="btn btn-success btn-app radius-4">
-                    <i class="icon-edit bigger-230"></i>
-                    建档信息
-                </a>
-                <a href="<?=U('my/courses')?>" class="btn btn-pink btn-app radius-4">
-                    <i class="icon-shopping-cart bigger-230"></i>
-                    我的课程
-                </a>
-                <?php endif;?>
-            </p>
+                </h2>
+            </div>
+
+            <?php if(!empty($company_info) && $company_info['check_status'] == 'OK#'):?>
+                <div class="col-xs-4">
+                    <p>
+                        <a href="<?=U('my/companyedit')?>" class="company">
+                            <i></i>
+                        </a>
+                    </p>
+                    <h2>
+                        建档信息
+
+                    </h2>
+                </div>
+
+                <div class="col-xs-4">
+                    <p><a href="<?=U('my/courses')?>" class="reg">
+                            <i></i>
+                        </a></p>
+                    <h2>
+                        我的课程
+
+                    </h2>
+                </div>
+            <?php endif;?>
 
             <?php if(empty($company_info)):?>
             <p>
