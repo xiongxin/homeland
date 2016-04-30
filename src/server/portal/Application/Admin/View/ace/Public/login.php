@@ -1,375 +1,666 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>欢迎您登录{:C('WEB_SITE_TITLE')}</title>
-        <meta name="keywords" content="Bootstrap" />
-        <meta name="description" content="" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        <!-- basic styles -->
-
-        <link rel="stylesheet" href="__ACE__/css/bootstrap.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="__ACE__/css/font-awesome.min.css" />
-
-        <!--[if IE 7]>
-        <link rel="stylesheet" href="__ACE__/css/font-awesome-ie7.min.css" />
-        <![endif]-->
-
-        <!-- page specific plugin styles -->
-
-        <!-- fonts -->
-
-        <link rel="stylesheet" href="__ACE__/css/font-googleapis.css" />
-
-        <!-- ace styles -->
-
-        <link rel="stylesheet" href="__ACE__/css/ace.min.css" />
-        <link rel="stylesheet" href="__ACE__/css/ace-rtl.min.css" />
-        <style>
-            body{overflow: hidden;}
-            #login_bg {
-              position: absolute;
-              z-index: -1;
-            }
-        </style>
-        <!--[if lte IE 8]>
-          <link rel="stylesheet" href="__ACE__/css/ace-ie.min.css" />
-        <![endif]-->
-
-        <!-- inline styles related to this page -->
-
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-
-        <!--[if lt IE 9]>
-        <script src="__ACE__/js/html5shiv.js"></script>
-        <script src="__ACE__/js/respond.min.js"></script>
-        <![endif]-->
-    </head>
-
-    <body class="login-layout" id="login-page">
-        <div id="login_bg"><img src="" alt="" style="display: none;" /></div>
-        <div class="main-container">
-            <div class="main-content">
-                <div class="row">
-                    <div class="col-sm-10 col-sm-offset-1">
-                        <div class="login-container">
-                            <div class="center">
-                                <h1>
-                                    <img alt="" src="__IMG__/login_logo.png" style="margin-bottom: 6px;">
-                                    <span class="white">{:C('WEB_SITE_TITLE')}</span>
-                                </h1>
-                            </div>
-
-                            <div class="space-6"></div>
-
-                            <div class="position-relative">
-                                <div id="login-box" class="login-box <?=(!isset($sms_login) || !$sms_login) ? 'visible' : ''?> widget-box no-border">
-                                    <div class="widget-body">
-                                        <div class="widget-main">
-                                            <h4 class="header blue lighter bigger">
-                                                <i class="icon-coffee green"></i> 请输入您的登录信息
-                                            </h4>
-
-                                            <div class="space-6"></div>
-
-                                            <form action="{:U('login')}" method="post">
-                                                <fieldset>
-                                                    <label class="block clearfix">
-                                                        <span class="block input-icon input-icon-right">
-                                                            <input type="text" class="form-control" autocomplete="off" placeholder="请填写用户名" name="username">
-                                                            <i class="icon-user"></i>
-                                                        </span>
-                                                    </label>
-
-                                                    <label class="block clearfix">
-                                                        <span class="block input-icon input-icon-right">
-                                                            <input type="password" class="form-control" autocomplete="off" placeholder="请填写密码" name="password">
-                                                            <i class="icon-lock"></i>
-                                                        </span>
-                                                    </label>
-                                                    
-                                                    <label class="block clearfix">
-                                                        <span class="block input-icon input-icon-right">
-                                                            <input type="text" class="form-control" autocomplete="off" placeholder="请填写验证码" name="verify">
-                                                            <i class="icon-certificate"></i>
-                                                        </span>
-                                                    </label>
-                                                    
-                                                    <label class="block clearfix">
-                                                        <span class="block input-icon input-icon-right">
-                                                            <img class="verifyimg reloadverify" style="width: 100%" src="{:U('Public/verify')}" title="看不清，点击换一张">
-                                                        </span>
-                                                    </label>
-                                                    
-                                                    <div class="space"></div>
-
-                                                    <div class="clearfix">
-                                                        <button type="reset" class="width-30 pull-left btn btn-sm">
-                                                            <i class="icon-refresh"></i> 重置
-                                                        </button>
-
-                                                        <button type="submit" class="width-65 pull-right btn btn-sm btn-success">
-                                                            <span>登录</span><i class="icon-arrow-right icon-on-right"></i>
-                                                        </button>
-                                                    </div>
-
-                                                    <div class="space-4"></div>
-                                                </fieldset>
-                                            </form>
-                                        </div><!-- /widget-main -->
-
-                                        <div class="toolbar clearfix">
-                                            <div>
-                                            </div>
-                                            <div>
-                                                <a href="javascript:" onclick="show_box('sms-login');return false;" class="user-signup-link">
-                                                    使用短信验证码登录
-                                                    <i class="icon-arrow-right"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                    </div><!-- /widget-body -->
-                                </div><!-- /login-box -->
-
-                                <div id="forget-box" class="forgot-box widget-box no-border">
-                                    <div class="widget-body">
-                                        <div class="widget-main">
-                                            <h4 class="header red lighter bigger">
-                                                <i class="icon-key"></i> 重置密码
-                                            </h4>
-
-                                            <form action="{:U('resetpwd')}" method="post">
-                                                <fieldset>
-                                                    <label class="block clearfix">
-                                                        <span class="block input-icon input-icon-right">
-                                                            <input type="text" class="form-control mobile" maxlength="11" autocomplete="off" placeholder="请填写手机号码" name="username">
-                                                            <i class="icon-mobile-phone"></i>
-                                                        </span>
-                                                    </label>
-                                                    
-                                                    <label class="input-group">
-                                                        <input type="text" maxlength="6" autocomplete="off" placeholder="请填写手机验证码" class="form-control input-mask-date only-num" name="verify">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn btn-sm btn-danger get-sms-code" type="button">
-                                                                <i class="icon-lightbulb"></i>
-                                                                <span>获取验证码</span>
-                                                            </button>
-                                                        </span>
-                                                    </label>
-                                                    
-                                                    <label class="block clearfix">
-                                                        <span class="block input-icon input-icon-right">
-                                                            <input type="password" maxlength="20" class="form-control" autocomplete="off" placeholder="请填写新密码" name="password">
-                                                            <i class="icon-lock"></i>
-                                                        </span>
-                                                    </label>
-                                                    
-                                                    <label class="block clearfix">
-                                                        <span class="block input-icon input-icon-right">
-                                                            <input type="password" maxlength="20" autocomplete="off" placeholder="请填写确认密码" name="rpassword" class="form-control">
-                                                            <i class="icon-retweet"></i>
-                                                        </span>
-                                                    </label>
-                                                    
-                                                    <div class="clearfix">
-
-                                                        <button class="width-30 pull-left btn btn-sm reg-reset-btn" type="reset">
-                                                            <i class="icon-refresh"></i>
-                                                            <span>重置</span>
-                                                        </button>
-                                                        
-                                                        <button class="width-65 pull-right btn btn-sm btn-danger" type="submit">
-                                                            <i class="icon-key"></i>
-                                                            <span>提交</span>
-                                                        </button>
-                                                    </div>
-                                                </fieldset>
-                                            </form>
-                                        </div><!-- /widget-main -->
-
-                                        <div class="toolbar center">
-                                            <a href="#" onclick="show_box('login-box'); return false;" class="back-to-login-link">
-                                                <span>返回登录</span> <i class="icon-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div><!-- /widget-body -->
-                                </div><!-- /forgot-box -->
-
-                                <div id="sms-login" class="signup-box <?=(isset($sms_login) && $sms_login) ? 'visible' : ''?> widget-box no-border">
-                                    <div class="widget-body">
-                                        <div class="widget-main">
-                                            <h4 class="header green lighter bigger">
-                                                <i class="icon-group blue"></i>手机短信验证码登录
-                                            </h4>
-
-                                            <div class="space-6"></div>
-                                            <p> 请输入您的登录信息: </p>
-
-                                            <form action="{:U('login2')}" method="post">
-                                                <fieldset>
-                                                    <label class="block clearfix">
-                                                        <span class="block input-icon input-icon-right">
-                                                            <input type="text" class="form-control mobile" maxlength="11" autocomplete="off" placeholder="请填写手机号码" name="username">
-                                                            <i class="icon-mobile-phone"></i>
-                                                        </span>
-                                                    </label>
-
-                                                    <label class="input-group">
-                                                        <input type="text" maxlength="6" autocomplete="off" placeholder="请填写手机验证码" class="form-control input-mask-date only-num" name="verify">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn btn-sm btn-danger get-sms-code" type="button">
-                                                                <i class="icon-lightbulb"></i>
-                                                                <span>获取验证码</span>
-                                                            </button>
-                                                        </span>
-                                                    </label>
-
-                                                    <div class="space-24"></div>
-
-                                                    <div class="clearfix">
-                                                        <button type="reset" class="width-30 pull-left btn btn-sm">
-                                                            <i class="icon-refresh"></i> 重置
-                                                        </button>
-
-                                                        <button type="submit" class="width-65 pull-right btn btn-sm btn-success">
-                                                            <span>登录</span><i class="icon-arrow-right icon-on-right"></i>
-                                                        </button>
-                                                    </div>
-                                                </fieldset>
-                                            </form>
-                                        </div>
-
-                                         <div class="toolbar clearfix">
-                                             <a href="#" onclick="show_box('login-box'); return false;" class="back-to-login-link">
-                                                 <i class="icon-arrow-left"></i>
-                                                 使用用户名密码登录
-                                             </a>
-                                         </div>
-                                    </div><!-- /widget-body -->
-                                </div><!-- /signup-box -->
-                            </div><!-- /position-relative -->
-                        </div>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div>
-        </div><!-- /.main-container -->
-	<!--[if lt IE 9]>
-    <script type="text/javascript" src="__STATIC__/jquery-1.10.2.min.js"></script>
-    <![endif]-->
-    <!--[if gte IE 9]><!-->
-    <script type="text/javascript" src="__STATIC__/jquery-2.0.3.min.js"></script>
-    <!--<![endif]-->
-    <script type="text/javascript">
-        if("ontouchend" in document) document.write("<script src='__ACE__/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
-    </script>
-    
-    <script src="__STATIC__/respond.js"></script>
-    <script type="text/javascript" src="__STATIC__/layer/layer.min.js"></script>
-    <script type="text/javascript" src="__STATIC__/common.js"></script>
-
-    <!-- inline scripts related to this page -->
-
-    <script type="text/javascript">
-        function show_box(id) {
-			jQuery('.widget-box.visible').removeClass('visible');
-			jQuery('#'+id).addClass('visible');
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎您登录{:C('WEB_SITE_TITLE')}</title>
+    <link rel="stylesheet" href="__ACE__/css/login.css">
+    <style>
+        .barcode-container {
+            display: inline-block;
+            _display: inline-block;
+            display: table-cell;
+            float: left;
+            width: 120px;
+            height: 120px;
         }
-        var loading;
 
-    	//表单提交
-    	$("form").submit(function(){
-    		var self = $(this);
-    		$("button:submit").addClass("log-in").attr("disabled", true);
+        .barcode-container .status, .barcode-container .mask {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            color: #fff;
+        }
+
+        .barcode-container .status {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: tahoma, arial, "Hiragino Sans GB", "Microsoft Yahei", \5b8b\4f53;
+            color: #fff;
+        }
+
+        .barcode-container .status .first {
+            margin-top: 32%;
+        }
+
+        .barcode-container .status .second {
+            margin-top: 15%;
+        }
+
+        .barcode-container .status button {
+            outline: none;
+            line-height: 1.5;
+            height: 30px;
+            color: #fff;
+            border: none;
+            background-color: #0ae;
+            display: inline-block;
+            margin-top: 6px;
+            margin-top: 4px \0;
+            text-align: center;
+            text-decoration: none;
+            vertical-align: middle;
+            font-size: 14px;
+            border-radius: 2px;
+            padding: 0 20px;
+            cursor: pointer;
+        }
+
+        .barcode-container .status button:hover {
+            background-color: #00a3d2;
+        }
+
+        .barcode-container .status button:active {
+            position: relative;
+            top: 1px;
+            box-shadow: 1px 1px 3px #999 inset;
+        }
+
+        .barcode-container .mask {
+            opacity: 0.6;
+            filter: alpha(opacity=60);
+            -moz-opacity: 0.6;
+            background: #000;
+        }
+
+        .barcode-container .status, .barcode-container .mask {
+            width: 100%;
+            height: 100%;
+        }
+
+        .barcode-container .mask {
+            top: -7px;
+            left: -7px;
+            width: 112%;
+            height: 112%;
+        }
+
+        .barcode-container.error .status.error, .barcode-container.error .mask {
+            display: block;
+        }
+
+        .barcode-container.timeout .status.timeout, .barcode-container.timeout .mask {
+            display: block;
+        }
+
+        .barcode-container.scanned .status.scanned, .barcode-container.scanned .mask {
+            display: block;
+        }
+
+        .barcode-container.confirmed .status.confirmed, .barcode-container.confirmed .mask {
+            display: block;
+        }
+
+        .barcode-container {
+            position: relative;
+        }
+
+        .barcode-container .barcode img {
+            top: 46px \0 !important;
+            left: 46px \0 !important;
+        }
+
+    </style>
+    <style>
+        .ui-nav li {
+            float: left;
+            width: 50%;
+            color: #fff;
+            text-align: center;
+            border-bottom: 2px #fff solid;
+            font-size: 16px;
+            padding: 15px 0 4px;
+            cursor: pointer;
+        }
+
+        .ui-nav li.active {
+            color: #0AE;
+            border-bottom-color: #0AE;
+        }
+
+        .ui-nav {
+            background: rgba(0, 0, 0, .5);
+            _background: 0 0;
+            filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#66000000', EndColorStr='#66000000');
+        }
+
+        .clear-float {
+            clear: both;
+        }
+
+        .login-modern form {
+            padding-top: 20px;
+        }
+
+        .sl-error-display {
+            margin-top: 0px;
+        }                </style>
+    <style type="text/css">
+        input.sixDigitPassword {
+            position: absolute;
+            color: #fff;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+            font-size: 1px;
+            left: 0;
+            -webkit-box-sizing: content-box;
+            box-sizing: content-box;
+            -webkit-user-select: initial; /* 取消禁用选择页面元素 */
+            outline: 'none';
+            margin-left: '-9999px';
+        }
+
+        div.sixDigitPassword {
+            cursor: text;
+            background: #fff;
+            outline: none;
+            position: relative;
+            padding: 8px 0;
+            height: 14px;
+            border: 1px solid #cccccc;
+            border-radius: 2px;
+        }
+
+        div.sixDigitPassword i {
+            float: left;
+            display: block;
+            padding: 4px 0;
+            height: 7px;
+            border-left: 1px solid #cccccc;
+        }
+
+        div.sixDigitPassword i.active {
+            background-image: url("https://t.alipayobjects.com/images/rmsweb/T1nYJhXalXXXXXXXXX.gif");
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+        div.sixDigitPassword b {
+            display: block;
+            margin: 0 auto;
+            width: 7px;
+            height: 7px;
+            overflow: hidden;
+            visibility: hidden;
+            background-image: url("https://t.alipayobjects.com/tfscom/T1sl0fXcBnXXXXXXXX.png");
+        }
+
+        div.sixDigitPassword span {
+            position: absolute;
+            display: block;
+            left: 0px;
+            top: -1px;
+            height: 30px;
+            border: 1px solid rgba(82, 168, 236, .8);
+            border: 1px solid #00ffff \9;
+            border-radius: 2px;
+            visibility: hidden;
+            -webkit-box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.75), 0 0 8px rgba(82, 168, 236, 0.6);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+        }
+    </style>
+    <script src="//cdn.bootcss.com/jquery/1.12.1/jquery.js"></script>
+    <script type="text/javascript" src="__STATIC__/layer/layer.min.js"></script>
+</head>
+<body>
+<style>
+    .authcenter-head .header {
+        display: table;
+        height: 100px;;
+    }
+
+    .authcenter-head .header .cell {
+        display: table-cell; /*让元素以表格的单元素格形式渲染*/
+        vertical-align: middle; /*使用元素的垂直对齐*/
+        width: 100px;
+    }
+
+    .authcenter-head .header .title {
+        font-size: 26px;
+        font-weight: bold;
+        width: auto;
+    }
+</style>
+<div class="authcenter" id="J-authcenter">
+    <div class="authcenter-head">
+        <div class="container">
+            <div class="header">
+                <div class="cell"><img src="__ACE__/images/logo.png" alt=""></div>
+                <div class="cell title"><h1>民族企业家园运营门户</h1></div>
+            </div>
+        </div>
+    </div>
+    <div class="authcenter-body fn-clear">
+        <div class="authcenter-body-login" id="nav">
+            <ul class="ui-nav">
+                <li class="active" data-status="show_login">账密登录</li>
+                <li data-status="show_login">短信登录</li>
+                <br class="clear-float">
+            </ul>
+            <div class="login login-modern" id="login">
+                <form name="loginForm" action="{:U('login')}" method="post"
+                      class="ui-form" novalidate="novalidate" data-widget-cid="widget-3" data-qrcode="false">
+                    <fieldset>
+                        <div class="sl-error" id="J-errorBox" errortype="2">
+                            <span class="sl-error-text">请输入登录密码</span>
+                        </div>
+                        <div class="ui-form-item" id="J-username">
+                            <label id="J-label-user" class="ui-label" seed="authcenter-switch-account">
+                                <span class="ui-icon ui-icon-userDEF"><i class="iconauth"></i></span>
+                            </label>
+                            <input
+                                type="text" id="J-input-user" class="ui-input ui-input-normal" name="logonId"
+                                tabindex="1" value="" autocomplete="off" maxlength="100" placeholder="邮箱/手机号"
+                                seed="authcenter-input-account" data-widget-cid="widget-4" data-explain="">
+                            <div class="ui-form-explain"></div>
+                        </div>
+
+                        <div class="ui-form-item ui-form-item-20pd" id="J-password">
+                            <label id="J-label-editer" class="ui-label" data-desc="登录密码"
+                                   seed="authcenter-switch-aliedit">
+                                <span class="ui-icon ui-icon-securityON" id="safeSignCheck"><i
+                                        class="iconauth"></i></span>
+                                <div id="J-label-editer-pop" class="ui-poptip fn-hide" data-widget-cid="widget-0">
+                                    <div class="ui-poptip-container">
+                                        <div class="ui-poptip-arrow ui-poptip-arrow-7">
+                                            <em></em>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <span class="alieditContainer" id="password_container">
+                                <input type="password" tabindex="2"
+                                       id="password_rsainput"
+                                       name="password_rsainput"
+                                       class="ui-input i-text"
+                                       oncontextmenu="return false"
+                                       onpaste="return false"
+                                       oncopy="return false"
+                                       oncut="return false"
+                                       autocomplete="off"
+                                       value=""></span>
+                            <div class="ui-form-explain"></div>
+                        </div>
+                        <div id="J-checkcode" class="ui-form-item">
+                            <label id="J-label-checkcode" class="ui-label" seed="authcenter-switch-checkcode">
+                                <i class="ui-icon iconauth ui-icon-checkcodeT" id="J-switchCheckcode"></i>
+                                <div id="J-label-checkcode-pop" class="ui-poptip fn-hide" data-widget-cid="widget-1">
+                                    <div class="ui-poptip-container">
+                                        <div class="ui-poptip-arrow ui-poptip-arrow-7">
+                                            <em></em>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <input type="text" placeholder="验证码" value="" class="ui-input ui-input-normal"
+                                   id="J-input-checkcode" data-type="IMAGE" maxlength="4" name="checkCode"
+                                   autocomplete="off" tabindex="3" data="validate" seed="authcenter-input-checkcode"
+                                   data-widget-cid="widget-7" data-explain="">
+                            <span class="sl-checkcode" id="J-checkcodeIcon"></span>
+                            <div class="ui-checkcode">
+                                <img class="ui-checkcode-img reloadverify verifyimg" id="J-checkcode-img"
+                                     src="{:U('Public/verify')}"
+                                     title="点击图片刷新验证码" alt="点击图片刷新验证码" seed="authcenter-img-checkcode">
+                            </div>
+                            <div class="ui-form-explain"></div>
+                        </div>
+                        <div class="ui-form-item ui-form-item-30pd" id="J-submit">
+                            <input type="submit" value="登 录" class="ui-button" id="J-login-btn" tabindex="4"
+                                   seed="authcenter-submit-sso_index">
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div id="show-mobile" class="login qrcode-modern fn-hide">
+                <form name="loginForm" action="{:U('login2')}" method="post"
+                      class="ui-form" novalidate="novalidate" data-widget-cid="widget-3" data-qrcode="false">
+                    <fieldset>
+                        <div class="sl-error" style="margin-top: 10px;" errortype="2">
+                            <span class="sl-error-text"></span>
+                        </div>
+                        <div class="ui-form-item">
+                            <label class="ui-label" seed="authcenter-switch-account">
+                                <span class="ui-icon ui-icon-userDEF"><i class="iconauth"></i></span>
+                            </label>
+                            <input id="mobile"
+                                   type="text" class="ui-input ui-input-normal" name="logonId"
+                                   tabindex="1" value="" autocomplete="off" maxlength="100" placeholder="手机号"
+                                   seed="authcenter-input-account" data-widget-cid="widget-4" data-explain="">
+                            <div class="ui-form-explain"></div>
+                        </div>
+
+                        <div class="ui-form-item">
+                            <label class="ui-label" seed="authcenter-switch-checkcode">
+                                <i class="ui-icon iconauth ui-icon-checkcodeT"></i>
+                                <div class="ui-poptip fn-hide" data-widget-cid="widget-1">
+                                    <div class="ui-poptip-container">
+                                        <div class="ui-poptip-arrow ui-poptip-arrow-7">
+                                            <em></em>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <input id="checkcode" type="text" placeholder="验证码" value=""
+                                   class="ui-input ui-input-checkcode"
+                                   data-type="IMAGE" maxlength="4" name="checkCode"
+                                   autocomplete="off" tabindex="3" data="validate" seed="authcenter-input-checkcode"
+                                   data-widget-cid="widget-7" data-explain="">
+                            <input type="hidden" name="idPrefix" value="">
+                            <span class="sl-checkcode"></span>
+                            <a id="getcheckcode" style="background-color:#DB7C22; font-size: 12px;" class="ui-button">
+                                &nbsp;&nbsp;获取验证码</a>
+                            <div class="ui-form-explain"></div>
+                        </div>
+                        <div class="ui-form-item ui-form-item-30pd">
+                            <input type="submit" value="登 录" class="ui-button" tabindex="4" id="mobile_sumbit"
+                                   seed="authcenter-submit-sso_index">
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="ui-box">
+            <div class="ui-box-head">
+                <h3 class="ui-box-head-title">房老师演讲</h3>
+                <a href="#" class="ui-box-head-more">更多<i class="iconfont">&#xe60a;</i></a>
+            </div>
+            <div class="ui-box-container">
+                <div class="ui-box-content fn-clear">
+                    <div class="fn-left">
+                        <img src="__ACE__/images/巡讲图.png" alt="">
+                    </div>
+                    <div class="fn-left ui-list-cont">
+                        <ul class="ui-list ui-list-graylink">
+                            <li class="ui-list-item fn-clear">
+                                <a href="#">如何申请认证？</a>
+                                <span class="ui-list-item-text fn-right">2016-02-12</span>
+                            </li>
+                            <li class="ui-list-item fn-clear">
+                                <a href="#">如何申请认证？</a>
+                                <span class="ui-list-item-text fn-right">2016-02-12</span>
+                            </li>
+                            <li class="ui-list-item fn-clear">
+                                <a href="#">如何申请认证？</a>
+                                <span class="ui-list-item-text fn-right">2016-02-12</span>
+                            </li>
+                            <li class="ui-list-item fn-clear">
+                                <a href="#">如何申请认证？</a>
+                                <span class="ui-list-item-text fn-right">2016-02-12</span>
+                            </li>
+                            <li class="ui-list-item fn-clear">
+                                <a href="#">如何申请认证？</a>
+                                <span class="ui-list-item-text fn-right">2016-02-12</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui-box">
+            <div class="ui-box-head">
+                <h3 class="ui-box-head-title">房老师最新动态</h3>
+                <a href="#" class="ui-box-head-more">更多<i class="iconfont">&#xe60a;</i></a>
+            </div>
+            <div class="ui-box-container">
+                <div class="ui-box-content fn-clear">
+                    <div class="fn-left">
+                        <img src="__ACE__/images/动态图.png" alt="">
+                    </div>
+                    <div class="fn-left ui-list-cont">
+                        <ul class="ui-list ui-list-graylink">
+                            <li class="ui-list-item fn-clear">
+                                <a href="#">如何申请认证？</a>
+                                <span class="ui-list-item-text fn-right">2016-02-12</span>
+                            </li>
+                            <li class="ui-list-item fn-clear">
+                                <a href="#">如何申请认证？</a>
+                                <span class="ui-list-item-text fn-right">2016-02-12</span>
+                            </li>
+                            <li class="ui-list-item fn-clear">
+                                <a href="#">如何申请认证？</a>
+                                <span class="ui-list-item-text fn-right">2016-02-12</span>
+                            </li>
+                            <li class="ui-list-item fn-clear">
+                                <a href="#">如何申请认证？</a>
+                                <span class="ui-list-item-text fn-right">2016-02-12</span>
+                            </li>
+                            <li class="ui-list-item fn-clear">
+                                <a href="#">如何申请认证？</a>
+                                <span class="ui-list-item-text fn-right">2016-02-12</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <style>
+
+        </style>
+
+        <div class="ui-box">
+            <div class="ui-box-head">
+                <h3 class="ui-box-head-title">培训课程</h3>
+                <a href="#" class="ui-box-head-more">更多<i class="iconfont">&#xe60a;</i></a>
+            </div>
+            <div class="ui-box-container">
+                <div class="ui-box-content" style="padding: 10px 0">
+                    <div class="ui-courses fn-clear">
+                        <div class="ui-courses-item fn-left">
+                            <img src="__ACE__/images/课程1.png" alt="">
+                            <h3>飞鹰训练营</h3>
+                            <p>铭智集团《飞鹰训练营》第17期于2016年4月15-21日为期七天培训。主要内容围绕四大模块展开，打造针对企业全国运营......</p>
+                        </div>
+                        <div class="ui-courses-item fn-left">
+                            <img src="__ACE__/images/课程1.png" alt="">
+                            <h3>飞鹰训练营</h3>
+                            <p>铭智集团《飞鹰训练营》第17期于2016年4月15-21日为期七天培训。主要内容围绕四大模块展开，打造针对企业全国运营......</p>
+                        </div>
+                        <div class="ui-courses-item fn-left">
+                            <img src="__ACE__/images/课程1.png" alt="">
+                            <h3>飞鹰训练营</h3>
+                            <p>铭智集团《飞鹰训练营》第17期于2016年4月15-21日为期七天培训。主要内容围绕四大模块展开，打造针对企业全国运营......</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui-help-cont">
+        <div class="container">
+            <div class="ui-help fn-clear">
+                <div class="ui-help-item fn-left">
+                    <h3>网站自助</h3>
+                    <p>常见问题查看帮助</p>
+                    <p>查看帮助</p>
+                </div>
+
+                <div class="ui-help-item fn-left">
+                    <h3>在线客服</h3>
+                    <p>常见问题查看帮助</p>
+                    <p>查看帮助</p>
+                </div>
+
+                <div class="ui-help-item fn-left">
+                    <h3>网站自助</h3>
+                    <p>常见问题查看帮助</p>
+                    <p>查看帮助</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cpy-cnt">
+        <div class="cpy">
+            <p><a>诚征英才</a><span>|</span><a href="">联系我们</a></p>
+            <p>2015-2016@深圳麦圈科技有限公司</p>
+        </div>
+    </div>
+    <div class="authcenter-background" id="J-authcenter-bg" style="width: 100%; height: 540px;">
+        <img id="J-authcenter-bgImg" class="authcenter-bg authcenter-bg-show" seed="JAuthcenterBg-J-authcenter-bgImg"
+             smartracker="on" src="__ACE__/images/header.png"
+             style="width: 100%; height: 540px;">
+    </div>
+</div>
+<script>
+    var verifyimg = $(".verifyimg").attr("src");
+    $(".reloadverify").click(function(){
+        if( verifyimg.indexOf('?')>0){
+            $(".verifyimg").attr("src", verifyimg+'&random='+Math.random());
+        }else{
+            $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/,'')+'?'+Math.random());
+        }
+    });
+
+    var list = $('#nav').find('.login');
+    $('#nav').find('li').each(function (idx, itm) {
+        itm.idx = idx;
+        $(itm).click(function (event) {
+            $('#nav').find('li').each(function (idx, itm) {
+                $(itm).removeClass('active')
+            });
+            $(this).addClass('active');
+            list.each(function (idx, itm) {
+                $(itm).removeClass('fn-hide');
+            });
+            var new_idx = this.idx > 0 ? 0 : 1;
+            $(list[new_idx]).addClass('fn-hide');
+        })
+    })
+
+    $('#J-login-btn').click(function () {
+        if ($('#J-input-user').val() == '') {
+            $('#login').find('.sl-error').addClass('sl-error-display');
+            $('#login').find('.sl-error-text').html('请输入登录帐号');
+            return false;
+        }
+
+        if ($('#password_rsainput').val() == '') {
+            $('#login').find('.sl-error').addClass('sl-error-display');
+            $('#login').find('.sl-error-text').html('请输入登录密码');
+            return false;
+        }
+
+        if ($('#J-input-checkcode').val() == '') {
+            $('#login').find('.sl-error').addClass('sl-error-display');
+            $('#login').find('.sl-error-text').html('请输入验证码');
+            return false;
+        }
+        $('#login').find('form').submit(function () {
+            var self = $(this);
+            $("button:submit").addClass("log-in").attr("disabled", true);
             loading = layer.load();
-            
-    		$.post(self.attr("action"), self.serialize(), success, "json").always(function(){
 
+            $.post(self.attr("action"), self.serialize(), success, "json").always(function () {
                 $("button:submit").removeClass("log-in").attr("disabled", false);
                 layer.close(loading);
-            });;
-    		return false;
-
-    		function success(data){
-    			if(data.status){
-    				layer.msg(data.info,{icon:1},function(){
-    					window.location.href = data.url;
-    				});
-    			} else {
-    				if(data.url != ''){
-    					layer.msg(data.info,{icon:2},function(){
-                            show_box("signup-box");
-    					});
-    				}else{
-    					layer.alert(data.info,{icon:2});
-    				}
-    				//刷新验证码
-    				$(".reloadverify").click();
-    			}
-    		}
-    	})
-
-		$(function(){
-			//初始化选中手机号码输入框
-			$("#login-box").find("input[name=username]").focus();
-			//刷新验证码
-			var verifyimg = $(".verifyimg").attr("src");
-            $(".reloadverify").click(function(){
-                if( verifyimg.indexOf('?')>0){
-                    $(".verifyimg").attr("src", verifyimg+'&random='+Math.random());
-                }else{
-                    $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/,'')+'?'+Math.random());
-                }
             });
-            
-            $(".get-sms-code").click(function(){
-                var mobile = $(this).closest('form').find("input[name=username]").val();
-                if(/^1\d{10}$/.test(mobile)){
-                    $.post("{:U('getAuthCode')}",{mobile:mobile}).done(function(resp){
-                        if(resp.status == 1){
-                            layer.msg(resp.info,{icon:1});
-                        }else{
-                            layer.alert(resp.info,{icon:2});
-                        }
-                    }).fail(function(){
-                        
-                        layer.alert('验证码获取失败！',{icon:2});
+            ;
+            return false;
+
+            function success(data) {
+                if (data.status) {
+                    layer.msg(data.info, {icon: 1}, function () {
+                        window.location.href = data.url;
                     });
-                }else{
-                	layer.alert('请输入正确的手机号码！',{icon:2});
+                } else {
+                    if (data.url != '') {
+                        layer.msg(data.info, {icon: 2}, function () {
+                            show_box("signup-box");
+                        });
+                    } else {
+                        layer.alert(data.info, {icon: 2});
+                    }
+                    //刷新验证码
+                    $(".reloadverify").click();
                 }
-            });
-            
-            //随机背景
-            //setInterval(function(){
-            //},3000)
-            var list = ['1.jpg','2.jpg','3.jpg'];
-            
-            var ranNum=parseInt((list.length)*Math.random());
-            var src = '__ACE__/images/background/'+list[ranNum];
-            $.get(src,function(){
-                $("#login_bg img").attr('src',src).fadeIn(500);
-            });
-            
-            //屏幕自适应
-            $(window).resize(change)
-                
-            change();
-            function change(){
-                var w=$(window).width();
-                var h=$(window).height();
-                $("#login_bg img,#lay").css({
-                    'width':w,
-                    'height':h
-                    })
-                $("#login_bg img").animate({opacity:1})
-                $("#login_box").css({
-                    'left':(w-364)/2,
-                    'top':(h-264)/2
-                })
             }
-		});
-    </script>
-    </body>
+        });
+    });
+    var mobile = $('#mobile').val();
+    $('#getcheckcode').click(function () {
+        if (/^1\d{10}$/.test(mobile)) {
+            $.post("{:U('getAuthCode')}", {mobile: mobile}).done(function (resp) {
+                if (resp.status == 1) {
+                    layer.msg(resp.info, {icon: 1});
+                } else {
+                    layer.alert(resp.info, {icon: 2});
+                }
+            }).fail(function () {
+
+                layer.alert('验证码获取失败！', {icon: 2});
+            });
+        } else {
+            layer.alert('请输入正确的手机号码！', {icon: 2});
+        }
+    });
+
+    $('#mobile_sumbit').click(function () {
+        if ($('#mobile').val() == '') {
+            $('#show-mobile').find('.sl-error').addClass('sl-error-display');
+            $('#show-mobile').find('.sl-error-text').html('请输入手机号码');
+            return false;
+        }
+        if (!/^1\d{10}$/.test(parseInt($('#mobile').val()))) {
+            $('#show-mobile').find('.sl-error').addClass('sl-error-display');
+            $('#show-mobile').find('.sl-error-text').html('请输入正确手机号码');
+            return false;
+        }
+
+        if ($('#checkcode').val() == '') {
+            $('#show-mobile').find('.sl-error').addClass('sl-error-display');
+            $('#show-mobile').find('.sl-error-text').html('请输入手机验证码');
+            return false;
+        }
+
+        $('#show-mobile').find('form').submit(function () {
+            var self = $(this);
+            $("button:submit").addClass("log-in").attr("disabled", true);
+            loading = layer.load();
+
+            $.post(self.attr("action"), self.serialize(), success, "json").always(function () {
+                $("button:submit").removeClass("log-in").attr("disabled", false);
+                layer.close(loading);
+            });
+            ;
+            return false;
+
+            function success(data) {
+                if (data.status) {
+                    layer.msg(data.info, {icon: 1}, function () {
+                        window.location.href = data.url;
+                    });
+                } else {
+                    if (data.url != '') {
+                        layer.msg(data.info, {icon: 2}, function () {
+                            show_box("signup-box");
+                        });
+                    } else {
+                        layer.alert(data.info, {icon: 2});
+                    }
+                    //刷新验证码
+                    $(".reloadverify").click();
+                }
+            }
+        });
+    });
+</script>
+</body>
 </html>
