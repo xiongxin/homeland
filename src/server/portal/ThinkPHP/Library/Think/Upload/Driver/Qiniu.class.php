@@ -77,18 +77,29 @@ class Qiniu{
      * @param  boolean $replace 同名文件是否覆盖
      * @return boolean          保存状态，true-成功，false-失败
      */
-    public function save(&$file,$replace=true) {
-        $file['name'] = $file['savepath'] . $file['savename'];
-        $key = str_replace('/', '_', $file['name']);
+    public function save(&$url,$replace=true) {
         $upfile = array(
             'name'=>'file',
-            'fileName'=>$key,
-            'fileBody'=>file_get_contents($file['tmp_name'])
+            'fileBody'=>file_get_contents($url) // 替代curlRequest读取文件内容
         );
+        $exts = [
+            IMAGETYPE_GIF=>'.gif',
+            IMAGETYPE_JPEG=>'.jpg',
+            IMAGETYPE_PNG=>'.png',
+            IMAGETYPE_BMP=>'.bmp'
+        ];
+        $img_type = intval(exif_imagetype($url));
+        if(!isset($exts[$img_type])){
+            $this->qiniu->errorStr = '图片类型不正确！';
+            return false;
+        }
+
+        $upfile['fileName'] = md5($upfile['fileBody']).$exts[$img_type];
+
         $config = array();
         $result = $this->qiniu->upload($config, $upfile);
-        $url = $this->qiniu->downlink($key);
-        $file['url'] = $url;
+        $url = $this->qiniu->downlink($upfile['fileName']);
+
         return false ===$result ? false : true;
     }
 

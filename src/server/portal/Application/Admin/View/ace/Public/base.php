@@ -258,7 +258,7 @@
 	    </script>
 	    <script type="text/javascript" src="__STATIC__/think.js"></script>
 	    <script type="text/javascript" src="__STATIC__/layer/layer.min.js"></script>
-	    
+
         <script type="text/javascript">
             if("ontouchend" in document) document.write('<script src="__ACE__/js/jquery.mobile.custom.min.js">'+'</'+'script>');
         </script>
@@ -266,7 +266,7 @@
         <script src="__STATIC__/respond.js"></script>
         <!-- 自动补全输入框 js -->
         <script src="__ACE__/js/typeahead-bs2.min.js"></script>
-        
+
         <!-- page specific plugin scripts -->
 
         <script src="__ACE__/js/jquery-ui-1.10.3.custom.min.js"></script>
@@ -277,7 +277,7 @@
         <script src="__ACE__/js/ace-elements.min.js"></script>
         <script src="__ACE__/js/ace.min.js"></script>
         <!-- inline scripts related to this page -->
-        
+
 	    <script type="text/javascript" src="__JS__/common.js"></script>
 	    <script type="text/javascript" src="__STATIC__/common.js"></script>
 	    <script type="text/javascript">

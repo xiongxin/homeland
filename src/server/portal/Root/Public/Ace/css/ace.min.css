@@ -6333,7 +6333,7 @@ input[type=checkbox].ace.ace-switch.ace-switch-7:checked+.lbl::after {
 
 .form-group select,.form-group textarea,.form-group input[type="text"],.form-group input[type="password"],.form-group input[type="datetime"],.form-group input[type="datetime-local"],.form-group input[type="date"],.form-group input[type="month"],.form-group input[type="time"],.form-group input[type="week"],.form-group input[type="number"],.form-group input[type="email"],.form-group input[type="url"],.form-group input[type="search"],.form-group input[type="tel"],.form-group input[type="color"]
 	{
-	background: #FFF
+	background: #FFF;height: 42px;
 }
 
 .form-group.has-success input,.form-group.has-success select,.form-group.has-success textarea

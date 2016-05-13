@@ -262,7 +262,7 @@
                                 <span class="ui-icon ui-icon-userDEF"><i class="iconauth"></i></span>
                             </label>
                             <input
-                                type="text" id="J-input-user" class="ui-input ui-input-normal" name="logonId"
+                                type="text" id="J-input-user" class="ui-input ui-input-normal" name="username"
                                 tabindex="1" value="" autocomplete="off" maxlength="100" placeholder="邮箱/手机号"
                                 seed="authcenter-input-account" data-widget-cid="widget-4" data-explain="">
                             <div class="ui-form-explain"></div>
@@ -285,7 +285,7 @@
                             <span class="alieditContainer" id="password_container">
                                 <input type="password" tabindex="2"
                                        id="password_rsainput"
-                                       name="password_rsainput"
+                                       name="password"
                                        class="ui-input i-text"
                                        oncontextmenu="return false"
                                        onpaste="return false"
@@ -308,7 +308,7 @@
                                 </div>
                             </label>
                             <input type="text" placeholder="验证码" value="" class="ui-input ui-input-normal"
-                                   id="J-input-checkcode" data-type="IMAGE" maxlength="4" name="checkCode"
+                                   id="J-input-checkcode" data-type="IMAGE" maxlength="4" name="verify"
                                    autocomplete="off" tabindex="3" data="validate" seed="authcenter-input-checkcode"
                                    data-widget-cid="widget-7" data-explain="">
                             <span class="sl-checkcode" id="J-checkcodeIcon"></span>
@@ -338,7 +338,7 @@
                                 <span class="ui-icon ui-icon-userDEF"><i class="iconauth"></i></span>
                             </label>
                             <input id="mobile"
-                                   type="text" class="ui-input ui-input-normal" name="logonId"
+                                   type="text" class="ui-input ui-input-normal" name="username"
                                    tabindex="1" value="" autocomplete="off" maxlength="100" placeholder="手机号"
                                    seed="authcenter-input-account" data-widget-cid="widget-4" data-explain="">
                             <div class="ui-form-explain"></div>
@@ -358,7 +358,7 @@
                             </label>
                             <input id="checkcode" type="text" placeholder="验证码" value=""
                                    class="ui-input ui-input-checkcode"
-                                   data-type="IMAGE" maxlength="4" name="checkCode"
+                                   data-type="IMAGE" maxlength="4" name="verify"
                                    autocomplete="off" tabindex="3" data="validate" seed="authcenter-input-checkcode"
                                    data-widget-cid="widget-7" data-explain="">
                             <input type="hidden" name="idPrefix" value="">
@@ -376,6 +376,8 @@
             </div>
         </div>
     </div>
+
+
     <div class="container">
         <div class="ui-box">
             <div class="ui-box-head">
@@ -389,26 +391,12 @@
                     </div>
                     <div class="fn-left ui-list-cont">
                         <ul class="ui-list ui-list-graylink">
-                            <li class="ui-list-item fn-clear">
-                                <a href="#">如何申请认证？</a>
-                                <span class="ui-list-item-text fn-right">2016-02-12</span>
-                            </li>
-                            <li class="ui-list-item fn-clear">
-                                <a href="#">如何申请认证？</a>
-                                <span class="ui-list-item-text fn-right">2016-02-12</span>
-                            </li>
-                            <li class="ui-list-item fn-clear">
-                                <a href="#">如何申请认证？</a>
-                                <span class="ui-list-item-text fn-right">2016-02-12</span>
-                            </li>
-                            <li class="ui-list-item fn-clear">
-                                <a href="#">如何申请认证？</a>
-                                <span class="ui-list-item-text fn-right">2016-02-12</span>
-                            </li>
-                            <li class="ui-list-item fn-clear">
-                                <a href="#">如何申请认证？</a>
-                                <span class="ui-list-item-text fn-right">2016-02-12</span>
-                            </li>
+                            <volist name="meetings" id="vo">
+                                <li class="ui-list-item fn-clear">
+                                    <a href="<?= C('WECHAT_ADDR') . 'public/enroll?meeting_id=' . $vo['id'] ?>">{$vo.title}</a>
+                                    <span class="ui-list-item-text fn-right">{$vo.insert_time}</span>
+                                </li>
+                            </volist>
                         </ul>
                     </div>
                 </div>
@@ -427,26 +415,12 @@
                     </div>
                     <div class="fn-left ui-list-cont">
                         <ul class="ui-list ui-list-graylink">
-                            <li class="ui-list-item fn-clear">
-                                <a href="#">如何申请认证？</a>
-                                <span class="ui-list-item-text fn-right">2016-02-12</span>
-                            </li>
-                            <li class="ui-list-item fn-clear">
-                                <a href="#">如何申请认证？</a>
-                                <span class="ui-list-item-text fn-right">2016-02-12</span>
-                            </li>
-                            <li class="ui-list-item fn-clear">
-                                <a href="#">如何申请认证？</a>
-                                <span class="ui-list-item-text fn-right">2016-02-12</span>
-                            </li>
-                            <li class="ui-list-item fn-clear">
-                                <a href="#">如何申请认证？</a>
-                                <span class="ui-list-item-text fn-right">2016-02-12</span>
-                            </li>
-                            <li class="ui-list-item fn-clear">
-                                <a href="#">如何申请认证？</a>
-                                <span class="ui-list-item-text fn-right">2016-02-12</span>
-                            </li>
+                            <volist name="twitters" id="vo">
+                                <li class="ui-list-item fn-clear">
+                                    <a href="{$vo.wx_url}">{$vo.title}</a>
+                                    <span class="ui-list-item-text fn-right">{$vo.create_time}</span>
+                                </li>
+                            </volist>
                         </ul>
                     </div>
                 </div>
