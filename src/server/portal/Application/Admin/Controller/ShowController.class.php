@@ -21,7 +21,7 @@ class ShowController extends Controller {
         $model = M()->table( C('DB_PREFIX').'page p');
         $page   = $model->where('id=' .$id)->find();
 
-        $this->assign('cont', $page['html']);
+        $this->assign('item', $page);
         $this->meta_title = '魔法页面列表';
         $this->display();
     }

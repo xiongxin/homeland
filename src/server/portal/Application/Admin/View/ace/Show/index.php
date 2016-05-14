@@ -4,13 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>微页面标题 - 蜂鸟测试 - Powered by 012WZ.COM</title>
+    <title>{$item['title']}</title>
     <meta name="format-detection" content="telephone=no, address=no">
     <meta name="apple-mobile-web-app-capable" content="yes" /> <!-- apple devices fullscreen -->
     <meta name="apple-touch-fullscreen" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="keywords" content="微赞,微信,微信公众平台,012wz.com" />
-    <meta name="description" content="公众平台自助引擎（www.012wz.com），简称微赞，微赞是一款免费开源的微信公众平台管理系统，是国内最完善移动网站及移动互联网技术解决方案。" />
     <link rel="shortcut icon" href="/attachment/images/global/wechat.jpg" />
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script type="text/javascript" src="/app/resource/js/app/util.js"></script>
@@ -79,7 +77,7 @@
 </head>
 <body>
 <div class="container container-fill">
-    {$cont}
+    {item['html']}
     <script type="text/javascript" src="./resource/js/app/common.js"></script>				
     <div class="text-center footer" style="margin:10px 0; width:100%; text-align:center; word-break:break-all;">
         <a href="http://www.012wz.com">关于微赞</a>&nbsp;&nbsp;<a href="http://bbs.012wz.com">微赞帮助</a>								&nbsp;&nbsp;			</div>
