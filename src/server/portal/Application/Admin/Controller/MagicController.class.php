@@ -130,6 +130,9 @@ class MagicController extends AdminController {
                 'is_image' => 1,
                 'filesize' => filesize($_FILES['file']['name']),
             );
+            //将图片保存到数据库
+            M('images')->add(['url'=>$url,'createtime'=>time()]);
+
             $this->ajaxReturn($info);
         }
     }
@@ -143,8 +146,76 @@ class MagicController extends AdminController {
 
     // 请选择链接中的微页面链接接口
     public function pagelist() {
+        $result = array();
+        $psize = 10;
+        $pindex = max(1, intval(I('page')));
+        $result['list'] = M()->query("SELECT * FROM t_page  WHERE status=1 ORDER BY id DESC LIMIT " . ($pindex - 1) * $psize . ',' . $psize);
+        if (!empty($result['list'])) {
+            foreach ($result['list'] as $k => &$v) {
+                $v['createtime'] =$v['insert_time'];
+            }
+            $total = M('page')->where('status=1')->count();
+            $result['pager'] = pagination($total, $pindex, $psize, '', array('before' => '2', 'after' => '3', 'ajaxcallback'=>'true'));
+        }
 
-        $this->assign('callback', I('callback'));
-        $this->display();
+        $vars = array();
+        $vars['message'] = $result;
+        $vars['redirect'] = '';
+        $vars['type'] = 'ajax';
+        exit(json_encode($vars));
+    }
+
+    //浏览图片
+    public function images() {
+        $where = '';
+        $year = intval(I('year'));
+        $month = intval(I('month'));
+        if($year > 0 || $month > 0) {
+            if($month > 0 && !$year) {
+                $year = date('Y');
+                $starttime = strtotime("{$year}-{$month}-01");
+                $endtime = strtotime("+1 month", $starttime);
+            } elseif($year > 0 && !$month) {
+                $starttime = strtotime("{$year}-01-01");
+                $endtime = strtotime("+1 year", $starttime);
+            } elseif($year > 0 && $month > 0) {
+                $year = date('Y');
+                $starttime = strtotime("{$year}-{$month}-01");
+                $endtime = strtotime("+1 month", $starttime);
+            }
+            $where .= ' where createtime >= ' . $starttime  . ' AND createtime <=  ' . $endtime;
+        }
+
+        $page = intval(I('page'));
+        $page = max(1, $page);
+        $size = I('pagesize') ? intval(I('pagesize')) : 32;
+
+
+        $sql = 'SELECT * FROM t_images ' . $where . " ORDER BY id DESC LIMIT ".(($page-1)*$size).','.$size;
+        $list = M()->query($sql);
+        foreach ($list as &$item) {
+            $item['createtime'] = date('Y-m-d', $item['createtime']);
+        }
+        //将 id作为key
+        $newlist = [];
+        foreach ($list as $itm) {
+            $newlist[$itm['id']] = $itm;
+        }
+        $total = M('images')->count();
+        $vars = array();
+        $vars['message'] = array('page'=> pagination($total, $page, $size, '', array('before' => '2', 'after' => '2', 'ajaxcallback'=>'null')), 'items' => $newlist);
+        $vars['redirect'] = '';
+        $vars['type'] = 'ajax';
+        exit(json_encode($vars));
+    }
+
+    //删除图片
+    public function deimg(){
+        $id = I('id');
+        if (M('images')->delete($id)) {
+            exit('success');
+        } else {
+            exit('fail');
+        }
     }
 }

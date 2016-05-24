@@ -12,13 +12,8 @@ class IndexController extends Mall {
      *
      */
     public function indexAction(){
-//        die('aaa');
-        $query = M()->query("select id,title,address from t_meeting where date(agenda_date) = '".date('Y-m-d')."'");
-        $list = $query ? $query->fetchAll(PDO::FETCH_ASSOC) : false;       
-        if(empty($list)){
-            $this->error('啊哈，今天没有任何会议哦！');
-        }
-        $meeting = $list[0];
+        Yar_Concurrent_Client::call("http://homeland.me/api/user",'insertUser',[10,'测试产品']);
+        Yar_Concurrent_Client::loop();
     }
 
     public function signAction(){

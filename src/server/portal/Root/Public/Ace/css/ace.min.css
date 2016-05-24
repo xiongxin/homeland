@@ -6485,8 +6485,9 @@ input[type=checkbox].ace.ace-switch.ace-switch-7:checked+.lbl::after {
 }
 
 .tab-content {
-	border: 1px solid #c5d0dc;
-	padding: 16px 12px;
+	/*border: 1px solid #c5d0dc;*/
+	padding: 2px;
+	margin-top: 20px;
 	position: relative;
 	z-index: 11
 }

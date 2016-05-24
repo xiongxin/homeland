@@ -77,7 +77,7 @@
 </head>
 <body>
 <div class="container container-fill">
-    {item['html']}
+    {$item['html']}
     <script type="text/javascript" src="./resource/js/app/common.js"></script>				
     <div class="text-center footer" style="margin:10px 0; width:100%; text-align:center; word-break:break-all;">
         <a href="http://www.012wz.com">关于微赞</a>&nbsp;&nbsp;<a href="http://bbs.012wz.com">微赞帮助</a>								&nbsp;&nbsp;			</div>
